@@ -5,13 +5,13 @@ provider "aws" {
 
 module "ecr" {
   source = "../"
+  tags = {
+    ProvisionBy = "Terraform"
+  }
   ecr_repositories = {
     gwmclientapp_core = {
       image_tag_mutability = "MUTABLE"
       scan_on_push         = false
-      tags = {
-        ProvisionBy = "Terraform"
-      }
     }
     gwmcore_advisormanagmentmoduleapp = {
       image_tag_mutability = "MUTABLE"

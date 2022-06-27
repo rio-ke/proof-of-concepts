@@ -11,4 +11,7 @@ variable "tags" {
   default = {}
 }
 
-variable "subnets" {}
+variable "subnets" {
+  type    = any
+  default = {}
+}
