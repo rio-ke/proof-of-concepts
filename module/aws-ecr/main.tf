@@ -1,13 +1,13 @@
 resource "aws_ecr_repository" "aer" {
-  for_each             = var.ecr_repositories # "${var.eks_cluster_name}-${var.environment}-eks"
+  for_each             = var.ecr_repositories
   image_tag_mutability = "MUTABLE"
   name                 = each.key
-  tags                 = merge({ Name = each.key }, tomap(var.additional_tags))
+  tags                 = merge({ Name = each.key }, tomap(lookup(each.value, "tags", {})))
   encryption_configuration {
-    encryption_type = lookup(each.encryption_type, "AES256")
+    encryption_type = lookup(each.value, "encryption_type", "AES256")
   }
   image_scanning_configuration {
-    scan_on_push = lookup(each.scan_on_push, false)
+    scan_on_push = lookup(each.value, "scan_on_push", false)
   }
 }
 
