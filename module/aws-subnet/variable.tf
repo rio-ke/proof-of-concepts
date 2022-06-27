@@ -4,7 +4,7 @@ variable "vpc_id" {
 variable "availability_zone" {
   default = ""
 }
-variable "subnet_cidr_block" {
+variable "cidr_block" {
   default = ""
 }
 variable "subnets" {}

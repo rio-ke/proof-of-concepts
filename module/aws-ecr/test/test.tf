@@ -4,7 +4,7 @@ provider "aws" {
 
 
 module "ecr" {
-  source = "../module/aws-ecr"
+  source = "../"
   ecr_repositories = {
     gwmclientapp_core = {
       image_tag_mutability = "MUTABLE"
