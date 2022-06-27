@@ -1,43 +1,79 @@
-# aws_vpc_endpoint.GWM-PRIVATE-NEWENDPOINT:
 resource "aws_vpc_endpoint" "ave" {
-    cidr_blocks           = []
-    ip_address_type       = "ipv4"
-    network_interface_ids = [
-        "eni-03e39d081a6ad7f12",
-        "eni-0673a03f5f6f1a772",
-    ]
-    policy                = jsonencode(
+  for_each            = var.vpc_endpoint
+  ip_address_type     = "ipv4"
+  tags                = merge({ Name = each.key }, tomap(lookup(each.value, "tags", local.tags)))
+  service_name        = "com.amazonaws.ap-southeast-1.execute-api"
+  vpc_endpoint_type   = "Interface"
+  vpc_id              = "vpc-04fc3b6b0abc327a9"
+  private_dns_enabled = true
+  requester_managed   = false
+  route_table_ids     = []
+  policy = jsonencode(
+    {
+      Statement = [
         {
-            Statement = [
-                {
-                    Action    = "*"
-                    Effect    = "Allow"
-                    Principal = "*"
-                    Resource  = "*"
-                },
-            ]
-        }
-    )
-    private_dns_enabled   = true
-    requester_managed     = false
-    route_table_ids       = []
-    security_group_ids    = [
-        "sg-02ebf76fd113ae4d4",
-    ]
-    service_name          = "com.amazonaws.ap-southeast-1.execute-api"
-    subnet_ids            = [
-        "subnet-076a9ab7a5daf4395",
-        "subnet-0c8b13170675b9431",
-    ]
-    tags                  = {
-        "Name" = "GWM-PRIVATE-NEWENDPOINT"
+          Action    = "*"
+          Effect    = "Allow"
+          Principal = "*"
+          Resource  = "*"
+        },
+      ]
     }
+  )
 
-    vpc_endpoint_type     = "Interface"
-    vpc_id                = "vpc-04fc3b6b0abc327a9"
-
-    dns_options {
-        dns_record_ip_type = "ipv4"
-    }
-
+  security_group_ids = [
+    "sg-02ebf76fd113ae4d4",
+  ]
+  subnet_ids = [
+    "subnet-076a9ab7a5daf4395",
+    "subnet-0c8b13170675b9431",
+  ]
+  dns_options {
+    dns_record_ip_type = "ipv4"
+  }
 }
+
+
+
+resource "aws_security_group" "asg" {
+  description = "PRIAVTE_API_SG"
+  name        = "GWM_PRIVATAPI_SG"
+  tags        = merge({ Name = each.key }, tomap(lookup(each.value, "tags", local.tags)))
+  vpc_id      = "vpc-04fc3b6b0abc327a9"
+  egress = [{
+    cidr_blocks      = ["0.0.0.0/0"]
+    description      = ""
+    from_port        = 0
+    ipv6_cidr_blocks = []
+    prefix_list_ids  = []
+    protocol         = "-1"
+    security_groups  = []
+    self             = false
+    to_port          = 0
+  }]
+  ingress = [
+    {
+      cidr_blocks      = ["10.30.128.0/22"]
+      description      = "From WVD"
+      from_port        = 0
+      ipv6_cidr_blocks = []
+      prefix_list_ids  = []
+      protocol         = "-1"
+      security_groups  = []
+      self             = false
+      to_port          = 0
+    },
+    {
+      cidr_blocks      = ["10.60.80.0/20"]
+      description      = "changing the traffic from 0.0.0.0 to VPC Range"
+      from_port        = 0
+      ipv6_cidr_blocks = []
+      prefix_list_ids  = []
+      protocol         = "-1"
+      security_groups  = []
+      self             = false
+      to_port          = 0
+    },
+  ]
+}
+
