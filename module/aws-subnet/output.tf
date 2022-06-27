@@ -1,7 +1,7 @@
-output "aws_subnet_id" {
+output "id" {
   value = { for k, v in aws_subnet.as : k => v.id }
 }
 
-output "aws_subnet_arn" {
+output "arn" {
   value = { for k, v in aws_subnet.as : k => v.arn }
 }
