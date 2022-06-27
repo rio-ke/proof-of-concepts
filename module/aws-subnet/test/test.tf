@@ -6,6 +6,10 @@ provider "aws" {
 module "as" {
   source = "../"
   vpc_id = "vpc-04fc3b6b0abc327a9"
+  tags = {
+    "map-migrated" = "d-server-00xwtj6vmucwr9"
+    "name"         = "demo"
+  }
   subnets = {
     GWM-APP-AZ1 = {
       assign_ipv6_address_on_creation                = false
@@ -27,9 +31,6 @@ module "as" {
       availability_zone    = "ap-southeast-1a"
       availability_zone_id = "apse1-az1"
       cidr_block           = "10.60.82.128/26"
-      tags = {
-        "map-migrated" = "d-server-00xwtj6vmucwr9"
-      }
     }
   }
 }

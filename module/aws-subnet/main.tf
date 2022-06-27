@@ -9,6 +9,6 @@ resource "aws_subnet" "as" {
   enable_resource_name_dns_aaaa_record_on_launch = lookup(each.value, "enable_resource_name_dns_aaaa_record_on_launch", false)
   ipv6_native                                    = lookup(each.value, "ipv6_native", false)
   map_public_ip_on_launch                        = lookup(each.value, "map_public_ip_on_launch", false)
-  tags                                           = merge({ Name = each.key }, tomap(lookup(each.value, "tags", {})))
+  tags                                           = merge({ Name = each.key }, tomap(lookup(each.value, "tags", local.tags)))
 }
 

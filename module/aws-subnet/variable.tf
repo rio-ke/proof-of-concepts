@@ -7,4 +7,8 @@ variable "availability_zone" {
 variable "cidr_block" {
   default = ""
 }
+variable "tags" {
+  default = {}
+}
+
 variable "subnets" {}
