@@ -1,13 +1,13 @@
 resource "aws_vpc_endpoint" "ave" {
-  for_each            = var.vpc_endpoint
+  for_each            = var.vpc_endpoints
   ip_address_type     = "ipv4"
   tags                = merge({ Name = each.key }, tomap(lookup(each.value, "tags", local.tags)))
   service_name        = "com.amazonaws.ap-southeast-1.execute-api"
   vpc_endpoint_type   = "Interface"
   vpc_id              = "vpc-04fc3b6b0abc327a9"
   private_dns_enabled = true
-  requester_managed   = false
-  route_table_ids     = []
+  # requester_managed   = false
+  route_table_ids = []
   policy = jsonencode(
     {
       Statement = [
@@ -21,9 +21,7 @@ resource "aws_vpc_endpoint" "ave" {
     }
   )
 
-  security_group_ids = [
-    "sg-02ebf76fd113ae4d4",
-  ]
+  security_group_ids = [aws_security_group.asg[each.key].id]
   subnet_ids = [
     "subnet-076a9ab7a5daf4395",
     "subnet-0c8b13170675b9431",
@@ -36,6 +34,7 @@ resource "aws_vpc_endpoint" "ave" {
 
 
 resource "aws_security_group" "asg" {
+  for_each    = var.vpc_endpoints
   description = "PRIAVTE_API_SG"
   name        = "GWM_PRIVATAPI_SG"
   tags        = merge({ Name = each.key }, tomap(lookup(each.value, "tags", local.tags)))
@@ -53,8 +52,8 @@ resource "aws_security_group" "asg" {
   }]
   ingress = [
     {
-      cidr_blocks      = ["10.30.128.0/22"]
-      description      = "From WVD"
+      cidr_blocks      = lookup(each.value, "cidr_blocks")
+      description      = "allow the traffic"
       from_port        = 0
       ipv6_cidr_blocks = []
       prefix_list_ids  = []
@@ -62,18 +61,7 @@ resource "aws_security_group" "asg" {
       security_groups  = []
       self             = false
       to_port          = 0
-    },
-    {
-      cidr_blocks      = ["10.60.80.0/20"]
-      description      = "changing the traffic from 0.0.0.0 to VPC Range"
-      from_port        = 0
-      ipv6_cidr_blocks = []
-      prefix_list_ids  = []
-      protocol         = "-1"
-      security_groups  = []
-      self             = false
-      to_port          = 0
-    },
+    }
   ]
 }
 

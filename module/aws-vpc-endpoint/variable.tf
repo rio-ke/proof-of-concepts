@@ -2,7 +2,7 @@ variable "tags" {
   default = {}
 }
 
-variable "vpc_endpoint" {
+variable "vpc_endpoints" {
   type    = any
   default = {}
 }
