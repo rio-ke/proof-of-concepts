@@ -2,9 +2,9 @@ resource "aws_vpc_endpoint" "ave" {
   for_each            = var.vpc_endpoints
   ip_address_type     = "ipv4"
   tags                = merge({ Name = each.key }, tomap(lookup(each.value, "tags", local.tags)))
-  service_name        = "com.amazonaws.ap-southeast-1.execute-api"
+  service_name        = lookup(each.value, "service_name")
   vpc_endpoint_type   = "Interface"
-  vpc_id              = "vpc-04fc3b6b0abc327a9"
+  vpc_id              = lookup(each.value, "vpc_id", var.vpc_id)
   private_dns_enabled = true
   # requester_managed   = false
   route_table_ids = []
@@ -22,10 +22,7 @@ resource "aws_vpc_endpoint" "ave" {
   )
 
   security_group_ids = [aws_security_group.asg[each.key].id]
-  subnet_ids = [
-    "subnet-076a9ab7a5daf4395",
-    "subnet-0c8b13170675b9431",
-  ]
+  subnet_ids         = lookup(each.value, "subnet_ids")
   dns_options {
     dns_record_ip_type = "ipv4"
   }
