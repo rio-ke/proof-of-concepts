@@ -28,7 +28,7 @@ fi
 # to create the sync repo
 syncUrl="https://github.com/jsmith/test"
 updatedPath="/Repos/Production/testrepo"
-cat >data.json <<EOF
+cat > data.json <<EOF
 { 
   "url": "${syncUrl}", 
   "provider": "azureDevOpsServices", 
