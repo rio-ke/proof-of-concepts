@@ -37,6 +37,4 @@ cat > data.json <<EOF
 EOF
 
 curl -s -XGET ${dataBricksURL}/api/2.0/repos -H "Authorization: Bearer ${bearerToken}" -H "Content-Type: application/json" -d @data.json | jq
-
-
 ```
