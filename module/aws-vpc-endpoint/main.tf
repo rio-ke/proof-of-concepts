@@ -6,8 +6,10 @@ resource "aws_vpc_endpoint" "ave" {
   vpc_id              = lookup(each.value, "vpc_id", var.vpc_id)
   tags                = merge({ Name = each.key }, tomap(lookup(each.value, "tags", local.tags)))
   private_dns_enabled = true
-  # requester_managed   = false
-  route_table_ids = []
+  route_table_ids     = []
+  security_group_ids  = [aws_security_group.asg[each.key].id]
+  subnet_ids          = lookup(each.value, "subnet_ids")
+  # requester_managed = false
   policy = jsonencode(
     {
       Statement = [
@@ -20,9 +22,6 @@ resource "aws_vpc_endpoint" "ave" {
       ]
     }
   )
-
-  security_group_ids = [aws_security_group.asg[each.key].id]
-  subnet_ids         = lookup(each.value, "subnet_ids")
   dns_options {
     dns_record_ip_type = "ipv4"
   }
@@ -49,7 +48,7 @@ resource "aws_security_group" "asg" {
   }]
   ingress = [
     {
-      cidr_blocks      = lookup(each.value, "cidr_blocks")
+      cidr_blocks      = lookup(each.value, "cidr_blocks", [])
       description      = "allow the traffic"
       from_port        = 0
       ipv6_cidr_blocks = []
