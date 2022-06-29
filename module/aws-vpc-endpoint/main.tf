@@ -1,10 +1,10 @@
 resource "aws_vpc_endpoint" "ave" {
   for_each            = var.vpc_endpoints
   ip_address_type     = "ipv4"
-  tags                = merge({ Name = each.key }, tomap(lookup(each.value, "tags", local.tags)))
   service_name        = lookup(each.value, "service_name")
   vpc_endpoint_type   = "Interface"
   vpc_id              = lookup(each.value, "vpc_id", var.vpc_id)
+  tags                = merge({ Name = each.key }, tomap(lookup(each.value, "tags", local.tags)))
   private_dns_enabled = true
   # requester_managed   = false
   route_table_ids = []
