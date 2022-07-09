@@ -32,3 +32,4 @@ _Reference_
 - https://docs.aws.amazon.com/cdk/api/latest/python/aws_cdk.aws_lambda/Function.html
 - https://pypi.org/project/aws-cdk.aws-s3-deployment/
 - https://docs.aws.amazon.com/cdk/api/latest/python/index.html
+- https://aws.amazon.com/getting-started/guides/setup-cdk/module-two/
