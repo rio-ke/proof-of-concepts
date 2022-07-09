@@ -1,0 +1,224 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "coreEnvironment": {
+      "type": "string"
+    },
+    "apimRsGroupCompany": {
+      "type": "string",
+      "defaultValue": "00"
+    },
+    "apimRsEnvironment": {
+      "type": "string",
+      "defaultValue": "dv"
+    },
+    "apimRsInstanceSuffix": {
+      "type": "string",
+      "defaultValue": "001"
+    },
+    "apiRsGroupCompany": {
+      "type": "string",
+      "defaultValue": "01"
+    },
+    "apiRsEnvironment": {
+      "type": "string",
+      "defaultValue": "dv"
+    },
+    "apiRsInstanceSuffix": {
+        "type": "string",
+        "defaultValue": "001"
+    },
+    "selfHostedGateway": {
+        "type": "string",
+        "defaultValue": "kd00apimg001"
+    } 
+  },
+  "functions": [],
+  "variables": {
+    "coreEnvironmentInShort": "[if(equals(parameters('coreEnvironment'),'prod'),'pr',if(equals(parameters('coreEnvironment'),'nonprod'),'np','dev'))]",
+    "defaultLocation": "[resourceGroup().location]",
+    "defaultLocationInShort": "[if(equals(resourceGroup().location, 'eastus2'),'eus2','cus')]",
+    "sQuote": "'",
+    "apimRgName": "[concat('rg-',parameters('apimRsGroupCompany'),'-integration-apim-',parameters('apimRsEnvironment'),'-',variables('defaultLocationInShort'),'-',parameters('apimRsInstanceSuffix'))]",
+    "apimServiceName": "[concat('apm-',parameters('apimRsGroupCompany'),'-',parameters('apimRsEnvironment'),'-core-',parameters('apimRsInstanceSuffix'))]",
+    "subCoreEnvironment": "[if(equals(parameters('coreEnvironment'),'prod'),'prod','nonprod')]",
+    "npApimServiceHost": "[concat(variables('coreEnvironmentInShort'),'apim.',variables('subCoreEnvironment'),'.corp.tmnas.io')]",
+    "prApimServiceHost": "apim.corp.tmnas.io",
+    "apimServiceHost": "[if(equals(parameters('coreEnvironment'),'prod'),variables('prApimServiceHost'),variables('npApimServiceHost'))]",
+    "apimApiPath": "[concat(variables('apimServiceHost'),'/',variables('apiServiceName'))]",
+    "apiServiceName": "[concat('api-',parameters('apiRsGroupCompany'),'-',parameters('apiRsEnvironment'),'-billingapi-',parameters('apiRsInstanceSuffix'))]",
+    "apiDescription": "Billing api Service",
+
+    "apiNativeServiceUrl_ci": "https://devtmnasservice.corp.tmnas.com/BillingAPI/v1/phly",
+    "apiNativeServiceUrl_dv": "https://devtmnasservice.corp.tmnas.com/BillingAPI/v1/phly",
+    "apiNativeServiceUrl_qa": "https://devtmnasservice.corp.tmnas.com/BillingAPI/v1/phly",
+    "apiNativeServiceUrl_mo": "https://devtmnasservice.corp.tmnas.com/BillingAPI/v1/phly",
+    "apiNativeServiceUrl_ps": "https://devtmnasservice.corp.tmnas.com/BillingAPI/v1/phly",
+    "apiNativeServiceUrl_pr": "https://devtmnasservice.corp.tmnas.com/BillingAPI/v1/phly",
+    "belongsToProductList": [
+      {
+        "productName": "pdt-iad-sub"
+      }
+    ],
+    "apiTagDetails": [
+      {
+        "tagName": "internal"
+      }
+    ]
+  },
+  "resources": [
+    {
+      "comments": "Create the API",
+      "type": "Microsoft.ApiManagement/service/apis",
+      "apiVersion": "2020-06-01-preview",
+      "name": "[concat(variables('apimServiceName'), '/',variables('apiServiceName'))]",
+      "properties": {
+        "displayName": "[variables('apiServiceName')]",
+        "apiRevision": "1",
+        "description": "[variables('apiDescription')]",
+        "subscriptionRequired": true,
+        "authenticationSettings": {
+          "oAuth2": {
+            "authorizationServerId": "oauth-setup"
+          }
+        },
+        "path": "[variables('apiServiceName')]",
+        "protocols": [
+          "https"
+        ],
+        "isCurrent": true,
+        "serviceUrl": "[variables(concat('apiNativeServiceUrl_',parameters('apiRsEnvironment')))]"
+      }
+    },
+    {
+      "comments": "Add the API to the specific products",
+      "type": "Microsoft.ApiManagement/service/products/apis",
+      "name": "[concat(variables('apimServiceName'),'/',variables('belongsToProductList')[copyIndex('belongsToProductListCopy')].productName,'/',variables('apiServiceName'))]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', variables('apimServiceName'), variables('apiServiceName'))]"
+      ],
+      "copy": {
+        "name": "belongsToProductListCopy",
+        "count": "[length(variables('belongsToProductList'))]"
+      },
+      "apiVersion": "2019-12-01",
+      "properties": {
+        "policyContent": ""
+      }
+    },
+    {
+      "comments": "Add the all operations level policy",
+      "type": "Microsoft.ApiManagement/service/apis/policies",
+      "apiVersion": "2020-06-01-preview",
+      "name": "[concat(variables('apimServiceName'), '/',variables('apiServiceName'),'/policy')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', variables('apimServiceName'), variables('apiServiceName'))]"
+      ],
+      "properties": {
+        "value": "<!--\r\n    IMPORTANT:\r\n    - Policy elements can appear only within the <inbound>, <outbound>, <backend> section elements.\r\n    - To apply a policy to the incoming request (before it is forwarded to the backend service), place a corresponding policy element within the <inbound> section element.\r\n    - To apply a policy to the outgoing response (before it is sent back to the caller), place a corresponding policy element within the <outbound> section element.\r\n    - To add a policy, place the cursor at the desired insertion point and select a policy from the sidebar.\r\n    - To remove a policy, delete the corresponding policy statement from the policy document.\r\n    - Position the <base> element within a section element to inherit all policies from the corresponding section element in the enclosing scope.\r\n    - Remove the <base> element to prevent inheriting policies from the corresponding section element in the enclosing scope.\r\n    - Policies are applied in the order of their appearance, from the top down.\r\n    - Comments within policy elements are not supported and may disappear. Place your comments between policy elements or at a higher level scope.\r\n-->\r\n<policies>\r\n  <inbound>\r\n    <base />\r\n  </inbound>\r\n  <backend>\r\n    <base />\r\n  </backend>\r\n  <outbound>\r\n    <base />\r\n  </outbound>\r\n  <on-error>\r\n    <base />\r\n  </on-error>\r\n</policies>",
+        "format": "xml"
+      }
+    },
+    {
+      "comments": "Associate the api to respective api tags",
+      "type": "Microsoft.ApiManagement/service/apis/tags",
+      "apiVersion": "2020-12-01",
+      "name": "[concat(variables('apimServiceName'),'/',variables('apiServiceName'),'/',variables('apiTagDetails')[copyIndex('apiTagDetailsCopy')].tagName)]",
+      "copy": {
+        "name": "apiTagDetailsCopy",
+        "count": "[length(variables('apiTagDetails'))]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', variables('apimServiceName'), variables('apiServiceName'))]"
+      ]
+    },
+    {
+        "comments": "Add the Api to self hosted gateway",
+        "type": "Microsoft.ApiManagement/service/gateways/apis",
+        "apiVersion": "2020-06-01-preview",
+        "name": "[concat(variables('apimServiceName'), '/',parameters('selfHostedGateway'),'/',variables('apiServiceName'))]",
+        "dependsOn": [
+            "[resourceId('Microsoft.ApiManagement/service/apis', variables('apimServiceName'), variables('apiServiceName'))]"
+        ],
+        "properties": {}
+    },
+    {
+        "comments": "Create an API operation - GetBillingCenterPerspective",
+      "type": "Microsoft.ApiManagement/service/apis/operations",
+      "apiVersion": "2020-06-01-preview",
+        "name": "[concat(variables('apimServiceName'), '/',variables('apiServiceName'),'/GetBillingCenterPerspective')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', variables('apimServiceName'), variables('apiServiceName'))]"
+      ],
+        "properties": {
+            "displayName": "GetBillingCenterPerspective",
+            "method": "POST",
+            "urlTemplate": "/GetBillingCenterPerspective",
+            "templateParameters": [],
+            "description": "Billing Center Perspective",
+            "request": {
+                "queryParameters": [],
+                "headers": [
+                    {
+                        "name": "Content-type",
+                        "type": "application/json",
+                        "values": []
+                    }
+                ],
+                "representations": []
+            },
+            "responses": [],
+            "policies": null
+        }
+    },
+    {
+      "comments": "Create an API operation policy - GetBillingCenterPerspective",
+      "type": "Microsoft.ApiManagement/service/apis/operations/policies",
+      "apiVersion": "2020-06-01-preview",
+      "name": "[concat(variables('apimServiceName'), '/',variables('apiServiceName'),'/GetBillingCenterPerspective/policy')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis/operations', variables('apimServiceName'), variables('apiServiceName'), 'GetBillingCenterPerspective')]",
+        "[resourceId('Microsoft.ApiManagement/service/apis', variables('apimServiceName'), variables('apiServiceName'))]"
+      ],
+      "properties": {
+        "value": "[concat('<policies>\r\n  <inbound>\r\n    <base />\r\n  </inbound>\r\n  <backend>\r\n    <base />\r\n  </backend>\r\n  <outbound>\r\n    <base />\r\n  </outbound>\r\n  <on-error>\r\n    <base />\r\n  </on-error>\r\n</policies>')]",
+        "format": "xml"
+      }
+    },
+    {
+        "comments": "Create an API operation - ping",
+        "type": "Microsoft.ApiManagement/service/apis/operations",
+        "apiVersion": "2020-06-01-preview",
+        "name": "[concat(variables('apimServiceName'), '/',variables('apiServiceName'),'/ping')]",
+        "dependsOn": [
+            "[resourceId('Microsoft.ApiManagement/service/apis', variables('apimServiceName'), variables('apiServiceName'))]"
+        ],
+        "properties": {
+            "displayName": "ping",
+            "method": "GET",
+            "urlTemplate": "/ping",
+            "templateParameters": [],
+            "description": "",
+            "responses": [],
+            "policies": null
+        }
+    },
+    {
+        "comments": "Create an API operation policy - ping",
+        "type": "Microsoft.ApiManagement/service/apis/operations/policies",
+        "apiVersion": "2020-06-01-preview",
+        "name": "[concat(variables('apimServiceName'), '/',variables('apiServiceName'),'/ping/policy')]",
+        "dependsOn": [
+            "[resourceId('Microsoft.ApiManagement/service/apis/operations', variables('apimServiceName'), variables('apiServiceName'), 'ping')]",
+            "[resourceId('Microsoft.ApiManagement/service/apis', variables('apimServiceName'), variables('apiServiceName'))]"
+        ],
+        "properties": {
+            "value": "[concat('<policies>\r\n  <inbound>\r\n    <base />\r\n  </inbound>\r\n  <backend>\r\n    <base />\r\n  </backend>\r\n  <outbound>\r\n    <base />\r\n  </outbound>\r\n  <on-error>\r\n    <base />\r\n  </on-error>\r\n</policies>')]",
+            "format": "xml"
+        }
+    }
+  ],
+  "outputs": {}
+}
+  

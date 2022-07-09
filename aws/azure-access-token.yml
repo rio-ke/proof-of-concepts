@@ -1,0 +1,21 @@
+---
+- hosts: localhost
+  vars:
+    tenantId: "tenantId"
+  tasks:
+  - name: Create the instance
+    uri:
+      url: "https://login.microsoftonline.com/{{ tenantId }}/oauth2/token"
+      method: POST
+      body:
+        client_id: "xxxxxxxx"
+        client_secret: "xxxxxxxx"
+        grant_type: "client_credentials"
+        scope: "https://management.azure.com"
+      body_format: form-urlencoded
+      force_basic_auth: yes
+      return_content: true
+      validate_certs: false
+    register: create_morpheus_access_token
+  - debug:
+      msg: "{{ create_morpheus_access_token.json.access_token }}"
