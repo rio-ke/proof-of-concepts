@@ -1,0 +1,6 @@
+vpc_cidr   = "10.0.0.0/16"
+accessKey  = ""
+secretKey  = ""
+region     = "eu-west-1"
+project    = "duckduckgo"
+key-name   = "xps"
