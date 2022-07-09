@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+ <SharedPersistenceConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <DbUserName>digit1</DbUserName>
+   <DbUserPassword>Digit@!@#@123</DbUserPassword>
+   <DbHost>localhost/%computername%</DbHost>
+   <DbPort>4432</DbPort>
+   <RootDir>\\%computername%\QlikSenseStorage</RootDir>
+   <StaticContentRootDir>\\%computername%\QlikSenseStorage\StaticContent</StaticContentRootDir>
+   <CustomDataRootDir>\\%computername%\QlikSenseStorage\CustomData</CustomDataRootDir>
+   <ArchivedLogsDir>\\%computername%\QlikSenseStorage\ArchivedLogs</ArchivedLogsDir>
+   <AppsDir>\\%computername%\QlikSenseStorage\Apps</AppsDir>
+   <CreateCluster>true</CreateCluster>
+   <InstallLocalDb>false</InstallLocalDb>
+   <ConfigureDbListener>true</ConfigureDbListener>
+   <ListenAddresses>*</ListenAddresses>
+   <IpRange>0.0.0.0/0</IpRange>
+   <MaxConnections>100</MaxConnections>
+   <!--<JoinCluster>true</JoinCluster>-->
+   <ConfigureLogging>true</ConfigureLogging>
+   <SetupLocalLoggingDb>true</SetupLocalLoggingDb>
+   <QLogsWriterPassword>writerpw</QLogsWriterPassword>
+   <QLogsReaderPassword>readerpw</QLogsReaderPassword>
+   <QLogsHostname>localhost/%computername%</QLogsHostname>
+   <QLogsPort>4432</QLogsPort>
+ </SharedPersistenceConfiguration> 
