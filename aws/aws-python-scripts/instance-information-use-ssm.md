@@ -30,7 +30,7 @@ def printInstanceSessionDataInformations():
                     print(i.ljust(35), "-", j)
             print("")
     else:
-        print("There is no instance of association of ssm manager")
+        print("There is no instance associated with ssm manager.")
 
 
 printInstanceSessionDataInformations()
