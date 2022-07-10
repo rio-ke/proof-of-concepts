@@ -4,6 +4,7 @@ _depencencies_
 
 * aws configure
 * python3
+* boto3
 
 _scripts_
 
