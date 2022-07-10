@@ -13,8 +13,7 @@ _scripts_
 # instance-information-use-ssm.py
 
 import boto3
-client = boto3.client('ssm')
-
+client = boto3.client('ssm', region_name="ap-south-1")
 
 def instanceSessionDataInformations():
     data = client.describe_instance_information()
