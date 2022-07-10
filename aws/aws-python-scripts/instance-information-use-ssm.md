@@ -46,3 +46,7 @@ python3 instance-information-use-ssm.py
 _output_
 
 ![image](https://user-images.githubusercontent.com/57703276/178131431-3526cead-3184-42dc-bee4-cf53c24b6271.png)
+
+_note_
+
+It requires a session manager; without it, we cannot obtain OS information.
