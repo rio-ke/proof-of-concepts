@@ -8,6 +8,9 @@ _depencencies_
 
 _scripts_
 
+
+_senario 1_
+
 ```python3
 #!/usr/bin/env python3
 
@@ -36,6 +39,38 @@ def printInstanceSessionDataInformations():
 printInstanceSessionDataInformations()
 
 ```
+
+_senario 2_
+
+```python3
+#!/usr/bin/env python3
+
+# instance-information-use-ssm.py
+
+import boto3
+client = boto3.client('ssm', region_name="ap-south-1")
+
+def instanceSessionDataInformations():
+    data = client.describe_instance_information()
+    return data['InstanceInformationList']
+
+
+def printInstanceSessionDataInformations():
+    data = instanceSessionDataInformations()
+    if data != []:
+        for instance in data:
+            for i, j in instance.items():
+                if i == "PlatformVersion" or i != "LastSuccessfulAssociationExecutionDate":
+                    print(i.ljust(35), "-", j)
+            print("")
+    else:
+        print("There is no instance associated with ssm manager.")
+
+
+printInstanceSessionDataInformations()
+
+```
+
 
 _execution_
 
