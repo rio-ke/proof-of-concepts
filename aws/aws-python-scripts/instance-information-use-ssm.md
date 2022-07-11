@@ -60,7 +60,7 @@ def printInstanceSessionDataInformations():
     if data != []:
         for instance in data:
             for i, j in instance.items():
-                if i == "PlatformVersion" or i != "LastSuccessfulAssociationExecutionDate":
+                if i == "PlatformName" or i == "PlatformVersion":
                     print(i.ljust(35), "-", j)
             print("")
     else:
