@@ -25,6 +25,7 @@ _configure the aws credentials_
 
 ```bash
 aws configure
+cdk bootstrap -b fourtimes-dev-cdk
 ```
 
 _Reference_
@@ -33,3 +34,6 @@ _Reference_
 - https://pypi.org/project/aws-cdk.aws-s3-deployment/
 - https://docs.aws.amazon.com/cdk/api/latest/python/index.html
 - https://aws.amazon.com/getting-started/guides/setup-cdk/module-two/
+- https://docs.aws.amazon.com/cdk/
+- https://docs.aws.amazon.com/cdk/api/v2/docs/aws-construct-library.html
+- https://docs.aws.amazon.com/cdk/v2/guide/home.html
