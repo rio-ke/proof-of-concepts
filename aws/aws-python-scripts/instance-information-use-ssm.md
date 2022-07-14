@@ -74,7 +74,9 @@ _script 3_
 # instance-information-use-ssm.py
 
 import boto3
-client = boto3.client('ssm', region_name="ap-south-1")
+session = boto3.Session(profile_name='dev')
+
+client = session.client('ssm', region_name="ap-south-1")
 
 def instanceSessionDataInformations():
     data = client.describe_instance_information()
@@ -107,3 +109,6 @@ _output_
 _note_
 
 It requires a session manager; without it, we cannot obtain OS information.
+
+
+#####  https://boto3.amazonaws.com/v1/documentation/api/latest/guide/credentials.html
