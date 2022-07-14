@@ -84,7 +84,7 @@ def printInstanceSessionDataInformations():
     data = instanceSessionDataInformations()
     if data != []:
         for instance in data:
-            print(instance['PlatformName'], instance['PlatformVersion'])
+            print(instance['InstanceId'], instance['PlatformName'], instance['PlatformVersion'])
     else:
         print("There is no instance associated with ssm manager.")
 
