@@ -88,6 +88,7 @@ def printInstanceSessionDataInformations():
     else:
         print("There is no instance associated with ssm manager.")
 
+printInstanceSessionDataInformations()
 
 ```
 
