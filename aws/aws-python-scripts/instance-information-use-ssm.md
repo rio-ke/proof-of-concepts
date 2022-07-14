@@ -143,6 +143,10 @@ _output_
 
 ![image](https://user-images.githubusercontent.com/57703276/178131431-3526cead-3184-42dc-bee4-cf53c24b6271.png)
 
+**_senario 4_**
+
+![image](https://user-images.githubusercontent.com/57703276/179044458-c102aea5-6368-45ce-9b83-d800399cc24e.png)
+
 _note_
 
 It requires a session manager; without it, we cannot obtain OS information.
