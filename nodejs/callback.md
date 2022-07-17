@@ -26,7 +26,6 @@ let sqlConnection = require("./sqlConnection");
 let credentials = require("./mysqlCredentials");
 
 var query = "SELECT 1 + 1 AS solution";
-
 sqlConnection(credentials.readCredentials, query, (results) => {
   if (results) {
     console.log(results);
