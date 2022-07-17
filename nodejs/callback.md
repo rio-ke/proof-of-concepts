@@ -1,3 +1,10 @@
+_requiremnets_
+
+```bash
+node --version
+npm i mysql
+```
+
 _sqlConnection.js_
 
 ```js
