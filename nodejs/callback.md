@@ -19,7 +19,30 @@ module.exports = sqlConnection;
 
 ```
 
-support.js
+_mysqlCredentials.js_
+
+```js
+var readCredentials = {
+  host: "172.17.0.3",
+  user: "root",
+  password: ".",
+  database: "ode",
+};
+
+var writeCredentials = {
+  host: "172.17.0.3",
+  user: "root",
+  password: ".",
+  database: "ode",
+};
+
+module.exports = {
+  readCredentials,
+  writeCredentials,
+};
+```
+
+_support.js_
 
 ```js
 let sqlConnection = require("./sqlConnection");
@@ -31,7 +54,4 @@ sqlConnection(credentials.readCredentials, query, (results) => {
     console.log(results);
   }
 });
-
-
 ```
-
