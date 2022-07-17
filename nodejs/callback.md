@@ -1,4 +1,4 @@
-_main.js_
+_sqlConnection.js_
 
 ```js
 var mysql = require("mysql");
