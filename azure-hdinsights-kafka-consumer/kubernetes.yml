@@ -25,7 +25,7 @@ spec:
       hostNetwork: true
       containers:
         - name: kafka-consumer
-          image: jjino/azure-hdinsights-kafka-consumer:v1
+          image: jjino/azure-hdinsights-kafka-consumer   # :v1
           env:
             - name: KAFKA_HOST
               value: "10.42.60.7:9092,10.42.60.6:9092,10.42.60.5:9092"
