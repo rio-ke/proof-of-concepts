@@ -5,6 +5,12 @@ node --version
 npm i mysql
 ```
 
+**_docker mysql service_**
+
+```bash
+docker run -d --name mysql -e MYSQL_ROOT_PASSWORD=. mysql:5.7
+```
+
 **_sqlConnection.js_**
 
 ```js
