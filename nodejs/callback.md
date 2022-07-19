@@ -14,9 +14,9 @@ const sqlConnection = (credentials, query, callback) => {
   let connection = mysql.createConnection(credentials);
   connection.query(query, (error, results) => {
     if (error) {
-      callback(error.code);
+      callback(error, null);
     } else {
-      callback(results);
+      callback(null, results);
     }
   });
   connection.end();
@@ -56,8 +56,10 @@ let sqlConnection = require("./sqlConnection");
 let credentials = require("./mysqlCredentials");
 
 var query = "SELECT 1 + 1 AS solution";
-sqlConnection(credentials.readCredentials, query, (results) => {
-  if (results) {
+sqlConnection(credentials.readCredentials, query, (err, results) => {
+  if (err) {
+    console.log(err);
+  } else {
     console.log(results);
   }
 });
