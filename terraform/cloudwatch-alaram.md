@@ -1,4 +1,4 @@
-**EC2 instance CPu 80% utilization alaram to sns**
+**EC2 instance CPu 80% utilization alaram to SNS**
 
 ```tf
 resource "aws_cloudwatch_metric_alarm" "ec2_cpu" {
@@ -21,3 +21,25 @@ resource "aws_cloudwatch_metric_alarm" "ec2_cpu" {
 
 ```
 
+**RDS instance CPu 80% utilization alaram to SNS**
+
+```tf
+resource "aws_cloudwatch_metric_alarm" "rds_cpu" {
+  alarm_name                = "rds-southcpu-utilization"
+  comparison_operator       = "GreaterThanOrEqualToThreshold"
+  evaluation_periods        = "2"
+  metric_name               = "rdsCPUUtilization"
+  namespace                 = "AWS/RDS"
+  period                    = "120" #seconds
+  statistic                 = "Average"
+  threshold                 = "90"
+  alarm_description         = "This metric monitors ec2 cpu utilization"
+  insufficient_data_actions = []
+  dimensions = {
+    InstanceId = "database-1"
+  }
+  alarm_actions = ["arn:aws:sns:ap-south-1:399946845918:notify"]
+  ok_actions    = ["arn:aws:sns:ap-south-1:399946845918:notify"]
+}
+
+```
