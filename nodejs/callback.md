@@ -1,11 +1,11 @@
-_requiremnets_
+**_requirements_**
 
 ```bash
 node --version
 npm i mysql
 ```
 
-_sqlConnection.js_
+**_sqlConnection.js_**
 
 ```js
 var mysql = require("mysql");
@@ -26,7 +26,7 @@ module.exports = sqlConnection;
 
 ```
 
-_mysqlCredentials.js_
+**_mysqlCredentials.js_**
 
 ```js
 var readCredentials = {
@@ -49,7 +49,7 @@ module.exports = {
 };
 ```
 
-_support.js_
+**_support.js_**
 
 ```js
 let sqlConnection = require("./sqlConnection");
