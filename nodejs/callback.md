@@ -14,15 +14,25 @@ const sqlConnection = (credentials, query, callback) => {
   let connection = mysql.createConnection(credentials);
   connection.query(query, (error, results) => {
     if (error) {
-      callback(error, null);
+      callback(
+        {
+          code: error.code,
+          errno: error.errno,
+          sqlMessage: error.sqlMessage,
+          sqlState: error.sqlState,
+        },
+        null
+      );
     } else {
-      callback(null, results);
+      callback(null, { results, fields });
     }
   });
   connection.end();
 };
 
 module.exports = sqlConnection;
+
+
 
 ```
 
