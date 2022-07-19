@@ -2,10 +2,10 @@
 
 ```tf
 resource "aws_cloudwatch_metric_alarm" "ec2_cpu" {
-  alarm_name                = "cpu-utilization"
+  alarm_name                = "ec2-cpu-utilization"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
   evaluation_periods        = "2"
-  metric_name               = "CPUUtilization"
+  metric_name               = "ec2CPUUtilization"
   namespace                 = "AWS/EC2"
   period                    = "120" #seconds
   statistic                 = "Average"
@@ -43,3 +43,5 @@ resource "aws_cloudwatch_metric_alarm" "rds_cpu" {
 }
 
 ```
+
+<!-- https://github.com/lorenzoaiello/terraform-aws-rds-alarms/blob/master/main.tf -->
