@@ -8,7 +8,7 @@ npm i mysql
 **_docker mysql service_**
 
 ```bash
-docker run -d --name mysql -e MYSQL_ROOT_PASSWORD=. mysql:5.7
+docker run -d --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=. mysql:5.7
 ```
 
 **_sqlConnection.js_**
@@ -45,17 +45,19 @@ module.exports = sqlConnection;
 
 ```js
 var readCredentials = {
-  host: "172.17.0.3",
+  host: "localhost",
   user: "root",
   password: ".",
-  database: "ode",
+  database: "mysql",
+  port: 3306
 };
 
 var writeCredentials = {
-  host: "172.17.0.3",
+  host: "localhost",
   user: "root",
   password: ".",
-  database: "ode",
+  database: "mysql",
+  port: 3306
 };
 
 module.exports = {
