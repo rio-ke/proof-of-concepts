@@ -1,4 +1,4 @@
-**EC2 instance CPu 80% utilization alaram to SNS**
+**EC2 instance CPu 80% utilization alarm to SNS**
 
 ```tf
 resource "aws_cloudwatch_metric_alarm" "ec2_cpu" {
@@ -21,7 +21,7 @@ resource "aws_cloudwatch_metric_alarm" "ec2_cpu" {
 
 ```
 
-**RDS instance CPu 80% utilization alaram to SNS**
+**RDS instance CPu 80% utilization alarm to SNS**
 
 ```tf
 resource "aws_cloudwatch_metric_alarm" "rds_cpu" {
