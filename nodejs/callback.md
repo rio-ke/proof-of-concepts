@@ -12,7 +12,7 @@ var mysql = require("mysql");
 
 const sqlConnection = (credentials, query, callback) => {
   let connection = mysql.createConnection(credentials);
-  connection.query(query, (error, results) => {
+  connection.query(query, (error, results, fields) => {
     if (error) {
       callback(
         {
@@ -29,7 +29,6 @@ const sqlConnection = (credentials, query, callback) => {
   });
   connection.end();
 };
-
 module.exports = sqlConnection;
 
 
