@@ -1,0 +1,23 @@
+**EC2 instance CPu 80% utilization alaram to sns**
+
+```tf
+resource "aws_cloudwatch_metric_alarm" "ec2_cpu" {
+  alarm_name                = "cpu-utilization"
+  comparison_operator       = "GreaterThanOrEqualToThreshold"
+  evaluation_periods        = "2"
+  metric_name               = "CPUUtilization"
+  namespace                 = "AWS/EC2"
+  period                    = "120" #seconds
+  statistic                 = "Average"
+  threshold                 = "80"
+  alarm_description         = "This metric monitors ec2 cpu utilization"
+  insufficient_data_actions = []
+  dimensions = {
+    InstanceId = "i-06858e6449749f729"
+  }
+  alarm_actions = ["arn:aws:sns:ap-south-1:399946845918:notify"]
+  ok_actions    = ["arn:aws:sns:ap-south-1:399946845918:notify"]
+}
+
+```
+
