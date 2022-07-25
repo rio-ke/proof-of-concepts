@@ -1,6 +1,10 @@
 ## current-login-notification
 
 ```bash
+vim current-login-notification
+```
+
+```bash
 
 #!/usr/bin/env bash
 
