@@ -6,9 +6,9 @@
 
 set -x
 
-sudo apt-get -y install apache2
-
 sudo systemctl stop nginx
+
+sudo apt-get -y install apache2
 
 sudo systemctl enable apache2
 
