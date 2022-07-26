@@ -6,10 +6,10 @@ Create User using Bash Script
 
 # user-creation.sh
 echo "enter your username"
-read username
+read USERNAME
 echo "enter your password"
-read password
-sudo useradd -m $username -s /bin/bash -p $password
+read PASSWORD
+sudo useradd -m "${USERNAME}" -s /bin/bash -p "${PASSWORD}"
 ```
 execution
 
