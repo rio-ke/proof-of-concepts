@@ -6,8 +6,13 @@
 
 sudo vim nginx.sh
 ```
+- file-script
 
 ```bash
+#!/usr/bin/env bash
+
+set -x
+
 sudo systemctl stop apache2
 
 sudo apt-get -y install nginx
