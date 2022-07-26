@@ -14,6 +14,8 @@ sudo systemctl status apache2
 
 ```
 
+**_bash script execution command_**
+
 ```bash
 bash apache2.sh
 ```
