@@ -1,41 +1,29 @@
 ## Nginx service installation bash script
 
-
-**_script run command_**
-```bash
-
-sudo vim nginx.sh
-```
-- file-script
+command
 
 ```bash
 #!/usr/bin/env bash
 
-set -x
-
-sudo systemctl stop apache2
-
+# nginx.sh
 sudo apt-get -y install nginx
-
-sudo systemctl status nginx
-
+sudo systemctl start nginx
+sudo systemctl enable nginx
 ```
 
-- permission change to bash script
+executable permission set
 
 ```bash 
 chmod +x nginx.sh
 ```
 
-**_script run command_**
+execution
 
 ```bash
-
+# with executable permission
 ./nginx.sh
-```
-or
 
-```bash
+# with out executable permission
 bash nginx.sh
 ```
 
