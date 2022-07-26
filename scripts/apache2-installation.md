@@ -4,6 +4,8 @@
 
 #!/usr/bin/env bash
 
+set -x
+
 sudo apt-get -y install apache2
 
 sudo systemctl stop nginx
