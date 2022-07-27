@@ -3,7 +3,7 @@
 **_File Cretaion_**
 ```bash
 
-sudo vim mysql_install.sh
+sudo vim mysql-install.sh
 
 ```
 
@@ -35,8 +35,6 @@ fi
 **_execution_**
 
 ```bash
-
-bash mysql_install.sh
-
+bash mysql-install.sh
 ```
 
