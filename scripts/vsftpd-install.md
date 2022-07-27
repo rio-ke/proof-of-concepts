@@ -4,7 +4,7 @@
 
 **_script_**
 ```bash
-#!usr/bin/env bash
+#!/usr/bin/env bash
 # vsftpd_install.sh
 
 serviceName="vsftpd"
@@ -20,7 +20,6 @@ else
     echo "${serviceName} service status is ${serviceStatus}"
 
 fi
-
 ```
 
 **_execution_**
