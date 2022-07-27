@@ -14,4 +14,3 @@ sudo systemctl status apache2
 ```bash
 bash apache2.sh
 ```
-
