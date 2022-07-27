@@ -15,12 +15,12 @@ sudo vim vsftpd_install.sh
 serviceName="vsftpd"
 serviceStatus=$(sudo systemctl is-active ${serviceName})
 
-if [ $serviceStatus != "active" ]; then
+if [ $serviceStatus != "xxxx" ]; then
     echo "${serviceName} service is not installed."
-   echo
-   echo
-    sudo apt install vsftpd "${serviceName}"
-    sudo systemctl status vsftpd
+    echo
+    echo
+    sudo apt install vsftpd "${serviceName}" -y
+    sudo systemctl start vsftpd
 else
     echo "${serviceName} service status is ${serviceStatus}"
 
