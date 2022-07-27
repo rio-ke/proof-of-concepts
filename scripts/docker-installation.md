@@ -29,12 +29,6 @@ sudo apt update -y
 echo "install docker repo latest"
 sudo apt install -y docker-ce docker-ce-cli containerd.io
 
-echo "install specific docker version"
-echo "list verssions"
-apt-cache madison docker-ce
-echo "install specific version"
-sudo apt-get install docker-ce=<VERSION_STRING> docker-ce-cli=<VERSION_STRING> containerd.io
-
 ```
 
 **_bash run command_**
