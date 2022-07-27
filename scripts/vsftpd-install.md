@@ -1,16 +1,11 @@
 ## Install VSFTPD-Script
 
-**_File Cretaion_**
-```bash
 
-sudo vim vsftpd_install.sh
-
-```
 
 **_script_**
 ```bash
-
-#usr/bin/env bash
+#!usr/bin/env bash
+# vsftpd_install.sh
 
 serviceName="vsftpd"
 serviceStatus=$(sudo systemctl is-active ${serviceName})
