@@ -20,6 +20,7 @@ if [ $serviceStatus != "active" ]; then
    echo
    echo
     sudo apt install vsftpd "${serviceName}"
+    sudo systemctl status vsftpd
 else
     echo "${serviceName} service status is ${serviceStatus}"
 
