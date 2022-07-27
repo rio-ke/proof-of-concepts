@@ -26,7 +26,5 @@ fi
 **_execution_**
 
 ```bash
-
 bash vsftpd_install.sh
-
 ```
