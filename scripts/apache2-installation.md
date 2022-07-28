@@ -3,7 +3,7 @@
 ```bash
 
 #!/usr/bin/env bash
-#vim apache2.sh
+# apache2.sh
 
 package=apache2
 MISSING=$( dpkg --get-selections ${package} 2>&1 | grep 'install' | awk '{ print $2 }')
