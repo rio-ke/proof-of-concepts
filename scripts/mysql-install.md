@@ -1,40 +1,28 @@
-## Install Mysql-Script
-
-**_File Cretaion_**
-```bash
-
-sudo vim mysql-install.sh
-
-```
+## Install MYSQL-Script
 
 
 
 **_script_**
-
 ```bash
-#usr/bin/env bash
+#!/usr/bin/env bash
+# mysql_install.sh
 
-serviceName="mysql-server"
-serviceStatus=$(sudo systemctl is-active ${serviceName})
+package=mysql-server
+MISSING=$( dpkg --get-selections ${package} 2>&1 | grep 'install' | awk '{ print $2 }')
 
-if [ $serviceStatus != "active" ]; then
-    echo "${serviceName} service is not installed."
-   echo
-   echo
-    sudo apt install  "${serviceName}" -y
-    sudo systemctl start mysql.service
-    sudo systemctl status mysql.service
+if  [ install != "$MISSING" ]; then
+    echo "${package} is Not installed."
+    sudo apt update
+    sudo apt install "${package}" -y   
 
 else
-    echo -e "\e[1;31mmysql server is already installed!"
+    echo "${package} is already installed "
 
 fi
 ```
 
-
 **_execution_**
 
 ```bash
-bash mysql-install.sh
+bash mysql_install.sh
 ```
-
