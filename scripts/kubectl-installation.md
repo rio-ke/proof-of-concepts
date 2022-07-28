@@ -18,3 +18,5 @@ execution
 ```bash
 bash kubectl-installation.sh
 ```
+
+[official documetation](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
