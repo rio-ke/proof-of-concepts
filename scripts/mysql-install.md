@@ -21,7 +21,7 @@ if [ $serviceStatus != "active" ]; then
     echo "${serviceName} service is not installed."
    echo
    echo
-    sudo apt install  "${serviceName}"
+    sudo apt install  "${serviceName}" -y
     sudo systemctl start mysql.service
     sudo systemctl status mysql.service
 
