@@ -26,7 +26,7 @@ if [ $serviceStatus != "active" ]; then
     sudo systemctl status mysql.service
 
 else
-    echo "${serviceName} service status is ${serviceStatus}"
+    echo -e "\e[1;31mmysql server is already installed!"
 
 fi
 ```
