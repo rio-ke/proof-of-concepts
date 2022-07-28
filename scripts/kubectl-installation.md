@@ -24,7 +24,10 @@ echo 'source <(kubectl completion bash)' >>~/.bashrc
 echo ""
 echo "If you have an alias for kubectl, you can extend shell completion to work with that alias"
 echo 'alias k=kubectl' >>~/.bashrc
+echo ""
 echo 'complete -o default -F __start_kubectl k' >>~/.bashrc
+echo ""echo ""
+
 echo "kubectl installation has been installed"
 ```
 
