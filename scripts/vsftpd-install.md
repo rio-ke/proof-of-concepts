@@ -7,17 +7,16 @@
 #!/usr/bin/env bash
 # vsftpd_install.sh
 
-serviceName="vsftpd"
-serviceStatus=$(sudo systemctl is-active ${serviceName})
+package=vsftpd
+MISSING=$( dpkg --get-selections ${package} 2>&1 | grep 'install' | awk '{ print $2 }')
 
-if [ $serviceStatus != "xxxx" ]; then
-    echo "${serviceName} service is not installed."
-    echo
-    echo
-    sudo apt install vsftpd "${serviceName}" -y
-    sudo systemctl start vsftpd
+if  [ install != "$MISSING" ]; then
+    echo "${package} is Not installed."
+    sudo apt update
+    sudo apt install "${package}" -y   
+
 else
-    echo "${serviceName} service status is ${serviceStatus}"
+    echo "${package} is already installed "
 
 fi
 ```
