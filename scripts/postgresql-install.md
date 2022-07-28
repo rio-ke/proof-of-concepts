@@ -1,6 +1,3 @@
-sudo apt install postgresql postgresql-contrib
-
-
 ## Install Postgresql-Script
 
 
