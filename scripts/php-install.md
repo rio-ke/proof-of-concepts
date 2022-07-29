@@ -13,13 +13,13 @@ package=php
 MISSING=$( dpkg --get-selections ${package} 2>&1 | grep 'install' | awk '{ print $2 }')
 
 if  [ install != "$MISSING" ]; then
-    echo "${package} is Not installed."
+    echo -e "\e[1;31m${package} is Not installed."
     sudo apt update
     sudo apt install "${package}" -y
     sudo apt install libapache2-mod-php
     
 else
-    echo "${package} is already installed "
+    echo -e "\e[1;31m${package} is already installed "
 
 fi
 ```
