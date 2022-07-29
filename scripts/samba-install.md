@@ -1,4 +1,4 @@
-## Install SAMBA-Script
+## install samba-script
 
 
 
