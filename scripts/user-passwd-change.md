@@ -1,4 +1,4 @@
-## install changepassword-Script
+## install changepassword-script
 
 **_script_**
 ```bash
