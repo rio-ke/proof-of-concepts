@@ -6,10 +6,10 @@ serviceName="docker"
 serviceStatus=$(sudo systemctl is-active ${serviceName})
 
 if [ $serviceStatus != "active" ]; then
-    echo "${serviceName} service is in-active."
+    echo -e "\e[1;31m${serviceName} service is in-active."
     sudo systemctl start "${serviceName}"
 else
-    echo "${serviceName} service status is ${serviceStatus}"
+    echo -e "\e[1;31m${serviceName} service status is ${serviceStatus}"
 
 fi
 
