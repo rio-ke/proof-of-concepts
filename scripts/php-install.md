@@ -1,4 +1,4 @@
-## Install PHP-Script
+## install php-script
 
 
 
