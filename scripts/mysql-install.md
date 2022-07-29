@@ -1,4 +1,4 @@
-## Install MYSQL-Script
+## install mysql -script
 
 
 
