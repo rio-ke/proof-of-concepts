@@ -1,4 +1,4 @@
-## Install NFS-server-Script
+## install nfs-server-Script
 
 
 
