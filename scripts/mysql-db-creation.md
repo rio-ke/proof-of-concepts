@@ -1,12 +1,13 @@
 
 
 ```bash
-#!/usr/bin/env bash
+##!/usr/bin/env bash
 # mysql-db-creation.sh
 
 USERNAME="root"
-PASSWORD="xxx"
-mysql -u${USERNAME} -p${PASSWORD} -e "create database 'foo'"
+PASSWORD="Password@123"
+mysql -u${USERNAME} -p${PASSWORD} -e "create database test";
+mysql -u${USERNAME}  -p${PASSWORD} -e "show databases"
 ```
 
 _execution_
