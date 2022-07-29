@@ -6,8 +6,7 @@
 ```bash
 #!/usr/bin/env bash
 # php_install.sh
-#If you want Install Apache PHP module
-#sudo apt install libapache2-mod-php
+
 
 
 package=php
@@ -17,6 +16,7 @@ if  [ install != "$MISSING" ]; then
     echo "${package} is Not installed."
     sudo apt update
     sudo apt install "${package}" -y
+    sudo apt install libapache2-mod-php
     
 else
     echo "${package} is already installed "
