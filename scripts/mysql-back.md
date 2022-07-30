@@ -7,25 +7,36 @@
 
 #current date
 DATE=`date +%y_%m_%d`
- 
+
+echo "username"
+read USER
+echo"password"
+read PASSWORD
+echo"DB NAME"
+read DB
+echo"DB1 NAME"
+read DB1
+echo"DB2 NAME"
+read DB2
+
 #list of fields
-mysqlogin=$( echo 'show databases' | mysql -ukendanic -ppassword )
+mysqlogin=$( echo 'show databases' | mysql -u$0USER -p$PASSWORD )
  
 #we loop on each folder (for automatically cut by the space)
 for backup in $mysqlogin
  
 do
  
-if [ $backup != "information_schema" ] && [ $backup != "mysql" ] && [ $backup != "Database" ]; then
+if [ $backup != "$DB" ] && [ $backup != "DB1" ] && [ $backup != "DB2" ]; then
  
 #echo $SQL
-mysqldump -ukendanic -ppassword $backup | gzip > /home/kendanic/backup/$backup"_mysql_"$DATE.sql.gz
+mysqldump -u$USER -p$PASSWORD $backup | gzip > /home/kendanic/backup/$backup"_mysql_"$DATE.sql.gz
  
 fi
  
 done
 
-```bash
+```
 
 
 **_command execution_**
