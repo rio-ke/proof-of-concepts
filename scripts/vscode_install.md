@@ -1,4 +1,4 @@
-## install vsftpd-script
+## install vscode-script
 
 **_script_**
 
