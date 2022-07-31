@@ -3,9 +3,8 @@
 **_script_**
 
 ```bash
-
 #!/usr/bin/env bash
-# jenkins_install.sh
+# jenkins-install.sh
 
 PACKAGE=jenkins
 MISSING=$( dpkg --get-selections ${PACKAGE} 2>&1 | grep 'install' | awk '{ print $2 }')
@@ -21,18 +20,14 @@ if  [ install != "$MISSING" ]; then
     sudo apt update
     sudo apt install $PACKAGE   -y
     echo -e "\e[1;31jenkins installation has been installed"
-
 else
     echo -e "\e[1;31m${PACKAGE} is already installed "
 
 fi
-
 ```
 
 **_execution_**
 
 ```bash
-
 bash jenkins_install.sh
-
 ```
