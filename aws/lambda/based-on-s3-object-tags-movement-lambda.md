@@ -60,6 +60,6 @@ def lambda_handler(event, context):
         s3_client.delete_object(Bucket=source_bucket_name, Key=file_name)
     return {
         'statusCode': 3000,
-        'body': json.dumps('File has been Successfully Copied')
+        'body': json.dumps('File has been Successfully Copied and deleted')
     }
 ```
