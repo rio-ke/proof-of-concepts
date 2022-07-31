@@ -2,7 +2,7 @@
 
 # **_script_**
 
-# ```bash
+```bash
 
 # !/usr/bin/env bash
 # mongodb-install.sh
