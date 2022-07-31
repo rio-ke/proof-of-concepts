@@ -65,6 +65,9 @@ import json
 
 def lambda_handler(event, context):
     queueMessges=event['Records'][0]['body']
-    print(queueMessges['Message'])
-    return (queueMessges['Message']
+    print(queueMessges)
+    return queueMessges
 ```
+cloudwatch logs
+
+![image](https://user-images.githubusercontent.com/102893121/182020381-bd9b9507-7ba8-4422-bc8b-fc28c6d65df3.png)
