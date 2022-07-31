@@ -4,11 +4,20 @@ command
 
 ```bash
 #!/usr/bin/env bash
+# apache2.sh
 
-# nginx.sh
-sudo apt -y install nginx
-sudo systemctl start nginx
-sudo systemctl enable nginx
+package=nginx
+MISSING=$( dpkg --get-selections ${package} 2>&1 | grep 'install' | awk '{ print $2 }')
+
+if  [ install != "$MISSING" ]; then
+    echo "${package} is Not installed."
+    sudo apt update
+    sudo apt install "${package}" -y   
+
+else
+    echo "${package} is already installed "
+
+fi
 ```
 
 execution
