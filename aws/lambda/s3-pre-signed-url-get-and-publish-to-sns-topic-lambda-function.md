@@ -1,4 +1,4 @@
-## pre-signed-url-create-and-publish-to-sns-topic-lambda-function.md
+## s3-pre-signed-url-get-and-publish-to-sns-topic-lambda-function.md
 
 ```json
 {
