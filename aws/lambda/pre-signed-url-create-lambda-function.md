@@ -37,7 +37,7 @@ s3 trigger json events for lamda
   ]
 }
 ```
-based on the evnt messages I wrote the python lambda function
+based on the event messages I wrote the python lambda function
 
 ```py
 import boto3
