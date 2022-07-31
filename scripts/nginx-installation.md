@@ -6,15 +6,9 @@ command
 #!/usr/bin/env bash
 
 # nginx.sh
-sudo apt-get -y install nginx
+sudo apt -y install nginx
 sudo systemctl start nginx
 sudo systemctl enable nginx
-```
-
-executable permission set
-
-```bash 
-chmod +x nginx.sh
 ```
 
 execution
