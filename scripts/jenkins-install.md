@@ -12,9 +12,8 @@ MISSING=$( dpkg --get-selections ${PACKAGE} 2>&1 | grep 'install' | awk '{ print
 if  [ install != "$MISSING" ]; then
     # -installation.sh
     echo -e "\e[1;31mupdate the respository"
-    echo "install the curl packages"
-    sudo apt install curl -y
-    echo "Downlaod the jenkins latest version"
+    sudo apt update
+    sudo apt install wget -y
     wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -
     sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
     sudo apt update
