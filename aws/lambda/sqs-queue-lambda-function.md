@@ -56,6 +56,7 @@
   ]
 }
 ```
+based on the event messages I wrote the python lambda function
 
 ```py
 import json
