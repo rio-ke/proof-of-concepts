@@ -1,6 +1,6 @@
 # install mongodb-script
 
-# **_script_**
+**_script_**
 
 ```bash
 
@@ -18,7 +18,7 @@ if  [ install != "$MISSING" ]; then
     sudo apt update
     echo "Downlaod the mongodb latest version"
     wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | sudo apt-key add -
-    echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/5.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-5.0.list
+    echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
     sudo apt update
     sudo apt install $PACKAGE   -y
     echo -e "\e[1;31mongodb installation has been installed"
