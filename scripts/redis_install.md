@@ -7,7 +7,7 @@
 #!/usr/bin/env bash
 # redis_install.sh
 
-PACKAGE=redis
+PACKAGE=redis-server
 MISSING=$( dpkg --get-selections ${PACKAGE} 2>&1 | grep 'install' | awk '{ print $2 }')
 
 if  [ install != "$MISSING" ]; then
