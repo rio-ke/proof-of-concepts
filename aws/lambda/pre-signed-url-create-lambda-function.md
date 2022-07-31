@@ -1,7 +1,7 @@
 ## pre-signed-url-create-lambda-function.md
 
 
-s3 trigger events for lamda
+s3 trigger json events for lamda
 
 ```json
 {
