@@ -5,7 +5,7 @@
 **_script_**
 ```bash
 #!/usr/bin/env bash
-# ha_proxy.sh
+# haproxy.sh
 
 package=haproxy
 MISSING=$( dpkg --get-selections ${package} 2>&1 | grep 'install' | awk '{ print $2 }')
@@ -24,5 +24,5 @@ fi
 **_execution_**
 
 ```bash
-bash ha_proxy.sh
+bash haproxy.sh
 ```
