@@ -13,6 +13,7 @@ if  [ install != "$MISSING" ]; then
     # -installation.sh
     echo -e "\e[1;31mupdate the respository"
     sudo apt update
+    sudo apt install openjdk-11-jdk -y
     sudo apt install wget -y
     wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -
     sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
