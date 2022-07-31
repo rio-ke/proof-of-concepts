@@ -55,5 +55,13 @@
     }
   ]
 }
+```
 
+```py
+import json
+
+def lambda_handler(event, context):
+    queueMessges=event['Records'][0]['body']
+    print(queueMessges['Message'])
+    return (queueMessges['Message']
 ```
