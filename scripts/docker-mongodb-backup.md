@@ -12,6 +12,7 @@ PASSWORD=MyNewPass
 DATABASE=dodo
 
 docker exec -i $CONTAINER /usr/bin/mongodump --username $USER --password $PASSWORD --authenticationDatabase admin --db $DATABASE --out /dump
+docker cp $CONTAINER:/dump ~/Downloads/dump
 ```
 
 **execution**
