@@ -5,8 +5,13 @@
 echo "ENTER YOUR USERNAME :"
 read -a USERNAME
 for NAME in $USERNAME; do
-    echo "${NAME} is going to be delete"
-    # userdel -r $USERNAME
+    USER=$(cat /etc/passwd | grep ${NAME} | awk -F: '{print $1}')
+    if [ "${USER}" == "${NAME}" ]; then
+        echo "${USER} is available in the system"
+        echo "${NAME} is going to be delete"
+        # sudo userdel -r "${NAME}"
+    else
+        echo "USERNAME is not available in the system"
+    fi
 done
-
 ```
