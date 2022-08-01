@@ -11,7 +11,7 @@ for NAME in $USERNAME; do
         echo "${NAME} is going to be delete"
         # sudo userdel -r "${NAME}"
     else
-        echo "USERNAME is not available in the system"
+        echo "${USER} is not available in the system"
     fi
 done
 ```
