@@ -3,7 +3,7 @@
 ```bash
 #!/usr/bin/env bash
 
-USERNAME="jino, dodo"
+USERNAME="jino dodo"
 for NAME in $USERNAME; do
     USER=$(cat /etc/passwd | grep ${NAME} | awk -F: '{print $1}')
     if [ "${USER}" == "${NAME}" ]; then
