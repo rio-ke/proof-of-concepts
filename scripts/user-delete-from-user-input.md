@@ -2,8 +2,8 @@
 
 ```bash
 #!/usr/bin/env bash
-echo "ENTER YOUR USERNAME :"
-read -a USERNAME
+
+USERNAME="jino, dodo"
 for NAME in $USERNAME; do
     USER=$(cat /etc/passwd | grep ${NAME} | awk -F: '{print $1}')
     if [ "${USER}" == "${NAME}" ]; then
@@ -11,7 +11,8 @@ for NAME in $USERNAME; do
         echo "${NAME} is going to be delete"
         # sudo userdel -r "${NAME}"
     else
-        echo "${USER} is not available in the system"
+        echo "${NAME} is not available in the system"
     fi
+    echo ""
 done
 ```
