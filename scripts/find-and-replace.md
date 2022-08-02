@@ -23,7 +23,6 @@ FILE="demo.txt"
 
 # Do not change this section
 SearchResults=$(grep -w ${KEYWORD} ${FILE} | wc -l)
-echo "Resuls are ${searchResults}"
 if [ "$SearchResults" != 0 ]; then
     sed -i 's^'${KEYWORD}'.^'${KEYWORD}'='${REPLACED_KEYWORD}^'' "${FILE}"
 else
