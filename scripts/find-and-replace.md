@@ -3,17 +3,11 @@
 create the file in the name `demo.txt`
 
 ```txt
-AB9_TAG=commercial-73
-AB_TAG=
-AP_TAG=commercial-12696
-BC_TAG=commercial-11674
-CC_TAG=commercial-89
-COMPOSE_HTTP_TIMEOUT=120
-FILEBEAT_TAG=master-30
-HOME_TAG=20220531_1656-1.33.0-glibc
-HTTPFILESERVER_TAG=20220531_1656-1.17.2
-HTTPSOFFLOADING_TAG=20220531_1605-2.4.17-alpine
-PC_TAG=commercial-28101
+AAA=commercial-73
+XXX=
+YYY=commercial-12696
+ZZZ=commercial-11674
+
 ```
 
 create the file in the name `script.sh`
@@ -24,8 +18,8 @@ create the file in the name `script.sh`
 # declare the variable
 
 TRIGGERING_BUILD_NUMBER="123"
-KEYWORD="AB_TAG"
-REPLACED_KEYWORD="csro-${TRIGGERING_BUILD_NUMBER}"
+KEYWORD="XXX"
+REPLACED_KEYWORD="demo-${TRIGGERING_BUILD_NUMBER}"
 FILE="demo.txt"
 
 # Do not change this section
