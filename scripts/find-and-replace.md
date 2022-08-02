@@ -21,7 +21,7 @@ create the file in the name `script.sh`
 ```bash
 #!/usr/bin/env bash
 
-# variable declaation
+# variable declaration
 TRIGGERING_BUILD_NUMBER="123"
 KEYWORD="AB_TAG"
 FILE="demo.txt"
@@ -29,7 +29,7 @@ FILE="demo.txt"
 SearchResults=$(grep -w ${KEYWORD} ${FILE} | wc -l)
 echo "Resuls are ${searchResults}"
 if [ "$SearchResults" != 0 ]; then
-    echo "${SearchResults} not empty"
+    # echo "${SearchResults} not empty"
     sed -i 's^'${KEYWORD}'.^'${KEYWORD}'=csro-'${TRIGGERING_BUILD_NUMBER}^'' "${FILE}"
 else
     exit 1
