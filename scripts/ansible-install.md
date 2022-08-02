@@ -14,7 +14,6 @@ if  [ install != "$MISSING" ]; then
     sudo apt install software-properties-common
     sudo apt-add-repository --yes --update ppa:ansible/ansible
     sudo apt install ansible -y
-        
 else
     echo -e "\e[1;31m${package} is already installed "
 fi
