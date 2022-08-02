@@ -14,14 +14,14 @@ create the file in the name `script.sh`
 ```bash
 #!/usr/bin/env bash
 
-# declare the variable
+# VARIABLE DECLARATION 
 
 BUILD_NUMBER="123"
 KEYWORD="XXX"
 REPLACED_KEYWORD="demo-${BUILD_NUMBER}"
 FILE="demo.txt"
 
-# Do not change this section
+# DO NOT CHANGE
 SearchResults=$(grep -w ${KEYWORD} ${FILE} | wc -l)
 if [ "$SearchResults" != 0 ]; then
     sed -i 's^'${KEYWORD}'.^'${KEYWORD}'='${REPLACED_KEYWORD}^'' "${FILE}"
