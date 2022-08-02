@@ -3,11 +3,10 @@
 create the file in the name `demo.txt`
 
 ```txt
-AAA=commercial-73
+AAA=demo-73
 XXX=
-YYY=commercial-12696
-ZZZ=commercial-11674
-
+YYY=demo-12696
+ZZZ=demo-11674
 ```
 
 create the file in the name `script.sh`
@@ -17,9 +16,9 @@ create the file in the name `script.sh`
 
 # declare the variable
 
-TRIGGERING_BUILD_NUMBER="123"
+BUILD_NUMBER="123"
 KEYWORD="XXX"
-REPLACED_KEYWORD="demo-${TRIGGERING_BUILD_NUMBER}"
+REPLACED_KEYWORD="demo-${BUILD_NUMBER}"
 FILE="demo.txt"
 
 # Do not change this section
@@ -30,7 +29,6 @@ if [ "$SearchResults" != 0 ]; then
 else
     exit 1
 fi
-
 ```
 
 execution
