@@ -15,7 +15,6 @@ create the file in the name `script.sh`
 #!/usr/bin/env bash
 
 # VARIABLE DECLARATION 
-
 BUILD_NUMBER="123"
 KEYWORD="XXX"
 REPLACED_KEYWORD="demo-${BUILD_NUMBER}"
