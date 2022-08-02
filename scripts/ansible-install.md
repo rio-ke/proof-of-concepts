@@ -11,11 +11,12 @@ MISSING=$( dpkg --get-selections ${package} 2>&1 | grep 'install' | awk '{ print
 if  [ install != "$MISSING" ]; then
     echo -e "\e[1;31m${package} is Not installed."
     sudo apt update
-    sudo apt install "${package}" -y
+    sudo apt install software-properties-common
+    sudo apt-add-repository --yes --update ppa:ansible/ansible
+    sudo apt install ansible -y
         
 else
     echo -e "\e[1;31m${package} is already installed "
-    
 fi
 ```
 
