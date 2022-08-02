@@ -3,7 +3,7 @@
 **_script_**
 ```bash
 #!/usr/bin/env bash
-# ansible_install.sh
+# ansible-install.sh
 
 package=ansible
 MISSING=$( dpkg --get-selections ${package} 2>&1 | grep 'install' | awk '{ print $2 }')
@@ -23,7 +23,7 @@ fi
 **_execution_**
 
 ```bash
-bash ansible_install.sh
+bash ansible-install.sh
 ```
 
 [Referece documentation](https://docs.ansible.com/ansible/2.9/installation_guide/intro_installation.html#installing-ansible-on-ubuntu)
