@@ -35,3 +35,12 @@ execution
 bash script.sh
 echo $?
 ```
+
+expected results
+
+```txt
+AAA=demo-73
+XXX=demo-123
+YYY=demo-12696
+ZZZ=demo-11674
+```
