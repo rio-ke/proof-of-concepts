@@ -1,4 +1,4 @@
-## custom-host-domain-setup-implementation.md
+## custom-host-domain-setup-implementation-in-kubernetes.md
 
 you must need to verify the  coredns-custom configmap configurations. use below commands to validate
 
