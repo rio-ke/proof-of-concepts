@@ -10,7 +10,8 @@ for NAME in $USERNAME; do
     if [ "${USER}" == "${NAME}" ]; then
         echo "${USER} is available in the system"
         echo "${NAME} is going to be delete"
-        # sudo userdel -r "${NAME}"
+        sudo killall -u "${NAME}"
+        sudo userdel -r "${NAME}"
     else
         echo "${NAME} is not available in the system"
     fi
