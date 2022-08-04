@@ -21,7 +21,7 @@ _Configure the MySQL_
 _Configure the PhpMyAdmin_
 
 ```bash
-
+sudo apt install phpmyadmin
 
 ```
 
