@@ -1,3 +1,5 @@
+
+```bash
 #!/usr/bin/env bash
 
 echo -e "\e[1;31mUpdate the system!"
@@ -9,3 +11,4 @@ echo -e "\e[1;31mApply executable permissions"
 sudo chmod +x /usr/local/bin/docker-compose
 echo -e "\e[1;31mdocker version"
 docker-compose version
+```
