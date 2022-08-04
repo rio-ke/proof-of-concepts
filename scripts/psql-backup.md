@@ -5,7 +5,7 @@
 **_script_**
 ```bash
 #!/usr/bin/env bash
-#psql_backup.sh
+#psql-backup.sh
 
 USER=root
 PASSWORD=MyNewPass
@@ -17,5 +17,5 @@ pg_dump -U$USER -p$PASSWORD $DATABASE > tecmintdb.sql
 **_execution_**
 
 ```bash
-bash psql_backup.sh
+bash psql-backup.sh
 ```
