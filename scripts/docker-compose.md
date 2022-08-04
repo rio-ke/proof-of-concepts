@@ -12,3 +12,5 @@ sudo chmod +x /usr/local/bin/docker-compose
 echo -e "\e[1;31mdocker version"
 docker-compose version
 ```
+
+[docker-compose-download-reference](https://github.com/docker/compose/releases)
