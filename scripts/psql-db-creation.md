@@ -11,6 +11,7 @@ sudo createdb -p$PASSWORD -U $USERNAME testdb;
 sudo -u postgres psql -c "\l"
 
 ```
+_execution_
 
 ```bash
 bash psql-db-creation.sh
