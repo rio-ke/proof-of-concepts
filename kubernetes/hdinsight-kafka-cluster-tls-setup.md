@@ -8,36 +8,46 @@
 
 Perform initial setup on head node 0, which for HDInsight will fill the role of the Certificate Authority (CA).
 
-# Create a new directory 'ssl' and change into it
-
+```bash
+ssh sshuser@hn0-apsdfs
 mkdir ssl
-cd ssl
+exit
+```
+
 
 Perform the same initial setup on each of the brokers (worker nodes 0, 1 and 2).
 
+```bash
 ssh sshuser@wn0-apsdfs
 mkdir ssl
 cd ssl
 keytool -genkey -keystore kafka.server.keystore.jks -validity 365 -storepass "MyServerPassword123" -keypass "MyServerPassword123" -dname "CN=wn0-apsdfs.in0vd1nkfuvevp0celnst1uytf.ix.internal.cloudapp.net" -storetype pkcs12
 keytool -keystore kafka.server.keystore.jks -certreq -file cert-file -storepass "MyServerPassword123" -keypass "MyServerPassword123"
 scp cert-file sshuser@hn0-apsdfs:~/ssl/wn0-cert-sign-request
+```
 
+```bash
 ssh sshuser@wn1-apsdfs
 mkdir ssl
 cd ssl
 keytool -genkey -keystore kafka.server.keystore.jks -validity 365 -storepass "MyServerPassword123" -keypass "MyServerPassword123" -dname "CN=wn1-apsdfs.in0vd1nkfuvevp0celnst1uytf.ix.internal.cloudapp.net" -storetype pkcs12
 keytool -keystore kafka.server.keystore.jks -certreq -file cert-file -storepass "MyServerPassword123" -keypass "MyServerPassword123"
 scp cert-file sshuser@hn0-apsdfs:~/ssl/wn1-cert-sign-request
+```
 
+```bash
 ssh sshuser@wn2-apsdfs
 mkdir ssl
 cd ssl
 keytool -genkey -keystore kafka.server.keystore.jks -validity 365 -storepass "MyServerPassword123" -keypass "MyServerPassword123" -dname "CN=wn2-apsdfs.in0vd1nkfuvevp0celnst1uytf.ix.internal.cloudapp.net" -storetype pkcs12
 keytool -keystore kafka.server.keystore.jks -certreq -file cert-file -storepass "MyServerPassword123" -keypass "MyServerPassword123"
 scp cert-file sshuser@hn0-apsdfs:~/ssl/wn2-cert-sign-request
+```
 
-# ca machine
+_CA machine_
 
+```bash
+ssh sshuser@hn0-apsdfs
 mkdir ssl
 cd ssl
 openssl req -new -newkey rsa:4096 -days 365 -x509 -subj "/CN=Kafka-Security-CA" -keyout ca-key -out ca-cert -nodes
@@ -56,12 +66,33 @@ scp wn2-cert-signed sshuser@wn2-apsdfs:~/ssl/cert-signed
 scp ca-cert sshuser@wn0-apsdfs:~/ssl/ca-cert
 scp ca-cert sshuser@wn1-apsdfs:~/ssl/ca-cert
 scp ca-cert sshuser@wn2-apsdfs:~/ssl/ca-cert
-
+```
 # worker nodes wn0,wn1,wn2 =>
 
+```bash
+ssh sshuser@wn0-apsdfs
+cd ssl
 keytool -keystore kafka.server.truststore.jks -alias CARoot -import -file ca-cert -storepass "MyServerPassword123" -keypass "MyServerPassword123" -noprompt
 keytool -keystore kafka.server.keystore.jks -alias CARoot -import -file ca-cert -storepass "MyServerPassword123" -keypass "MyServerPassword123" -noprompt
 keytool -keystore kafka.server.keystore.jks -import -file cert-signed -storepass "MyServerPassword123" -keypass "MyServerPassword123" -noprompt
+```
+
+```bash
+ssh sshuser@wn1-apsdfs
+cd ssl
+keytool -keystore kafka.server.truststore.jks -alias CARoot -import -file ca-cert -storepass "MyServerPassword123" -keypass "MyServerPassword123" -noprompt
+keytool -keystore kafka.server.keystore.jks -alias CARoot -import -file ca-cert -storepass "MyServerPassword123" -keypass "MyServerPassword123" -noprompt
+keytool -keystore kafka.server.keystore.jks -import -file cert-signed -storepass "MyServerPassword123" -keypass "MyServerPassword123" -noprompt
+```
+
+```bash
+ssh sshuser@wn2-apsdfs
+cd ssl
+keytool -keystore kafka.server.truststore.jks -alias CARoot -import -file ca-cert -storepass "MyServerPassword123" -keypass "MyServerPassword123" -noprompt
+keytool -keystore kafka.server.keystore.jks -alias CARoot -import -file ca-cert -storepass "MyServerPassword123" -keypass "MyServerPassword123" -noprompt
+keytool -keystore kafka.server.keystore.jks -import -file cert-signed -storepass "MyServerPassword123" -keypass "MyServerPassword123" -noprompt
+```
+
 
 openssl x509 -req -CA ca-cert -CAkey ca-key -in ~/ssl/client-cert-sign-request -out ~/ssl/client-cert-signed -days 365 -CAcreateserial -passin pass:MyClientPassword123
 
