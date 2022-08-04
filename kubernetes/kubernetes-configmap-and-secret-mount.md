@@ -55,19 +55,19 @@ spec:
     - name: web-server
       image: nginx
       volumeMounts:
-        - name: "kafka-tls-authentication"
-          mountPath: "/etc/foo"
+        - name: kafka-tls-authentication
+          mountPath: /etc/foo
           readOnly: true
-        - name: "kafka-tls-keystore"
-          mountPath: "/etc/boo"
+        - name: kafka-tls-keystore
+          mountPath: /etc/boo
           readOnly: true
   volumes:
     - name: kafka-tls-authentication
       configMap:
-        name: "kafka-tls-authentication-key"
+        name: kafka-tls-authentication-key
     - name: kafka-tls-keystore
       secret:
-        secretName: "kafka-tls-keystore-jks"
+        secretName: kafka-tls-keystore-jks
 ```
 
 _if you want to change the secret mounth path value you can refer this yml_
