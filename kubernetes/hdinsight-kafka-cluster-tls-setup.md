@@ -1,10 +1,10 @@
-|IP ADDRESS| DOMAIN NAME|
-|---|---|
-|10.42.60.7 |wn0-apsdfs wn0-apsdfs.in0vd1nkfuvevp0celnst1uytf.ix.internal.cloudapp.net|
-|10.42.60.5 |wn1-apsdfs wn1-apsdfs.in0vd1nkfuvevp0celnst1uytf.ix.internal.cloudapp.net|
-|10.42.60.6 |wn2-apsdfs wn2-apsdfs.in0vd1nkfuvevp0celnst1uytf.ix.internal.cloudapp.net|
-|10.42.60.17|hn0-apsdfs.in0vd1nkfuvevp0celnst1uytf.ix.internal.cloudapp.net|
-|10.42.60.16|hn1-apsdfs.in0vd1nkfuvevp0celnst1uytf.ix.internal.cloudapp.net|
+|IP ADDRESS|HOST NAME | DOMAIN NAME|
+|---|---|---|
+|10.42.60.7 |wn0-apsdfs | wn0-apsdfs.in0vd1nkfuvevp0celnst1uytf.ix.internal.cloudapp.net|
+|10.42.60.5 |wn1-apsdfs | wn1-apsdfs.in0vd1nkfuvevp0celnst1uytf.ix.internal.cloudapp.net|
+|10.42.60.6 |wn2-apsdfs | wn2-apsdfs.in0vd1nkfuvevp0celnst1uytf.ix.internal.cloudapp.net|
+|10.42.60.17|hn0-apsdfs |hn0-apsdfs.in0vd1nkfuvevp0celnst1uytf.ix.internal.cloudapp.net|
+|10.42.60.16|hn1-apsdfs |hn1-apsdfs.in0vd1nkfuvevp0celnst1uytf.ix.internal.cloudapp.net|
 
 Perform initial setup on head node 0, which for HDInsight will fill the role of the Certificate Authority (CA).
 
