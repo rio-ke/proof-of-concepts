@@ -6,6 +6,13 @@
 |10.42.60.17|hn0-apsdfs |hn0-apsdfs.in0vd1nkfuvevp0celnst1uytf.ix.internal.cloudapp.net|
 |10.42.60.16|hn1-apsdfs |hn1-apsdfs.in0vd1nkfuvevp0celnst1uytf.ix.internal.cloudapp.net|
 
+_dependencies_
+
+```bash
+sudo apt update
+sudo apt install sshpass -y
+sshpass -p your_password ssh user@hostname
+```
 Perform initial setup on head node 0, which for HDInsight will fill the role of the Certificate Authority (CA).
 
 ```bash
