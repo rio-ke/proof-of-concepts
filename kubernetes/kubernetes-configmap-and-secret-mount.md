@@ -42,6 +42,8 @@ data:
     ssl.key.password=MyClientPassword123
 ```
 
+_the existing configmap and secret consumed here_
+
 ```yml
 ---
 apiVersion: v1
