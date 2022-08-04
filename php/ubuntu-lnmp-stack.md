@@ -1,6 +1,6 @@
 ## ubuntu-lnmp-stack.md
 
 
-|username|ip address| password |
-|---|---|---|
-||||
+|USERNAME|IP ADDRESS| PASSWORD | OS|
+|---|---|---|---|
+|username|xxx.xxx.xxx.xxx|password| ubuntu |
