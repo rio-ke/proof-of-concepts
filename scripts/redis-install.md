@@ -3,13 +3,11 @@
 **_script_**
 
 ```bash
-
 #!/usr/bin/env bash
-# redis_install.sh
+# redis-install.sh
 
 PACKAGE=redis-server
 MISSING=$( dpkg --get-selections ${PACKAGE} 2>&1 | grep 'install' | awk '{ print $2 }')
-
 if  [ install != "$MISSING" ]; then
     echo -e "\e[1;31m${PACKAGE} is Not installed."
     sudo apt update
@@ -17,13 +15,10 @@ if  [ install != "$MISSING" ]; then
 else
     echo -e "\e[1;31m${PACKAGE} is already installed "
 fi
-
 ```
 
 **_execution_**
 
 ```bash
-
-bash redis_install.sh
-
+bash redis-install.sh
 ```
