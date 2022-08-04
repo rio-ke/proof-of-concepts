@@ -102,3 +102,13 @@ spec:
         - key: kafka.client.keystore.jks
           path: kafka.client.keystore.jks
 ```
+
+_After deployment you can validate the configmap and secret configuration_
+
+```bash
+kubectl exec -ti web-server bash
+> cat /etc/foo/client-ssl-auth.properties
+> cat /etc/boo/kafka.client.keystore.jks
+> cat /etc/boo/kafka.client.truststore.jks
+exit
+```
