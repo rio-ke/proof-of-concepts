@@ -35,9 +35,9 @@ metadata:
 data:
   client-ssl-auth.properties: |
     security.protocol=SSL
-    ssl.truststore.location=/etc/foo/kafka.client.truststore.jks
+    ssl.truststore.location=/etc/boo/kafka.client.truststore.jks
     ssl.truststore.password=MyClientPassword123
-    ssl.keystore.location=/etc/foo/kafka.client.keystore.jks
+    ssl.keystore.location=/etc/boo/kafka.client.keystore.jks
     ssl.keystore.password=MyClientPassword123
     ssl.key.password=MyClientPassword123
 ```
