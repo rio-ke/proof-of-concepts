@@ -1,7 +1,7 @@
 
 ```bash
 #!/usr/bin/env bash
-VERSION=v2.7.0
+VERSION=v2.9.0
 echo -e "\e[1;31mUpdate the system!"
 sudo apt update
 sudo apt install curl -y
