@@ -29,7 +29,7 @@ sudo mkdir -p /var/www/fourtimes.ml
 sudo vim /var/www/fourtimes.ml/index.html
 
 ```
-remove the default domain
+**remove the default domain**
 
 Take a backup before deleting the default package.
 
@@ -116,8 +116,7 @@ _Configure the Php_
 
 PHP is the language that is mostly used for server-side programming. It is executed, run, and must be installed on the webserver. Since it is an interpreted language, it doesn’t need any compiler. PHP handles the interaction between the front-end of the web pages and the back-end servers or databases.
 
-
-Installation of PHP on Ubuntu 20.04 LTS
+**Installation of PHP on Ubuntu 20.04 LTS**
 
 Before getting started with the installation of PHP, first, always update Ubuntu’s package repository.
 
@@ -147,23 +146,16 @@ sudo apt install php-fpm php-mysql
 
 ```
 
-
-Check the version installed:
+**Check the version installed:**
 
 ```bash
 php -v
 ```
 
 
-
-```bash
-
-
-```
-
 _Configure the Vsftpd_
 
-package installatio
+**package installation**
 
 ```bash
 
@@ -210,7 +202,7 @@ userlist_deny=NO
 
 
 ```
-create vsftpd userlist
+**create vsftpd userlist**
 
 ```bash
 sudo mkdir -p /etc/vsftpd/fourusers
