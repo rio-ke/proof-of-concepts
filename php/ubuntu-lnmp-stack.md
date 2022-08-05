@@ -7,7 +7,7 @@
 _Configure the nginx_
 
 ```bash
-sudo apt update
+sudo apt update && sudo apt upgrade
 sudo apt install nginx
 
 ```
