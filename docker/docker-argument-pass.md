@@ -5,7 +5,7 @@ _docker file_
 # Dockerfile
 FROM nginx
 ARG DB_PASSWORD
-ENV DB_PASSWORD="${DB_PASSWORD}"
+ENV DB_PASSWORD=${DB_PASSWORD}
 ```
 
 _docker build with args_
