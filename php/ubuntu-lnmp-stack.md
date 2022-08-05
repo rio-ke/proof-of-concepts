@@ -7,10 +7,83 @@
 _Configure the nginx_
 
 ```bash
-
+sudo apt update
+sudo apt install nginx
 
 ```
 
+NGINX installation verification
+
+after instaling the nginx package, use this commmand to verification the nginx package
+```bash
+nginx -v
+
+```
+Configuration of Nginx
+
+we consider as a domain fourtims.ml
+
+create the document root for this vhost configuration
+
+```bash
+sudo mkdir -p /var/www/fourtimes.ml
+sudo vim /var/www/fourtimes.ml/index.html
+
+```
+remove the default domain
+
+Take a backup before deleting the default package.
+
+```bash
+
+rm -rf etc/nginx/sites-enabled/default
+rm -rf etc/nginx/sites-available/default
+```
+
+vhost configuration
+
+```bash
+
+/etc/nginx/sites-enabled/fourtimes.ml.conf
+```
+
+```bash
+
+server {
+    listen       80;
+    server_name  fourtimes.ml www.fourtimes.ml;
+    
+    access_log           /var/log/nginx/fourtimes.ml.access.log;
+    error_log            /var/log/nginx/fourtimes.ml.error.log;
+    
+    
+    location / {
+        root   /var/www/fourtimes.ml;
+        index  index.html index.htm;
+    }
+}
+
+```
+creation of a symlink
+
+```bash
+sudo ln -s /etc/nginx/sites-available/fourtimes.ml.conf /etc/nginx/sites-enabled/
+
+```
+
+validation the nginx
+
+```bash
+
+nginx -t
+```
+
+restart the service
+
+systemctl stop nginx
+systemctl start nginx 
+
+It will give your domain insecure access. We can get to http://fourtimes.ml using a browser.
 _Configure the MySQL_
 
 ```bash
