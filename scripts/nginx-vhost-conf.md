@@ -58,7 +58,7 @@ EOF
 # ln -s $NGINX_AVAILABLE_VHOSTS/$1 $NGINX_ENABLED_VHOSTS/$1
 
 # Host entry for domain
-echo "192.168.2.253 $domain" > /etc/hosts
+echo "192.168.2.253 $domain" >> /etc/hosts
 
 # Restart
 echo "Do you wish to restart nginx?"
