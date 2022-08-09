@@ -27,12 +27,8 @@
         "name": "joe",
         "email": "lokesh@mail.com"
       },
-      "poc_Job_DI_Material_Master_Intermediate_Load": {},
-      "jobTwo": {
-        "name": "joe",
-        "email": "lokesh@mail.com",
-        "age": 10,
-        "mobile": 9894586
+      "poc_Job_DI_Material_Master_Intermediate_Load": {
+       "customArgs": {}
       }
     }
   ]
