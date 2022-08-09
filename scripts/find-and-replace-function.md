@@ -1,6 +1,8 @@
 
 _configuration file_
 
+Create the file in the name of  demo.txt with below content.
+
 ```txt
 # demo.txt
 AAA=demo-73
@@ -13,7 +15,7 @@ _script_
 
 ```bash
 #!/usr/bin/env bash
-
+# script.sh
 function findAndReplace() {
     KEYWORD=$1
     REPLACED_KEYWORD=$2
@@ -31,6 +33,10 @@ BUILD_NUMBER="123"
 # EXCUTION FORMAT FIRST SEARCH KEYWORD, REPLACED_KEYWORD AND TRAGET FILE NAME
 findAndReplace "XXX" "demo-${BUILD_NUMBER}" "demo.txt"
 findAndReplace "YYY" "yyy-${BUILD_NUMBER}" "demo.txt"
+```
+
+```bash
+bash script.sh
 ```
 
 _expected result_
