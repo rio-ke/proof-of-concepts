@@ -59,8 +59,8 @@ def jobObjectJsonProperty(bucket, filename, jobname):
     content_object = s3.Object(bucket, filename)
     file_content = content_object.get()['Body'].read().decode('utf-8')
     json_content = json.loads(file_content)
-    return json_content['glueJobsProperty'][0][jobname]
-
+    return json_content
+    
 # Merge Json Object
 def mergeJsonObjectsList(fileObjectData, jobName):
     commonArgs=fileObjectData['commonArgs']
@@ -100,7 +100,7 @@ def lambda_handler(event, context):
 
     # GLUEJOB EXPECTED JSON ARGUMENTS
 
-    default_arguments = mergeJsonObjectsList(jobObjectJsonProperty(s3BucketName, JOBS_PROPERTY_JSON, glueJobName), glueJobName)
+    default_arguments = json.dumps(mergeJsonObjectsList(jobObjectJsonProperty(s3BucketName, JOBS_PROPERTY_JSON, glueJobName), glueJobName))
     print(default_arguments)
 
     # createGlueJob = glueModule.create_job(
