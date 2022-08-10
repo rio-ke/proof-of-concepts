@@ -3,6 +3,10 @@ _changes required_
 ```txt
 # demo.txt
 <param name="MaxRatingThreadPoolSize" value="GRID_MAXPRODUCTMODELSYNCTHREADPOOLSIZE"/>
+<param name="MaxRatingThreadPoolSize" value="GRID_MAXPRODUCTMODELSYNCTHREADPOOLSIZE"/>
+<param name="MaxRatingThreadPoolSize" value="GRID_MAXRATINGTHREADPOOLSIZE"/>
+<param name="MaxRatingThreadPoolSize" value="GRID_WORKQUEUETHREADPOOLMAXSIZE"/>
+<param name="MaxRatingThreadPoolSize" value="GRID_WORKQUEUETHREADSKEEPALIVETIME"/>
 <param name="MaxRatingThreadPoolSize" value="GRID_MAXRATINGTHREADPOOLSIZE"/>
 <param name="MaxRatingThreadPoolSize" value="GRID_WORKQUEUETHREADPOOLMAXSIZE"/>
 <param name="MaxRatingThreadPoolSize" value="GRID_WORKQUEUETHREADSKEEPALIVETIME"/>
@@ -37,6 +41,10 @@ _expected Results_
 
 ```txt
 <param name="MaxRatingThreadPoolSize" value="1"/>
+<param name="MaxRatingThreadPoolSize" value="1"/>
+<param name="MaxRatingThreadPoolSize" value="2"/>
+<param name="MaxRatingThreadPoolSize" value="3"/>
+<param name="MaxRatingThreadPoolSize" value="4"/>
 <param name="MaxRatingThreadPoolSize" value="2"/>
 <param name="MaxRatingThreadPoolSize" value="3"/>
 <param name="MaxRatingThreadPoolSize" value="4"/>
