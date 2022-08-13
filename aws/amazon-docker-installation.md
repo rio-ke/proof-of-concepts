@@ -17,16 +17,16 @@ sudo systemctl start docker
 sudo systemctl enable docker
 
 # validate the docker installation
-docker --version
+sudo docker --version
 
 # create the docker container
 sudo docker run -p 8080:80 -d --name nginx nginx
 
 # docker container status
-docker ps 
+sudo docker ps 
 
 # remove the running docker container
-docker stop nginx
-docker rm -f nginx
-docker ps
+sudo docker stop nginx
+sudo docker rm -f nginx
+sudo docker ps
 ```
