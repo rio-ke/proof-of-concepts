@@ -6,6 +6,8 @@
 ```py
 import boto3
 import json
+import time
+import logging
 s3_client = boto3.client('s3')
 
 def lambda_handler(event, context):
@@ -19,12 +21,17 @@ def lambda_handler(event, context):
     destination_bucket_name = 'production-bucket-dodo'
     copy_object = {'Bucket': source_bucket_name, 'Key': file_name}
 
-    if source_bucket_name == "s3-bca-prdizgut-staging":
+    if source_bucket_name == "s3-bca-prdizgut-xxx":
+        logging.info("Copy the source object to destination bucket")
         s3_client.copy_object(CopySource=copy_object, Bucket=destination_bucket_name, Key=file_name)
+        time.sleep(2)
+        logging.info("Delete the source object in source bucket")
         s3_client.delete_object(Bucket=source_bucket_name, Key=file_name)
     else:
-        print("after tag process..")
+        logging.info("Copy the source object to destination bucket")
         # s3_client.copy_object(CopySource=copy_object, Bucket=destination_bucket_name, Key=file_name)
+        time.sleep(2)
+        logging.info("Delete the source object in source bucket")
         # s3_client.delete_object(Bucket=source_bucket_name, Key=file_name)
     return {
         "statusCode": 201,
