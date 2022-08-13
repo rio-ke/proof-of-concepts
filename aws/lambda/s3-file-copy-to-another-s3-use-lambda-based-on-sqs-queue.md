@@ -1,4 +1,7 @@
-event['Records'][0]['body']['Message']['Records'][0]
+
+```json
+
+```
 
 ```py
 import boto3
