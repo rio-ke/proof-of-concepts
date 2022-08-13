@@ -5,6 +5,9 @@
 # installation of docker
 sudo amazon-linux-extras install docker
 
+# above the command not working you can use below command or else leave it 
+yum install docker
+
 # Access information
 sudo usermod -a -G docker ec2-user
 
