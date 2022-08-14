@@ -1,4 +1,6 @@
 
+based on json file create the secrets use azure rest api integrate with ansible.
+
 ```json
 {
   "secrets": [
@@ -14,6 +16,8 @@
 }
 
 ```
+
+Create the ansible file
 
 ```yml
 ---
