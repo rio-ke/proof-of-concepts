@@ -29,15 +29,13 @@
     BEARER_TOKEN_SCOPE: "https://vault.azure.net"
     SECRET_CREATION: false
   tasks:
-    - name: LOAD JSON FROM FILE
+    - name: load Json files from file.
       set_fact:
         jsondata: "{{lookup('file','json.json')}}"
-
-    # - name: debug
-    #   debug:
-    #     msg: "{{ item.name }} {{ item.value }}"
-    #   loop: "{{ jsondata.secrets }}"
-
+    - name: debug
+      debug:
+        msg: "{{ item.name }} {{ item.value }}"
+      loop: "{{ jsondata.secrets }}"
     - name: Generate bearer token
       uri:
         url: "https://login.microsoftonline.com/{{ TENANT_ID }}/oauth2/token"
@@ -47,13 +45,9 @@
           Content-Type: application/x-www-form-urlencoded
         body: "grant_type=client_credentials&client_id={{CLIENT_ID}}&resource={{ BEARER_TOKEN_SCOPE }}&client_secret={{SECRET_ID}}"
       register: _TOKEN
-      when:
-        - SECRET_CREATION == "yes"
-
-    # - name: debug
-    #   debug:
-    #     msg: "{{ _TOKEN.json.access_token }}"
-
+    - name: debug
+      debug:
+        msg: "{{ _TOKEN.json.access_token }}"
     - name: "SECRET CREATE IN {{ KEYVAULT_NAME }}"
       uri:
         url: "https://{{ KEYVAULT_NAME }}.vault.azure.net//secrets/{{ item.name }}?api-version=7.3"
@@ -69,7 +63,4 @@
           }
       register: _SECRET_RESULTS
       loop: "{{ jsondata.secrets }}"
-      when:
-        - jsondata.secrets != ""
-        - SECRET_CREATION == "yes"
 ```
