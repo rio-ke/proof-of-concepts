@@ -23,6 +23,7 @@ function findAndReplace() {
     if [ "${SearchResults}" != 0 ]; then
         sed -i 's^'${KEYWORD}'^'${REPLACED_KEYWORD}^'' "${FILE}"
     else
+        echo "${KEYWORD} no keywaords"
         exit 1
     fi
 }
