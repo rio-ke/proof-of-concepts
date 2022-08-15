@@ -1,8 +1,12 @@
 ## Readme.md
 
+_switch the namespace_
+
 ```bash
-# switch the namespace
 kubectl config set-context --current --namespace=argocd
-# change the exist service 
+```
+_change the exist service type_
+
+```bash
 kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
 ```
