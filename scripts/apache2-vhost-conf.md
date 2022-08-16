@@ -10,7 +10,7 @@
 
 read -p "Enter username : " USERNAME
 read -p "Enter domain name : " DOMAIN
-READ -P "Enter your Host Entry IP : " HOSTIP
+read -P "Enter your Host Entry IP : " HOSTIP
 
 # Functions
 ok() { echo -e '\e[32m'$DOMAIN'\e[m'; } # Green
@@ -24,7 +24,7 @@ WEB_USER=$username
 
 
 # Create nginx config file
-cat > $APACHE_ENABLED_VHOSTS/$DOMAIN-vhost.conf <<EOF
+cat > $APACHE_ENABLED_VHOSTS/$DOMAIN.conf <<EOF
 server {
     listen       80;
     server_name  $DOMAIN www.$DOMAIN;
@@ -71,7 +71,7 @@ select yn in "Yes" "No"; do
     esac
 done
 
-echo -e '\e[32m Site Created and Check that the URL http://deva.com\e[m'
+echo -e '\e[32m Site Created and Check that the URL http://$DOMAIN.com\e[m'
 
 
 ```
