@@ -27,7 +27,7 @@ spec:
     http:
       paths:
       - path: /
-        pathType: ImplementationSpecific
+        pathType: Prefix # ImplementationSpecific
         backend:
           service:
             name: jobs
