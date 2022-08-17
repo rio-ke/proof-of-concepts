@@ -35,3 +35,18 @@ spec:
               number:  9002
 
 ```
+
+_optional secret creation as yaml file_
+
+```yml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: fourtimes-ml-certs
+type: kubernetes.io/tls
+data:
+  server.crt: |
+       <crt contents here>
+  server.key: |
+       <private key contents here>
+```
