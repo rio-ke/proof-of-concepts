@@ -79,7 +79,7 @@ glueModule = boto3.client('glue')
 # GLOBAL VARIABLES
 JOBS_PROPERTY_JSON = "metadata.json"
 
-
+# Read the json object
 def jobObjectJsonProperty(bucket, filename, jobname):
     s3 = boto3.resource('s3')
     content_object = s3.Object(bucket, filename)
@@ -88,7 +88,6 @@ def jobObjectJsonProperty(bucket, filename, jobname):
     return json_content
 
 # Merge Json Object
-
 
 def mergeJsonObjectsList(fileObjectData, jobName):
     commonArgs = fileObjectData['commonArgs']
@@ -99,6 +98,7 @@ def mergeJsonObjectsList(fileObjectData, jobName):
 
 
 # EXECUTION STARING POINT
+
 def lambda_handler(event, context):
     GLUE_ROLE_NAME = os.environ['ROLE_NAME']
 
@@ -112,8 +112,7 @@ def lambda_handler(event, context):
     splitLocation = s3BucketObjectUrl.split("/")
     originCount = len(splitLocation) - 1
     glueJobName = splitLocation[originCount].removesuffix('.py')
-    jsonData = jobObjectJsonProperty(
-        s3BucketName, JOBS_PROPERTY_JSON, glueJobName)
+    jsonData = jobObjectJsonProperty(s3BucketName, JOBS_PROPERTY_JSON, glueJobName)
     argsData = mergeJsonObjectsList(jsonData, glueJobName)
     Timeout = jsonData['glueJobsProperty'][0][glueJobName]['Timeout']
     Connections = jsonData['glueJobsProperty'][0][glueJobName]['Connections']
@@ -142,13 +141,4 @@ def lambda_handler(event, context):
             WorkerType=WorkerType,
         )
         print("{} has been created".format(glueJobName))
-
-    # GLUEJOB START EXISTING JOBS
-    # startCreatedGlueJob = glueModule.start_job_run(
-    #     JobName=createGlueJob['Name'],
-    #     Arguments={
-    #     }
-    # )
-    # print('startCreatedGlueJob:', startCreatedGlueJob)
-    # print('submitting successful job......')
 ```
