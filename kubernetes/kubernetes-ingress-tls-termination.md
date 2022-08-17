@@ -16,6 +16,8 @@ metadata:
   annotations:
     ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "1800"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "1800"
 spec:
   ingressClassName: nginx
   tls:
