@@ -1,4 +1,13 @@
 
+In s3 you should be follow the folder structure like below
+
+```bash
+> 1 source
+> 2 logs
+> 3 dependencies
+> 4 tempdir
+```
+
 Read the Json from S3 in the name of metadata.json
 
 ```json
