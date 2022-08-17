@@ -1,5 +1,5 @@
 
-Read the Json from S3
+Read the Json from S3 in the name of metadata.json
 
 ```json
 {
