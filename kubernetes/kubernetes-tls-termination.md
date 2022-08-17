@@ -1,0 +1,37 @@
+
+_certificate creation_
+
+```bash
+kubectl create secret tls fourtimes-ml-certs --key server.key --cert server.crt
+```
+
+_ingress deployment yaml file_
+
+```yml
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: jobs
+  annotations:
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - dodo.fourtimes.ml
+    secretName: fourtimes-ml-certs
+  rules:
+  - host: dodo.fourtimes.ml
+    http:
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: jobs
+            port:
+              number:  9002
+
+```
