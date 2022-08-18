@@ -9,10 +9,10 @@ mkdir ado-agent-runner
 # change the ado agent directory
 cd ado-agent-runner
 
-# Download the agent file
+# Download the agent file from devops portal
 wget https://vstsagentpackage.azureedge.net/agent/2.206.1/vsts-agent-linux-x64-2.206.1.tar.gz
 
-# extract files from an unzip
+# unzip the files
 tar xvzf vsts-agent-linux-x64-2.206.1.tar.gz
 
 # list the directory
