@@ -1,45 +1,44 @@
+## azure-ado-agent-creation.md
 
+_Update the system_
 
-**Update the system**
-```
+```bash
 sudo apt update
 ```
-**Create a directory for ado agent && change the ado agent directory**
-```
+_Create a directory for ado agent && change the ado agent directory_
+
+```bash
 mkdir ado-agent-runner
 cd ado-agent-runner
 ``` 
-**Create the agent pool for azure devops**
-```
-- go to the dev.azure.com/origanisation name.
-- go to the project settings.
-- click on agent pools unde.r pipelines.
-- Create a new agent (Please follow the instruction on the new agent)
+_Create the agent pool for azure devops_
 
+```
+> require Organization URL
+> PAT Token
+> Create Agent Pool name
+
+Each piece of information must be accurate when registering an agent with an ado pool.```
+
+```bash
 # Download the agent file from devops portal
 - wget https://vstsagentpackage.azureedge.net/agent/2.206.1/vsts-agent-linux-x64-2.206.1.tar.gz
-
 # unzip the files
 tar xvzf vsts-agent-linux-x64-2.206.1.tar.gz
 ```
 
+_Enter the details about the agent pool_
 
-**list the directory**
-```
-ls -la
-```
-**Enter the details about the agent pool**
-```
+```bash
 bash config.sh 
-ls -la
 ```
 
-**Install the sevice packages**
+_Install the sevice packages_
 ```
 sudo bash svc.sh  install
 ```
 
-**start and stop the service**
+_start and stop the service_
 ```
 sudo bash svc.sh start
 sudo bash svc.sh stop
