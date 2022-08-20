@@ -14,7 +14,7 @@ cd ado-agent-runner
 _Create the agent pool for azure devops_
 
 ```
-> require Organization URL
+> Require Organization URL
 > PAT Token
 > Create Agent Pool name
 
@@ -42,4 +42,13 @@ _start and stop the service_
 ```
 sudo bash svc.sh start
 sudo bash svc.sh stop
+```
+
+
+uninstall the service
+
+```bash
+sudo bash svc.sh stop
+sudo bash svc.sh uninstall
+bash config.sh remove
 ```
