@@ -1,0 +1,2 @@
+PROJECT="fofo"
+ENVIRONMENT="dev"
