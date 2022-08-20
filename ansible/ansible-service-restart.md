@@ -4,7 +4,6 @@
 ```yml
 ---
 # file: restart.yml
-
 - name: RESTARTED THE NGINX SERVICE
   hosts: worker
   tasks:
