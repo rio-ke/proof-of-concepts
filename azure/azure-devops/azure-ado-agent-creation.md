@@ -13,14 +13,25 @@ cd ado-agent-runner
 ``` 
 _Create the agent pool for azure devops_
 
-```
-> Require Organization URL
-> PAT Token
-> Create Agent Pool name
-
-Each piece of information must be accurate when registering an agent with an ado pool.```
-
 ```bash
+Note:
+-----
+Each piece of information must be accurate when registering an agent with an ado pool.
+
+> Require Organization URL
+    example for - https://dev.azure.com/organizationName
+    
+> PAT Token
+    - Go to the User Settings on DevOps portal.
+    - Click the Personal Access Token.
+    - Create the New Token.
+    
+> Create Agent Pool name
+    - go to the dev.azure.com/origanisation name.
+    - go to the project settings.
+    - click on agent pools under pipelines.
+    - Create a new agent (Please follow the instruction on the new agent)
+
 # Download the agent file from devops portal
 - wget https://vstsagentpackage.azureedge.net/agent/2.206.1/vsts-agent-linux-x64-2.206.1.tar.gz
 # unzip the files
