@@ -56,7 +56,7 @@ sudo bash svc.sh stop
 ```
 
 
-_Use the command shown below to uninstall the service_
+_Use the command shown below to **uninstall** the service_
 
 ```bash
 sudo bash svc.sh stop
