@@ -129,6 +129,7 @@ def lambda_handler(event, context):
     numberOfWorkers = jsonData['glueJobsProperty'][0][glueJobName]['NumberOfWorkers']
     WorkerType = jsonData['glueJobsProperty'][0][glueJobName]['WorkerType']
     GLUE_ROLE_NAME = jsonData['glueJobsProperty'][0][glueJobName]['roleName']
+    
     try:
         jobStatus = glueModule.get_job(JobName=glueJobName)
         jobDelete = glueModule.delete_job(JobName=glueJobName)
