@@ -13,3 +13,5 @@
   ]
 }
 ```
+
+requests.get("http://www.example.com/", headers={"Content-Type":"text"})
