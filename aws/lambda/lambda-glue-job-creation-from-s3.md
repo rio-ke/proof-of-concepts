@@ -35,7 +35,8 @@ Read the Json from S3 in the name of metadata.json
         },
         "Timeout": 100,
         "NumberOfWorkers": 2,
-        "WorkerType": "G.1X"
+        "WorkerType": "G.1X",
+        "roleName": "aws-glue-master"
       },
       "poc_Job_DI_Figl_Stg_Intermediate_Delta_Load": {
         "customArgs": {
@@ -109,7 +110,7 @@ def mergeJsonObjectsList(fileObjectData, jobName):
 # EXECUTION STARING POINT
 
 def lambda_handler(event, context):
-    GLUE_ROLE_NAME = os.environ['ROLE_NAME']
+    # GLUE_ROLE_NAME = os.environ['ROLE_NAME']
 
     s3 = event['Records'][0]['s3']
     s3Bucket = s3['bucket']
@@ -127,7 +128,7 @@ def lambda_handler(event, context):
     Connections = jsonData['glueJobsProperty'][0][glueJobName]['Connections']
     numberOfWorkers = jsonData['glueJobsProperty'][0][glueJobName]['NumberOfWorkers']
     WorkerType = jsonData['glueJobsProperty'][0][glueJobName]['WorkerType']
-
+    GLUE_ROLE_NAME = jsonData['glueJobsProperty'][0][glueJobName]['roleName']
     try:
         jobStatus = glueModule.get_job(JobName=glueJobName)
         jobDelete = glueModule.delete_job(JobName=glueJobName)
