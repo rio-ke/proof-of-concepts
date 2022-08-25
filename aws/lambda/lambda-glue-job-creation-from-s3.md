@@ -8,7 +8,7 @@ In s3 you should be follow the folder structure like below
 > 4 tempdir
 ```
 
-Read the Json from S3 in the name of metadata.json
+Read the Json from S3 in the name of metadata-dev.json
 
 ```json
 {
@@ -87,7 +87,8 @@ import boto3
 glueModule = boto3.client('glue')
 
 # GLOBAL VARIABLES
-JOBS_PROPERTY_JSON = "metadata.json"
+ENVIRONMENT_NAME="dev"
+JOBS_PROPERTY_JSON = "metadata" + "-" + ENVIRONMENT_NAME + ".json"
 
 # Read the json object
 def jobObjectJsonProperty(bucket, filename, jobname):
