@@ -87,6 +87,7 @@ import boto3
 glueModule = boto3.client('glue')
 
 # GLOBAL VARIABLES
+# ENVIRONMENT_NAME=os.environ['ENVIRONMENT_NAME']
 ENVIRONMENT_NAME="dev"
 JOBS_PROPERTY_JSON = "metadata" + "-" + ENVIRONMENT_NAME + ".json"
 
