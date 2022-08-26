@@ -6,6 +6,7 @@ import boto3
 s3_client = boto3.client('s3')
 sqs_client = boto3.client('sqs')
 
+# Read as Environment variable
 apiGatewayUrl="https://td6rfssqf2.execute-api.ap-southeast-1.amazonaws.com/dev"
 sqsUrl="https://sqs.ap-southeast-1.amazonaws.com/653413855845/dodo"
 apiGatewayId="td6rfssqf2"
