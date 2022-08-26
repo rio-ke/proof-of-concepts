@@ -51,3 +51,17 @@ def lambda_handler(event, context):
         else:
             print("loop Process exited code 1")
 ```
+
+while-loop
+
+```py
+while True:
+    import requests
+    apiGatewayUrl = "https://td6rfssqf2.execute-api.ap-southeast-1.amazonaws.com/dev"
+    res = requests.get(apiGatewayUrl)
+    data = res.json()
+    status = data['ReceiveMessageResponse']['ReceiveMessageResult']['messages']
+    print(status)
+    if status == None:
+        break
+```
