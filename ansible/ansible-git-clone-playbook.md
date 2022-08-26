@@ -1,9 +1,6 @@
-#### ansible-glt-clone-playbook
-
----
+## ansible-git-clone-playbook
 
 ```yml
-
 # file: clone.yml
 ---
 - name: ansible playbooks
@@ -22,13 +19,10 @@
         dest: "{{ DESTINATIN }}"
         # single_branch: yes
         version: "{{ BRANCH_NAME }}"
-
 ```
 
 _execution_
 
 ```bash
-
 ansible-playbook clone.yml
-
 ```
