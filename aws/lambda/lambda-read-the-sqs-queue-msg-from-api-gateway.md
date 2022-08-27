@@ -23,8 +23,8 @@ import requests
 import json
 import boto3
 
-s3_client = boto3.client('s3')
-sqs_client = boto3.client('sqs')
+s3Client = boto3.client('s3')
+sqsClient = boto3.client('sqs')
 
 # Read as Environment variable
 apiGatewayUrl="https://td6rfssqf2.execute-api.ap-southeast-1.amazonaws.com/dev"
@@ -33,7 +33,7 @@ apiGatewayId="td6rfssqf2"
 destinationBucketName="staging-bucket-dodo"
 
 def deleteQueueMessage(sqsUrl, ReceiptHandle):
-    return sqs_client.delete_message(QueueUrl=sqsUrl,ReceiptHandle=ReceiptHandle)
+    return sqsClient.delete_message(QueueUrl=sqsUrl,ReceiptHandle=ReceiptHandle)
 
 def lambda_handler(event, context):
     while True:
@@ -52,9 +52,9 @@ def lambda_handler(event, context):
                 file_name = s3Data['object']['key']
                 copy_object = {'Bucket': source_bucket_name, 'Key': file_name}
                 print("Copy the source object to destination bucket")
-                s3_client.copy_object(CopySource=copy_object, Bucket=destinationBucketName, Key=file_name)
+                s3Client.copy_object(CopySource=copy_object, Bucket=destinationBucketName, Key=file_name)
                 print("Delete the source object in source bucket")
-                s3_client.delete_object(Bucket=source_bucket_name, Key=file_name)
+                s3Client.delete_object(Bucket=source_bucket_name, Key=file_name)
                 ReceiptHandle=stageOne['ReceiveMessageResponse']['ReceiveMessageResult']['messages'][0]['ReceiptHandle']
                 deleteQueueMessage(sqsUrl,ReceiptHandle)
         else:
