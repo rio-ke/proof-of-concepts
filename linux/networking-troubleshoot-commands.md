@@ -10,4 +10,9 @@ ss -tulpn
 ```
 
 ```bash
+systemctl status network
+```
+
+
+```bash
 ```
