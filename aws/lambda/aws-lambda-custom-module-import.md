@@ -5,7 +5,6 @@
   mkdir my-sourcecode-function
   cd my-sourcecode-function
   vim  lambda_function.py
-  pip install --target ./package requests
   sudo apt install python3-pip
   pip install --target ./package requests
   ls -la package/
