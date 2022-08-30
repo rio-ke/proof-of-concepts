@@ -17,21 +17,3 @@ resource "azuredevops_variable_group" "example" {
     }
   }
 }
-
-
-locals {
-  variables = var.secrets
-}
-
-variable "devOpsProjectName" {
-  default = "Nexus for Banking"
-}
-
-variable "variableGroupName" {
-  default = "demo"
-}
-
-variable "secrets" {
-  type    = any
-  default = null
-}
