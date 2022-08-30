@@ -9,6 +9,8 @@ export AZDO_PERSONAL_ACCESS_TOKEN=<Personal Access Token>
 export AZDO_ORG_SERVICE_URL=https://dev.azure.com/<Your Org Name>
 
 terraform init
+
+# change the params under config.tfvars file
 terraform apply -var-file=config.tfvars
 ```
 
