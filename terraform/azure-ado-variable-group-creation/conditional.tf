@@ -1,0 +1,3 @@
+locals {
+  variables = var.secrets
+}
