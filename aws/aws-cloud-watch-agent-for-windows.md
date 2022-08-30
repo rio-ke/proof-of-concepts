@@ -1,4 +1,4 @@
-
+## aws-cloud-watch-agent-for-windows.md
 
 ```ps1
 $url = "https://s3.amazonaws.com/amazoncloudwatch-agent/windows/amd64/latest/AmazonCloudWatchAgent.zip"
@@ -8,6 +8,6 @@ $wc.DownloadFile($url, $output)
 Expand-Archive -path $output -destinationpath $env:TEMP
 cd $env:TEMP
 ./install.ps1
-Set-Location -Path C:\Program Files\Amazon\AmazonCloudWatchAgent\
+Set-Location -Path 'C:\Program Files\Amazon\AmazonCloudWatchAgent'
 ./amazon-cloudwatch-agent-ctl.ps1 -a fetch-config -m ec2 -c ssm:AmazonCloudWatch-windows -s
 ```
