@@ -1,0 +1,4 @@
+locals {
+  awsManagedRoles = var.awsManagedRoles
+}
+
