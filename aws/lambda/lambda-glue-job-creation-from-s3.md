@@ -133,12 +133,23 @@ def lambda_handler(event, context):
     GLUE_ROLE_NAME = jsonData['glueJobsProperty'][0][glueJobName]['roleName']
     
     try:
-        jobStatus = glueModule.get_job(JobName=glueJobName)
-        jobDelete = glueModule.delete_job(JobName=glueJobName)
-        print("{} has been deleted".format(glueJobName))
+        createGlueJob = glueModule.update_job(
+            Name=glueJobName,
+            Role=GLUE_ROLE_NAME,
+            Command={
+                'Name': 'glueetl',
+                'ScriptLocation': sourceS3ScriptLocation
+            },
+            DefaultArguments=argsData,
+            GlueVersion='3.0',
+            Timeout=Timeout,
+            Connections=Connections,
+            NumberOfWorkers=numberOfWorkers,
+            WorkerType=WorkerType,
+        )
+        print("{} has been updated".format(glueJobName))
     except:
         print("no such previous {} job".format(glueJobName))
-    finally:
         createGlueJob = glueModule.create_job(
             Name=glueJobName,
             Role=GLUE_ROLE_NAME,
