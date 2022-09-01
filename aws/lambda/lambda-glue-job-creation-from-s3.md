@@ -166,3 +166,33 @@ def lambda_handler(event, context):
         )
         print("{} has been created".format(glueJobName))
 ```
+
+
+reference
+
+```py
+from botocore.exceptions import ClientError
+import boto3
+
+
+def check_glue_job_exists(job_name):
+    glue_client = boto3.client('glue')
+    try:
+        response = glue_client.get_job(JobName=job_name)
+        return response
+    except ClientError as e:
+        raise Exception(
+            "boto3 client error in check_glue_job_exists: " + e.__str__())
+    except Exception as e:
+        raise Exception(
+            "Unexpected error in check_glue_job_exists: " + e.__str__())
+
+
+glueJobName = "jobTwo"
+
+
+# To check existing job
+print(check_glue_job_exists(glueJobName))
+# Job doesn’t exist
+print(check_glue_job_exists("run_s3_file_job_not_exist"))
+```
