@@ -20,7 +20,7 @@ echo "Entrypoint.sh: Writing environment variables to files"
 
 findAndReplace "acceptorThreadCount=.*" "acceptorThreadCount=$tomcat_acceptorThreadCount" "${CATALINA_HOME}/conf/server.xml"
 findAndReplace "maxConnections=.*" "maxConnections=$tomcat_maxConnections" "${CATALINA_HOME}/conf/server.xml"
-# findAndReplace "Connector port="8080" protocol="HTTP/1.1".*" "Connector port="8080" protocol="$tomcat_protocol"" "${CATALINA_HOME}/conf/server.xml"
+findAndReplace "protocol=.*" "protocol="$tomcat_protocol""  "${CATALINA_HOME}/conf/server.xml"
 findAndReplace "maxPostSize=.*" "maxPostSize=$tomcat_maxPostSize" "${CATALINA_HOME}/conf/server.xml"
 findAndReplace "maxThreads=.*" "maxThreads=$tomcat_maxThreads" "${CATALINA_HOME}/conf/server.xml"
 findAndReplace "processorCache=.*" "processorCache=$tomcat_processorCache" "${CATALINA_HOME}/conf/server.xml"
