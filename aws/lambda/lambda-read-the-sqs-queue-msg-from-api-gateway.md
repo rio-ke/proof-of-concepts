@@ -47,16 +47,21 @@ def lambda_handler(event, context):
                 stageTwo = stageOne['ReceiveMessageResponse']['ReceiveMessageResult']['messages'][0]['Body']
                 stageThree = json.loads(stageTwo)
                 stageFour = json.loads(stageThree['Message'])
-                s3Data=stageFour['Records'][0]['s3']
-                source_bucket_name = s3Data['bucket']['name']
-                file_name = s3Data['object']['key']
-                copy_object = {'Bucket': source_bucket_name, 'Key': file_name}
-                print("Copy the source object to destination bucket")
-                s3Client.copy_object(CopySource=copy_object, Bucket=destinationBucketName, Key=file_name)
-                print("Delete the source object in source bucket")
-                s3Client.delete_object(Bucket=source_bucket_name, Key=file_name)
-                ReceiptHandle=stageOne['ReceiveMessageResponse']['ReceiveMessageResult']['messages'][0]['ReceiptHandle']
-                deleteQueueMessage(sqsUrl,ReceiptHandle)
+                if 'Records' in stageFour:
+                    s3Data=stageFour['Records'][0]['s3']
+                    source_bucket_name = s3Data['bucket']['name']
+                    file_name = s3Data['object']['key']
+                    copy_object = {'Bucket': source_bucket_name, 'Key': file_name}
+                    print(copy_object)
+                    print("Copy the source object to destination bucket")
+                    s3Client.copy_object(CopySource=copy_object, Bucket=destinationBucketName, Key=file_name)
+                    print("Delete the source object in source bucket")
+                    s3Client.delete_object(Bucket=source_bucket_name, Key=file_name)
+                    ReceiptHandle=stageOne['ReceiveMessageResponse']['ReceiveMessageResult']['messages'][0]['ReceiptHandle']
+                    print(ReceiptHandle)
+                    deleteQueueMessage(sqsUrl,ReceiptHandle)
+                else:
+                    print("no records received")
         else:
             print("something wrong in apiGateway endpoint.")
             break
