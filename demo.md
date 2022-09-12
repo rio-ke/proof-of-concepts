@@ -10,6 +10,7 @@ touch /opt/traps/forensics/2.txt
 _script_
 
 ```bash
+#!/bin/bash
 # script.sh
 set -E -u -o pipefail -e -x
 if [ -d "/opt/traps/forensics" ] 
@@ -22,5 +23,5 @@ fi
 ```
 
 ```bash
-bash script.sh
+sudo bash script.sh
 ```
