@@ -62,5 +62,9 @@ def lambda_handler(event, context):
             Connections=Connections,
             NumberOfWorkers=numberOfWorkers,
             WorkerType=WorkerType,
+            Tags={
+                'aws-migration-project-id': 'xxxx',
+                'map-migrated': 'd-server-xxxxx'
+            }
         )
         print("{} has been created".format(glueJobName))
