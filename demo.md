@@ -1,11 +1,26 @@
 
+_commands_
 
 ```bash
-if [ -d "/path/to/dir" ] 
+mkdir /opt/traps/forensics
+touch /opt/traps/forensics/1.txt
+touch /opt/traps/forensics/2.txt
+```
+
+_script_
+
+```bash
+# script.sh
+set -E -u -o pipefail -e -x
+if [ -d "/opt/traps/forensics" ] 
 then
-    echo "Directory /path/to/dir exists." 
-    # rm -rf /path/to/dir
+    echo "Directory /opt/traps/forensics exists." 
+    # rm -rf /opt/traps/forensics
 else
-    echo "Error: Directory /path/to/dir does not exists."
+    echo "Error: Directory /opt/traps/forensics does not exists."
 fi
+```
+
+```bash
+bash script.sh
 ```
