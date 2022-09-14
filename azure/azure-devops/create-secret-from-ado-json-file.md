@@ -1,9 +1,11 @@
 ```yml
 parameters:
-  azureSubscription: "Development"
+  azureSubscription: "Non-Prod Subscription"
   keyvaultName: ""
   keyvaultRestApiVersion: 7.3
   showTheSecretsFromAzureCliServiceConnection: false
+  secretName: ""
+  secretValue: ""
 
 jobs:
   - job: ${{ parameters.name }}
@@ -27,7 +29,6 @@ jobs:
             echo "##vso[task.setvariable variable=SECRET_ID]${appSecret}"
             echo "##vso[task.setvariable variable=CLIENT_ID]${appId}"
           addSpnToEnvironment: true
-
       - bash: |
           echo ${azureTenantId} > secret.txt
           echo ${azureClientId} >> secret.txt
@@ -38,15 +39,14 @@ jobs:
           azureClientId: $(CLIENT_ID)
           azureSecretId: $(SECRET_ID)
         condition: eq('${{ parameters.showTheSecretsFromAzureCliServiceConnection }}', true)
-
       - task: PublishBuildArtifacts@1
         displayName: "Publish Artifact: drop"
         inputs:
           PathtoPublish: secret.txt
         condition: eq('${{ parameters.showTheSecretsFromAzureCliServiceConnection }}', true)
-
       - script: |
-          token=$(curl -XGET -H "Content-Type: application/x-www-form-urlencoded" -d "grant_type=client_credentials&client_id=${azureClientId}&resource=${azureBeareTokenscope}&client_secret=${azureSecretId}" "https://login.microsoftonline.com/${azureTenantId}/oauth2/token"  | jq .access_token)
+          # token=$(curl -s -XGET -H "Content-Type: application/x-www-form-urlencoded" -d "grant_type=client_credentials&client_id=${azureClientId}&resource=https://vault.azure.net&client_secret=${azureSecretId}" "https://login.microsoftonline.com/${azureTenantId}/oauth2/token"  | jq .access_token)
+          token=$(curl -s -XGET -H "Content-Type: application/x-www-form-urlencoded" -d "grant_type=client_credentials&client_id=${azureClientId}&resource=${azureBeareTokenscope}&client_secret=${azureSecretId}" "https://login.microsoftonline.com/${azureTenantId}/oauth2/token"  | jq .access_token)
           echo "##vso[task.setvariable variable=azureBearerToken]${token}"
         displayName: "Generate bearer token"
         env:
@@ -54,16 +54,42 @@ jobs:
           azureTenantId: $(TENANT_ID)
           azureClientId: $(CLIENT_ID)
           azureSecretId: $(SECRET_ID)
-
       - script: |
-          jq -c '.[]' secrets.json | while read secret; do
-            name=$(echo ${secret} | jq '.secretName')
-            value=$(echo ${secret} | jq '.secretValue')
-            curl -s -XPUT "https://${azureKeyvaultName}.vault.azure.net/secrets/${name}?api-version=${azureKeyvaultRestApiVersion}" -H "Content-Type: application/json" -H "Authorization: Bearer ${azureKeyvaultBearerToken}" -d '{ "value": ${value} }'
-          done
+          token=$(azureBearerToken)
+          cat > data.json <<EOF
+          { 
+            "value": "${azureSecretValue}"
+          }
+          EOF
+          data=$(curl -s -XPUT https://${azureKeyvaultName}.vault.azure.net/secrets/${azureSecretName}?api-version=${azureKeyvaultRestApiVersion} -d @data.json -H "Content-Type: application/json" -H "Authorization: Bearer ${token}")
+          echo ${data} | jq .
+          rm -rf data.json
         displayName: "create keyvault secret"
-        env: # secrets.json file content should be look like this => [{ "secretName": "jino", "secretValue": "gino" }]
+        env:
           azureKeyvaultBearerToken: $(azureBearerToken)
           azureKeyvaultName: ${{ parameters.keyvaultName }}
           azureKeyvaultRestApiVersion: ${{ parameters.keyvaultRestApiVersion }}
+          azureSecretName: ${{ parameters.secretName }}
+          azureSecretValue: ${{ parameters.secretValue }}
+
+      # # Bulk secret creation
+      # - script: |
+      #     token=$(azureBearerToken)
+      #     jq -c '.[]' ${fileFullPath} | while read secret; do
+      #       name=$(echo ${secret} | jq '.secretName')
+      #       value=$(echo ${secret} | jq '.secretValue')
+      #       cat > data.json <<EOF
+      #       { 
+      #         "value": "${value}"
+      #       }
+      #       EOF
+      #       curl -s -XPUT https://${azureKeyvaultName}.vault.azure.net/secrets/${name}?api-version=${azureKeyvaultRestApiVersion} -d @data.json -H "Content-Type: application/json" -H "Authorization: Bearer ${token}"
+      #     done
+      #   displayName: "create keyvault secret"
+      #   env: # secrets.json file content should be look like this => [{ "secretName": "jino", "secretValue": "gino" }]
+      #     azureKeyvaultBearerToken: $(azureBearerToken)
+      #     azureKeyvaultName: ${{ parameters.keyvaultName }}
+      #     azureKeyvaultRestApiVersion: ${{ parameters.keyvaultRestApiVersion }}
+      #     fileFullPath: secrets.json
+
 ```
