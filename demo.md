@@ -94,3 +94,23 @@ else
     exit 0
 fi
 ```
+
+refer 4
+
+```bash
+#!/usr/bin/env bash
+set -E -u -o pipefail -e -x
+
+if [ -d "/opt/traps/forensics" ]; then
+    echo "Directory /opt/traps/forensics exists."
+    if [ -n "$(sudo find /opt/traps/forensics/* -type d -mtime +7 -ls 2>/dev/null)" ]; then
+        sudo find /opt/traps/forensics/* -type d -mtime +7 -delete -print
+        echo "Deleting /opt/traps/forensics/ older than 5 min successful"
+    else
+        echo "No files found under /opt/traps/forensics/ older than 7 days"
+    fi
+else
+    echo "Error: Directory /opt/traps/forensics does not exists."
+    exit 0
+fi
+```
