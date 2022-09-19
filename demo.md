@@ -104,7 +104,7 @@ set -E -u -o pipefail -e -x
 if [ -d "/opt/traps/forensics" ]; then
     echo "Directory /opt/traps/forensics exists."
     if [ -n "$(sudo find /opt/traps/forensics/* -type d -mtime +7 -ls 2>/dev/null)" ]; then
-        sudo find /opt/traps/forensics/* -type d -mtime +7 -delete -print
+        sudo find /opt/traps/forensics/* -type d -mtime +7 -print0 | xargs -0 -I {} /bin/rm -rf "{}"
         echo "Deleting /opt/traps/forensics/ older than 5 min successful"
     else
         echo "No files found under /opt/traps/forensics/ older than 7 days"
