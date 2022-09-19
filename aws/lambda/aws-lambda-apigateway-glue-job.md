@@ -176,3 +176,10 @@ def lambda_handler(event, context):
     }
 
 ```
+
+
+```bash
+
+curl -XGET https://wx7bcyhfq5.execute-api.ap-south-1.amazonaws.com/prod/lambda | jq
+
+```
