@@ -40,16 +40,27 @@ stages:
       - job: buildApps
         # variables:
         #   - template: variable-${{ variables.environment }}.yml@self
-        steps:
-          - checkout: self
-            displayName: $(Build.Repository.Name) => $(Build.SourceBranchName)
-          - template: ui-build-deployment-templates/main.yml@common
-            parameters:
-              npmBuild: true
-              sonarScan: false
-              testCase: false
-              dockerBuildAndPush: true
-              aquaSec: false
-              kubernetesValuesPreparation: true
-              helmDeployment: true
+      steps:
+        - checkout: self
+          displayName: $(Build.Repository.Name) => $(Build.SourceBranchName)
+        - download: current
+          artifact: drop
+
+        - task: CopyFiles@2
+          displayName: 'Copy Files docker file to: $(build.DefaultWorkingDirectory)'
+          inputs:
+            SourceFolder: '$(Agent.BuildDirectory)/drop/apps'
+            Contents: |
+              **
+            TargetFolder: '$(System.DefaultWorkingDirectory)/apps/'
+            
+        - template: ui-build-deployment-templates/main.yml@common
+          parameters:
+            npmBuild: true
+            sonarScan: false
+            testCase: false
+            dockerBuildAndPush: true
+            aquaSec: false
+            kubernetesValuesPreparation: true
+            helmDeployment: true
 ```
