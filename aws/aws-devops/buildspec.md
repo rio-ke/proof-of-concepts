@@ -8,13 +8,15 @@ phases:
   install:
     commands: 
       - aws --version
+      - curl --version
+      - jq --version
   pre_build: 
     commands: 
     - echo Build started on `date` 
     - aws s3 cp --recursive . s3://bucketname/ --exclude "*.md" --exclude ".git/*" --exclude ".gitignore"
   build: 
     commands: 
-    - curl -s -XGET -o /dev/null -I -w "%{http_code}" https://wx7bcyhfq5.execute-api.ap-south-1.amazonaws.com/prod/lambda
+    - curl -s -XGET https://wx7bcyhfq5.execute-api.ap-south-1.amazonaws.com/prod/lambda
   post_build: 
     commands: 
     - echo Build completed on `date` 
