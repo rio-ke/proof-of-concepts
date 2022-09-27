@@ -28,3 +28,9 @@ def checkSumIntegrity (sourceBucket, destinationBucket, filename):
         return False
 
 ```
+
+execution
+
+```py
+print(checkSumIntegrity("abc1-bucket-s3", "abc1-bucket-s3", "screenshot.docx"))
+```
