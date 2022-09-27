@@ -2,6 +2,7 @@
 
 ```py
 def checkSumIntegrity (sourceBucket, destinationBucket, filename):
+    s3Client = boto3.client('s3')
     source = s3Client.get_object(Bucket=sourceBucket,ChecksumMode='ENABLED', Key=filename)
     destination = s3Client.get_object(Bucket=destinationBucket, ChecksumMode='ENABLED', Key=filename)
     sourceCheckpoint = 'ChecksumSHA256' in source.keys()
