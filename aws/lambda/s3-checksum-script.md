@@ -1,4 +1,15 @@
+creation of file
 
+```py
+import boto3
+s3Client = boto3.client('s3')
+copy_object = {'Bucket': "a1-bucket-s3", 'Key': "screenshot.docx"}
+sumValues = s3Client.copy_object(CopySource=copy_object, Bucket="abc1-bucket-s3", Key="screenshot.docx", ChecksumAlgorithm='SHA256')
+checkSum = s3Client.get_object(Bucket="abc1-bucket-s3", ChecksumMode='ENABLED', Key="screenshot.docx")
+print(checkSum['ChecksumSHA256'])
+
+```
+validation of file
 
 ```py
 def checkSumIntegrity (sourceBucket, destinationBucket, filename):
