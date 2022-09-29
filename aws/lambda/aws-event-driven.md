@@ -18,6 +18,14 @@ sns.fifo publish to sqs.fifo
 
 sns queue to lambda trigger
 
+Require params
+
+* Content-based deduplication
+* Deduplication scope 
+  * Message group
+  * per queue
+  
+_access policy_
 ```json
 {
   "Version": "2008-10-17",
