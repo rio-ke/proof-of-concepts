@@ -34,3 +34,20 @@ execution
 ```py
 print(checkSumIntegrity("abc1-bucket-s3", "abc1-bucket-s3", "screenshot.docx"))
 ```
+ChecksumSHA1
+
+```py
+def checkSumIntegrity(sourceBucket, destinationBucket, filename):
+    s3Client = boto3.client('s3')
+    source = s3Client.get_object(Bucket=sourceBucket, ChecksumMode='ENABLED', Key=filename)
+    destination = s3Client.get_object(Bucket=destinationBucket, ChecksumMode='ENABLED', Key=filename)
+    sourceCheckpoint = 'ChecksumSHA1' in source.keys()
+    destinationCheckpoint = 'ChecksumSHA1' in destination.keys()
+    if (sourceCheckpoint == True and destinationCheckpoint== True):
+        if (source['ChecksumSHA1'] == destination['ChecksumSHA1']):
+            return True
+        else:
+            return False
+    else:
+        return False
+```
