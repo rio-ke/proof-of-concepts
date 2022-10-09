@@ -53,15 +53,20 @@ _access policy_
 lambda copy the s3 object from source to another
 
 ```py
-import boto3
 import json
 import urllib
+import sys
+
+from pip._internal import main
+main(['install', '-I', '-q', 'boto3', '--target', '/tmp/', '--no-cache-dir', '--disable-pip-version-check'])
+sys.path.insert(0,'/tmp/')
+
+import boto3
 
 s3Client = boto3.client('s3')
 sqsClient = boto3.client('sqs')
 
-#  variable section
-
+# VARIABLE SECTION
 destination_bucket_name = 'abc1-bucket-s3'
 replication_destination_bucket_name= "b1-bucket-s3"
 sqsUrl="https://sqs.ap-south-1.amazonaws.com/653413855845/a4-sqs.fifo"
@@ -69,25 +74,18 @@ sqsUrl="https://sqs.ap-south-1.amazonaws.com/653413855845/a4-sqs.fifo"
 def deleteQueueMessage(sqsUrl, ReceiptHandle):
     return sqsClient.delete_message(QueueUrl=sqsUrl,ReceiptHandle=ReceiptHandle)
 
-def findReceiptHandle(event):
-    receiptHandleList = []
-    for i in range(len(event['Records'])):
-        receiptHandleList.append(event['Records'][i]['receiptHandle'])
-    return receiptHandleList
-
-
 def findS3EventObjectFromS3(event):
     s3EventObjectFromS3List = []
-    for source in range(len(event['Records'])):
-        events = json.loads(event['Records'][source]['body'])
-        checkEvent = 'Records' in events.keys()
-        if checkEvent == True:
-            eventsData = json.loads(event['Records'][source]['body'])
-            s3CheckPoint = 's3' in eventsData['Records'][0].keys()
-            if s3CheckPoint == True:
-                s3EventObjectFromS3List.append(events['Records'][0]['s3'])
-                
-    return s3EventObjectFromS3List
+    checkEvent = 'Records' in event.keys()
+    if checkEvent == True:
+        for source in range(len(event['Records'])):
+            actualData = json.loads(event['Records'][source]['body'])
+            receiptHandle = event['Records'][source]['receiptHandle']
+            s3Event = actualData[0]['s3']
+            zone = actualData[0]['zone']
+            data = {'s3': s3Event, 'zone': zone, "receiptHandle": receiptHandle}
+            s3EventObjectFromS3List.append(data)
+    return s3EventObjectFromS3List    
 
 def getObjectDetails(buckeName, fileName):
     results = s3Client.list_objects(Bucket=buckeName, Prefix=fileName)
@@ -97,21 +95,27 @@ def lambda_handler(event, context):
     s3ObjectIdentifier = findS3EventObjectFromS3(event)
     if s3ObjectIdentifier != []:
         for s3 in s3ObjectIdentifier:
-            fileName = urllib.parse.unquote_plus(s3['object']['key'])
-            sourceBucketName = urllib.parse.unquote_plus(s3['bucket']['name'])
+            fileName = urllib.parse.unquote_plus(s3['s3']['object']['key'])
+            sourceBucketName = urllib.parse.unquote_plus(s3['s3']['bucket']['name'])
+            fileZone = s3['zone']
+            queueId = s3['receiptHandle']
             copyObject = { 'Bucket': sourceBucketName, 'Key': fileName }
+            
             getObjectAvailable = getObjectDetails(sourceBucketName, fileName)
             if getObjectAvailable == True:
-                s3Client.copy_object(CopySource=copyObject, Bucket=destination_bucket_name, Key=fileName)
-                s3Client.copy_object(CopySource=copyObject, Bucket=replication_destination_bucket_name, Key=fileName)
-                print(f' => {fileName} has been copy to {destination_bucket_name} and {replication_destination_bucket_name} buckets')
+                tagging = {'TagSet' : [{'Key': 'zone', 'Value': fileZone }]}
+                s3Client.put_object_tagging(Bucket=sourceBucketName,Key=fileName, Tagging=tagging)
+                print(f' <= {fileName} file has been tagged in {sourceBucketName} bucket')
+                s3Client.copy_object(CopySource=copyObject, Bucket=destination_bucket_name, Key=fileName, TaggingDirective='COPY', ChecksumAlgorithm='SHA1',)
+                s3Client.copy_object(CopySource=copyObject, Bucket=replication_destination_bucket_name, Key=fileName, TaggingDirective='COPY', ChecksumAlgorithm='SHA1')
+                print(f' => {fileName} file has been copy to {destination_bucket_name} and {replication_destination_bucket_name} buckets')
                 s3Client.delete_object(Bucket=sourceBucketName, Key=fileName)
-                print(f' <= {fileName} has been deleted from {sourceBucketName} bucket')
-            
-    queueIdentifier = findReceiptHandle(event)
-    if queueIdentifier != []:
-        for queue in queueIdentifier:
-            deleteQueueMessage(sqsUrl, queue) 
+                print(f' <= {fileName} file has been deleted from {sourceBucketName} bucket')
+                deleteQueueMessage(sqsUrl, queueId)
+                print(f' <= {fileName} queue has been deleted')
+            else:
+                deleteQueueMessage(sqsUrl, queueId)
+                print(f' <= {fileName} queue has been deleted')
 ```
 
 b2 lambda
@@ -142,57 +146,63 @@ s3Client = boto3.client('s3')
 sqsClient = boto3.client('sqs')
 
 destination_bucket_name = "abc1-bucket-s3"
-sqsUrl="https://sqs.ap-south-1.amazonaws.com/653413855845/b4-sqs.fifo"
+sqsUrl = "https://sqs.ap-south-1.amazonaws.com/653413855845/b4-sqs.fifo"
+
 
 def deleteQueueMessage(sqsUrl, ReceiptHandle):
-    return sqsClient.delete_message(QueueUrl=sqsUrl,ReceiptHandle=ReceiptHandle)
-
-def findReceiptHandle(event):
-    receiptHandleList = []
-    for i in range(len(event['Records'])):
-        receiptHandleList.append(event['Records'][i]['receiptHandle'])
-    return receiptHandleList
-
+    return sqsClient.delete_message(QueueUrl=sqsUrl, ReceiptHandle=ReceiptHandle)
 
 def findS3EventObjectFromS3(event):
     s3EventObjectFromS3List = []
-    for source in range(len(event['Records'])):
-        events = json.loads(event['Records'][source]['body'])
-        checkEvent = 'Records' in events.keys()
-        if checkEvent == True:
-            eventsData = json.loads(event['Records'][source]['body'])
-            s3CheckPoint = 's3' in eventsData['Records'][0].keys()
-            if s3CheckPoint == True:
-                s3EventObjectFromS3List.append(events['Records'][0]['s3'])
-                
+    checkEvent = 'Records' in event.keys()
+    if checkEvent == True:
+        for source in (event['Records']):
+            receiptHandle = source['receiptHandle']
+            actualData = json.loads(source['body'])
+            s3Event = actualData['Records'][0]['s3']
+            data = {'s3': s3Event, "receiptHandle": receiptHandle}
+            s3EventObjectFromS3List.append(data)
+
     return s3EventObjectFromS3List
 
-def getTags(buckeName, fileName):
-    tag = s3Client.get_object_tagging(Bucket=buckeName, Key=fileName)
-    return tag['TagSet']
 
 def getObjectDetails(buckeName, fileName):
     results = s3Client.list_objects(Bucket=buckeName, Prefix=fileName)
     return 'Contents' in results
 
+
+def getTags(buckeName, fileName):
+    tag = s3Client.get_object_tagging(Bucket=buckeName, Key=fileName)
+    return tag['TagSet']
+
+
 def lambda_handler(event, context):
     s3ObjectIdentifier = findS3EventObjectFromS3(event)
     if s3ObjectIdentifier != []:
         for s3 in s3ObjectIdentifier:
-            fileName = urllib.parse.unquote_plus(s3['object']['key'])
-            sourceBucketName = urllib.parse.unquote_plus(s3['bucket']['name'])
-            getObjectAvailable = getObjectDetails(sourceBucketName, fileName)
-            if getObjectAvailable == True:
+            fileName = urllib.parse.unquote_plus(s3['s3']['object']['key'])
+            sourceBucketName = urllib.parse.unquote_plus(s3['s3']['bucket']['name'])
+            queueId = s3['receiptHandle']
+            sourceGetObjectAvailable = getObjectDetails(sourceBucketName, fileName)
+            targetGetObjectAvailable = getObjectDetails(sourceBucketName, fileName)
+
+            if sourceGetObjectAvailable == True or targetGetObjectAvailable == True:
                 updationTags = getTags(sourceBucketName, fileName)
-                s3Client.put_object_tagging(Bucket=destination_bucket_name,Key=fileName,Tagging={ 'TagSet': updationTags })
-                print(f' => {fileName} tag has been updated to {destination_bucket_name} bucket')
-                # s3Client.delete_object(Bucket=sourceBucketName, Key=fileName)
-                # print(f' <= {fileName} has been deleted from {sourceBucketName} bucket')
-                
-    queueIdentifier = findReceiptHandle(event)
-    if queueIdentifier != []:
-        for queue in queueIdentifier:
-            deleteQueueMessage(sqsUrl, queue)
+                s3Client.put_object_tagging(Bucket=destination_bucket_name, Key=fileName, Tagging={'TagSet': updationTags})
+                s3Client.delete_object(Bucket=sourceBucketName, Key=fileName)
+                deleteQueueMessage(sqsUrl, queueId)
+                print(json.dumps({
+                    "file": file_name,
+                    "sourceBucket": sourceBucketName,
+                    "destinationBucket": destination_bucket_name,
+                    "queueMessageDeleteStatus": True,
+                    "tagUpdate": True,
+                    "copyStatus": True,
+                    "deleteQueueMessageStatus": True
+                }))
+            else:
+                deleteQueueMessage(sqsUrl, queueId)
+                print(f' <= {fileName} queue has been deleted')
 ```
 
 c2 lambda
