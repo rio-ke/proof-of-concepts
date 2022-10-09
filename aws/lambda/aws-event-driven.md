@@ -1,4 +1,15 @@
 
+```bash
+mkdir python
+cd python/
+mkdir python
+pip3 install --target ./python boto3
+zip -r boto3.zip python
+rm -rf python/
+mkdir python
+pip3 install --target ./python requests
+zip -r requests.zip python
+```
 
 s3 event publish to sns
 ```py
