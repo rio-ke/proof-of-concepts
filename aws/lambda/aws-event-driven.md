@@ -17,9 +17,14 @@ import json
 import boto3
 
 snsClient = boto3.client('sns')
+
 snsArn="arn:aws:sns:ap-south-1:653413855845:a3-sns.fifo"
+
 def lambda_handler(event, context):
-    response = snsClient.publish(MessageGroupId="stageone", TargetArn=snsArn, Message=json.dumps({'default': json.dumps(event)}), MessageStructure='json')
+    modifiedEvents = event['Records']
+    extraAttribute = { "zone": "internet" }
+    [rearrange.update(extraAttribute) for rearrange in modifiedEvents]
+    response = snsClient.publish(MessageGroupId="stageone", TargetArn=snsArn, Message=json.dumps({'default': json.dumps(modifiedEvents)}), MessageStructure='json')
     print(f' <= event published to sns')
 ```
 
