@@ -6,5 +6,6 @@ print(" default print")
 a = "demo"
 print(a)
 
-print(f'{a} is variable'
+print(f'{a} is variable')
+print('variable is:', a)
 ```
