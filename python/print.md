@@ -17,9 +17,9 @@ print(b) # 123
 ```
 **_Convert the values list to dictionary_**
 ```py
-one = ["orahr","sdd","ueu"]
+one = ["orange","apple","kivi"]
 data = {index: value for index, value in enumerate(one)}
-print(d) # {0: 'orahr', 1: 'sdd', 2: 'ueu'}
+print(d) # {0: 'orange', 1: 'apple', 2: 'kivi'}
 ```
 **_Convert the values dictionary to list_**
 ```py
