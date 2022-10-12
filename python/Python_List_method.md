@@ -93,4 +93,15 @@ prime_numbers.sort()
 
 print(prime_numbers) # [2, 3, 5, 7, 11]
 ```
+**`copy()`** - The copy() method returns a shallow copy of the list.
+```py
+#!/usr/bin/env python3
+prime_numbers = [2, 3, 5]
+
+# copying a list
+numbers = prime_numbers.copy()
+
+print('Copied List:', numbers) # Copied List: [2, 3, 5]
+```
+
 
