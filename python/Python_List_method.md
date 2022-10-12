@@ -26,7 +26,7 @@ numbers = [1, 4]
 numbers.extend(prime_numbers)
 print(numbers) # [1, 4, 2, 3, 5]
 ```
-**`insert()`**
+**`insert()`** - The insert() method inserts an element to the list at the specified index.
 ```py
 #!/usr/bin/env python3
 prime_numbers = [2, 3, 5, 7]
@@ -34,4 +34,38 @@ prime_numbers = [2, 3, 5, 7]
 # insert 11 at index 4
 prime_numbers.insert(4, 11)
 print('List:', prime_numbers) # List: [2, 3, 5, 7, 11]
+```
+**`remove()`** - The remove() method removes the first matching element (which is passed as an argument) from the list.
+```py
+#!/usr/bin/env python3
+
+animals = ['cat', 'dog', 'rabbit', 'guinea pig']
+
+# 'rabbit' is removed
+animals.remove('rabbit')
+
+# Updated animals List
+print('Updated animals list: ', animals) # Updated animals list:  ['cat', 'dog', 'guinea pig']
+
+```
+**`count()`** - The count() method returns the number of times the specified element appears in the list.
+```py
+# random list
+random = ['a', ('a', 'b'), ('a', 'b'), [3, 4]]
+
+# count element ('a', 'b')
+count = random.count(('a', 'b'))
+
+
+# print count
+print("The count of ('a', 'b') is:", count) # The count of ('a', 'b') is: 2
+
+
+# count element [3, 4]
+count = random.count([3, 4])
+
+
+# print count
+print("The count of [3, 4] is:", count) # The count of [3, 4] is: 1
+
 ```
