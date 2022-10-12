@@ -22,7 +22,7 @@ Output:
 ```
 **`If else Statement`**
 ```py
-#! /usr/bin/env python3
+#!/usr/bin/env python3
 num = 3
 
 if num >= 0:
@@ -32,5 +32,19 @@ else:
 
 Output:
 # positive number
+```
+**`if...elif...else`**
+```py
+#!/usr/bin/env python3
+num = 3.4
+if num > 0:
+    print("Positive number")
+elif num == 0:
+    print("Zero")
+else:
+    print("Negative number")
+    
+Output:
+# Positive number
 ```
 
