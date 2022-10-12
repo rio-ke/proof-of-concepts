@@ -46,7 +46,6 @@ animals.remove('rabbit')
 
 # Updated animals List
 print('Updated animals list: ', animals) # Updated animals list:  ['cat', 'dog', 'guinea pig']
-
 ```
 **`count()`** - The count() method returns the number of times the specified element appears in the list.
 ```py
@@ -60,5 +59,17 @@ print("The count of ('a', 'b') is:", count) # The count of ('a', 'b') is: 2
 # count element [3, 4]
 count = random.count([3, 4])
 print("The count of [3, 4] is:", count) # The count of [3, 4] is: 1
+```
+**`pop()`** - The pop() method removes the item at the given index from the list and returns the removed item.
+```py
+#!/usr/bin/env python3
+languages = ['Python', 'Java', 'C++', 'French', 'C']
 
+# remove and return the 4th item
+return_value = languages.pop(3)
+
+print('Return Value:', return_value) # Return Value: French
+
+# Updated List
+print('Updated List:', languages) # Updated List: ['Python', 'Java', 'C++', 'C']
 ```
