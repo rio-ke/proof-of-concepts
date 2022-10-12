@@ -81,7 +81,16 @@ prime_numbers = [2, 3, 5, 7]
 # reverse the order of list elements
 prime_numbers.reverse()
 
-print('Reversed List:', prime_numbers) # Output: Reversed List: [7, 5, 3, 2]
+print('Reversed List:', prime_numbers) # Reversed List: [7, 5, 3, 2]
 ```
+**`sort()`** - The sort() method sorts the items of a list in ascending or descending order.
+```py
+#!/usr/bin/env python3
+prime_numbers = [11, 3, 7, 5, 2]
 
+# sorting the list in ascending order
+prime_numbers.sort()
+
+print(prime_numbers) # [2, 3, 5, 7, 11]
+```
 
