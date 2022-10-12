@@ -50,22 +50,15 @@ print('Updated animals list: ', animals) # Updated animals list:  ['cat', 'dog',
 ```
 **`count()`** - The count() method returns the number of times the specified element appears in the list.
 ```py
-# random list
+#!/usr/bin/env python3
 random = ['a', ('a', 'b'), ('a', 'b'), [3, 4]]
 
 # count element ('a', 'b')
 count = random.count(('a', 'b'))
-
-
-# print count
 print("The count of ('a', 'b') is:", count) # The count of ('a', 'b') is: 2
-
 
 # count element [3, 4]
 count = random.count([3, 4])
-
-
-# print count
 print("The count of [3, 4] is:", count) # The count of [3, 4] is: 1
 
 ```
