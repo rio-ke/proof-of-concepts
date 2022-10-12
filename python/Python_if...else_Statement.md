@@ -30,7 +30,7 @@ if num >= 0:
 else:
     print("Negative number")
 
-output:
+Output:
 # positive number
 ```
 
