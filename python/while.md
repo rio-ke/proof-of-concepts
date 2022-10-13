@@ -19,5 +19,16 @@ while count >= 1:
 ```
 **While loop with else**
 ```py
+#!/usr/bin/env python3
 
+counter = 0
+
+while counter < 3: print("Inside loop"); counter = counter + 1
+else: print("Inside else")
+
+# Output:
+Inside loop
+Inside loop
+Inside loop
+Inside else
 ```
