@@ -27,3 +27,6 @@ export catalog=$(curl -s -H "Authorization: Basic $credentials" https://$registr
 echo "Catalog"
 echo $catalog | jq .
 ```
+
+
+https://github.com/Azure/acr/blob/main/docs/AAD-OAuth.md
