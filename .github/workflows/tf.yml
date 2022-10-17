@@ -1,16 +1,16 @@
 name: deploy to terraform
 on: 
-  - push
-workflow_dispatch:
-  inputs:
-    name:
-      description: "target environment name"
-      required: true
-      default: "dev"
-    destroy:
-      description: "Destroy the resource"
-      required: false
-      default: false
+  # - push
+  workflow_dispatch:
+    inputs:
+      name:
+        description: "target environment name"
+        required: true
+        default: "dev"
+      destroy:
+        description: "Destroy the resource"
+        required: false
+        default: false
 jobs:
   deploy_source:
     name: terraform
