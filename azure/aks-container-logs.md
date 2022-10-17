@@ -1,5 +1,5 @@
 
-
+aks kubernetes pods logs
 ```sql
 let startTimestamp = ago(1h);
 KubePodInventory
