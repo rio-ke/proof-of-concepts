@@ -119,20 +119,20 @@ data "aws_iam_policy_document" "s1" {
 
   statement {
     actions = [
-        "SNS:Publish",
-        "SNS:RemovePermission",
-        "SNS:SetTopicAttributes",
-        "SNS:DeleteTopic",
-        "SNS:ListSubscriptionsByTopic",
-        "SNS:GetTopicAttributes",
-        "SNS:AddPermission",
-        "SNS:Subscribe"
+      "SNS:Publish",
+      "SNS:RemovePermission",
+      "SNS:SetTopicAttributes",
+      "SNS:DeleteTopic",
+      "SNS:ListSubscriptionsByTopic",
+      "SNS:GetTopicAttributes",
+      "SNS:AddPermission",
+      "SNS:Subscribe"
     ]
     condition {
       test     = "StringEquals"
       variable = "AWS:SourceOwner"
       values = [
-        var.account-id,
+        data.aws_caller_identity.current.account_id
       ]
     }
 
@@ -141,13 +141,15 @@ data "aws_iam_policy_document" "s1" {
       type        = "AWS"
       identifiers = ["*"]
     }
-    resources = [aws_sns_topic.s1.arn ]
-    Action = ["SNS:Publish", "SNS:Subscribe"]
-    sid = "_sub_and_pub_"
+    resources = [aws_sns_topic.s1.arn]
+    Action    = ["SNS:Publish", "SNS:Subscribe"]
+    sid       = "_sub_and_pub_"
   }
 }
 
 resource "aws_sns_topic_policy" "default" {
-  arn = aws_sns_topic.s1.arn
+  arn    = aws_sns_topic.s1.arn
   policy = data.aws_iam_policy_document.s1.json
 }
+
+data "aws_caller_identity" "current" {}
