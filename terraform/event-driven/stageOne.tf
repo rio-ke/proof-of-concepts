@@ -35,7 +35,7 @@ resource "aws_iam_policy" "s1" {
     Version = "2012-10-17"
     Statement = [
       {
-        Action   = ["sns:*"]
+        Action   = ["*"]
         Effect   = "Allow"
         Resource = "*"
       }
