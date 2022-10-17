@@ -40,7 +40,7 @@ jobs:
           terraform init \
             -backend-config="bucket=terraform-cnl-backend" \
             -backend-config="key=${{ matrix.folder }}/${{ github.event.inputs.name }}-env.tfstate" \
-            -backend-config="region=ap-south-1" \
+            -backend-config="region=us-east-1" \
             -backend=true
       - name: terraform plan
         run: terraform  plan -var-file="${{ github.event.inputs.name }}-config.tfvars"
