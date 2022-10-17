@@ -76,3 +76,10 @@ resource "aws_s3_bucket_notification" "s1" {
     id                  = "stage-a2-s3-to-lambda-notofcation"
   }
 }
+
+resource "aws_sqs_queue" "terraform_queue" {
+  name                  = "a3-sqs-queue.fifo"
+  fifo_queue            = true
+  deduplication_scope   = "messageGroup"
+  fifo_throughput_limit = "perMessageGroupId"
+}
