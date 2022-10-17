@@ -55,7 +55,7 @@ resource "aws_lambda_function" "s1" {
   runtime       = "python3.9"
   environment {
     variables = {
-      snsArn   = aws_sns_topic.s1.arn
+      snsArn = aws_sns_topic.s1.arn
     }
   }
 }
@@ -73,5 +73,6 @@ resource "aws_s3_bucket_notification" "s1" {
   lambda_function {
     lambda_function_arn = aws_lambda_function.s1.arn
     events              = ["s3:ObjectCreated:*"]
+    id                  = "stage-a2-s3-to-lambda-notofcation"
   }
 }
