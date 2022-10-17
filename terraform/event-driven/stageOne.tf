@@ -67,3 +67,11 @@ resource "aws_sns_topic" "s1" {
 }
 
 
+resource "aws_s3_bucket_notification" "s1" {
+  bucket = aws_s3_bucket.s1.id
+
+  lambda_function {
+    lambda_function_arn = aws_lambda_function.s1.arn
+    events              = ["s3:ObjectCreated:*"]
+  }
+}
