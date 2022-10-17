@@ -13,7 +13,7 @@ data "archive_file" "s1" {
 }
 
 resource "aws_iam_role" "s1" {
-  name = "test_role"
+  name = "stage-a2-lambda-lambda-role"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -27,6 +27,25 @@ resource "aws_iam_role" "s1" {
       }
     ]
   })
+}
+
+resource "aws_iam_policy" "s1" {
+  name = "stage-a2-lambda-lambda-role-policy"
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action   = ["sns:*"]
+        Effect   = "Allow"
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "s1" {
+  role       = aws_iam_role.s1.name
+  policy_arn = aws_iam_policy.s1.arn
 }
 resource "aws_lambda_function" "s1" {
   filename      = "${path.module}/stageOne/main.py.zip"
@@ -46,3 +65,5 @@ resource "aws_sns_topic" "s1" {
   fifo_topic                  = true
   content_based_deduplication = true
 }
+
+
