@@ -6,4 +6,43 @@ resource "aws_s3_bucket" "s1" {
   }
 }
 
+data "archive_file" "s1" {
+  type        = "zip"
+  source_file = "${path.module}/stageOne/main.py"
+  output_path = "${path.module}/stageOne/main.py.zip"
+}
 
+resource "aws_iam_role" "s1" {
+  name = "test_role"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Sid    = ""
+        Principal = {
+          Service = "lambda.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+resource "aws_lambda_function" "s1" {
+  filename      = "${path.module}/stageOne/main.py.zip"
+  function_name = "stage-a2-lambda"
+  role          = aws_iam_role.s1.arn
+  handler       = "main.lambda_handler"
+  runtime       = "python3.9"
+  environment {
+    variables = {
+      snsArn   = aws_sns_topic.s1.arn
+    }
+  }
+}
+
+resource "aws_sns_topic" "s1" {
+  name                        = "a3-sns-topic.fifo"
+  fifo_topic                  = true
+  content_based_deduplication = true
+}
