@@ -78,10 +78,11 @@ resource "aws_s3_bucket_notification" "s1" {
 }
 
 resource "aws_sqs_queue" "s1" {
-  name                  = "a4-sqs-queue.fifo"
-  fifo_queue            = true
-  deduplication_scope   = "messageGroup"
-  fifo_throughput_limit = "perMessageGroupId"
+  name                        = "a4-sqs-queue.fifo"
+  fifo_queue                  = true
+  content_based_deduplication = true
+  deduplication_scope         = "messageGroup"
+  fifo_throughput_limit       = "perQueue"
 }
 resource "aws_sqs_queue_policy" "s1" {
   queue_url = aws_sqs_queue.s1.id
