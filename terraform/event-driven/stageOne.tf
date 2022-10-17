@@ -142,7 +142,7 @@ data "aws_iam_policy_document" "s1" {
       identifiers = ["*"]
     }
     resources = [aws_sns_topic.s1.arn]
-    Action    = ["SNS:Publish", "SNS:Subscribe"]
+    action    = ["SNS:Publish", "SNS:Subscribe"]
     sid       = "_sub_and_pub_"
   }
 }
