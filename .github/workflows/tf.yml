@@ -43,9 +43,9 @@ jobs:
             -backend-config="region=us-east-1" \
             -backend=true
       - name: terraform plan
-        run: terraform  plan -var-file=config.tfvars
+        run: terraform  plan -var-file="${{ github.event.inputs.name }}-config.tfvars"
       - name: terraform apply
-        run: terraform  apply-var-file="${{ github.event.inputs.name }}-config.tfvars" -auto-approve
+        run: terraform  apply -var-file="${{ github.event.inputs.name }}-config.tfvars" -auto-approve
       - name: show
         run: terraform show
       - name: destroy
