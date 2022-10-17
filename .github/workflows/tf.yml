@@ -1,0 +1,53 @@
+name: deploy to terraform
+on: 
+  - push
+  workflow_dispatch:
+    inputs:
+      name:
+        description: "target environment name"
+        required: true
+        default: "dev"
+      destroy:
+        description: "Destroy the resource"
+        required: false
+        default: false
+jobs:
+  deploy_source:
+    name: terraform
+    strategy:
+      matrix:
+        folder: [terraform/event-driven/]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ matrix.folder }}
+    steps:
+      - name: checkout
+        uses: actions/checkout@v1
+      - name: setup terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.1.8
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.SECRET_KEY }}
+          aws-region: us-east-1
+      - name: terraform initial
+        run: |
+          terraform init \
+            -backend-config="bucket=terraform-cnl-backend" \
+            -backend-config="key=${{ matrix.folder }}/${{ github.event.inputs.name }}-env.tfstate" \
+            -backend-config="region=us-east-1" \
+            -backend=true
+      - name: terraform plan
+        run: terraform  plan -var-file=config.tfvars
+      - name: terraform apply
+        run: terraform  apply-var-file="${{ github.event.inputs.name }}-config.tfvars" -auto-approve
+      - name: show
+        run: terraform show
+      - name: destroy
+        if: github.event.inputs.destroy == 'true'
+        run: terraform destroy -var-file="${{ github.event.inputs.name }}-config.tfvars" -auto-approve
