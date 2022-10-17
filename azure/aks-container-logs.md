@@ -13,8 +13,6 @@ KubePodInventory
     | where TimeGenerated > startTimestamp
 )
 on ContainerID
-// at this point before the next pipe, columns from both tables are available to be "projected". Due to both 
-// tables having a "Name" column, we assign an alias as PodName to one column which we actually want
 | project TimeGenerated, PodName, LogEntry, LogEntrySource
 | order by TimeGenerated desc
 ```
@@ -35,8 +33,6 @@ KubePodInventory
     | where TimeGenerated > startTimestamp
 )
 on ContainerID
-// at this point before the next pipe, columns from both tables are available to be "projected". Due to both 
-// tables having a "Name" column, we assign an alias as PodName to one column which we actually want
 | project Namespace, TimeGenerated, PodName, LogEntry, LogEntrySource
 | order by TimeGenerated desc
 ```
