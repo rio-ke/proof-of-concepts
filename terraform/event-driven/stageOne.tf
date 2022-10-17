@@ -73,12 +73,12 @@ resource "aws_s3_bucket_notification" "s1" {
   lambda_function {
     lambda_function_arn = aws_lambda_function.s1.arn
     events              = ["s3:ObjectCreated:*"]
-    id                  = "stage-a2-s3-to-lambda-notofcation"
+    id                  = "stage-a2-s3-to-lambda-notification"
   }
 }
 
 resource "aws_sqs_queue" "s1" {
-  name                  = "a3-sqs-queue.fifo"
+  name                  = "a4-sqs-queue.fifo"
   fifo_queue            = true
   deduplication_scope   = "messageGroup"
   fifo_throughput_limit = "perMessageGroupId"
@@ -107,3 +107,8 @@ resource "aws_sqs_queue_policy" "s1" {
 }
 
 
+resource "aws_sns_topic_subscription" "s1" {
+  topic_arn = aws_sns_topic.s1.arn
+  protocol  = "sqs"
+  endpoint  = aws_sqs_queue.s1.arn
+}
