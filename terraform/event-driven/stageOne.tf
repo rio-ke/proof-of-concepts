@@ -193,7 +193,6 @@ resource "aws_lambda_function" "a5" {
   }
 }
 
-
 resource "aws_s3_bucket" "s22" {
   bucket = "stage-b1-bucket-s3"
   tags = {
