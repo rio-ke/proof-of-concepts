@@ -1,7 +1,7 @@
 resource "aws_s3_bucket" "s1" {
   bucket = "stage-a1-bucket-s3"
   tags = {
-    Name        = "a1-bucket-s3"
+    Name        = "stage-a1-bucket-s3"
     Environment = "development"
   }
 }
@@ -196,7 +196,7 @@ resource "aws_lambda_function" "a5" {
 resource "aws_s3_bucket" "s22" {
   bucket = "stage-b1-bucket-s3"
   tags = {
-    Name        = "b1-bucket-s3"
+    Name        = "stage-b1-bucket-s3"
     Environment = "development"
   }
 }
@@ -204,7 +204,7 @@ resource "aws_s3_bucket" "s22" {
 resource "aws_s3_bucket" "s21" {
   bucket = "stage-abc1-bucket-s3"
   tags = {
-    Name        = "abc1-bucket-s3"
+    Name        = "stage-abc1-bucket-s3"
     Environment = "development"
   }
 }
