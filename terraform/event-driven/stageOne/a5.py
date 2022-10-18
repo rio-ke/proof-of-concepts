@@ -7,9 +7,9 @@ s3Client = boto3.client('s3')
 sqsClient = boto3.client('sqs')
 
 # VARIABLE SECTION
-destination_bucket_name = 'abc1-bucket-s3'
-replication_destination_bucket_name= "b1-bucket-s3"
-sqsUrl="https://sqs.ap-south-1.amazonaws.com/653413855845/a4-sqs.fifo"
+destination_bucket_name = os.environ['destination_bucket_name']                         # 'abc1-bucket-s3'
+replication_destination_bucket_name= os.environ['replication_destination_bucket_name']  # "b1-bucket-s3"
+sqsUrl = os.environ['sqsUrl']                                                           # "https://sqs.ap-south-1.amazonaws.com/653413855845/a4-sqs.fifo"
 
 def deleteQueueMessage(sqsUrl, ReceiptHandle):
     return sqsClient.delete_message(QueueUrl=sqsUrl,ReceiptHandle=ReceiptHandle)
