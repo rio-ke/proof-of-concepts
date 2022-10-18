@@ -67,6 +67,7 @@ resource "aws_lambda_function" "s1" {
   role          = aws_iam_role.s1.arn
   handler       = "main.lambda_handler"
   runtime       = "python3.9"
+  layers = [aws_lambda_layer_version.l1.arn, aws_lambda_layer_version.l2.arn]
   environment {
     variables = {
       snsArn = aws_sns_topic.s1.arn
