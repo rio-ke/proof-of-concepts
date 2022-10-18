@@ -168,3 +168,11 @@ resource "aws_sns_topic_policy" "default" {
 }
 
 data "aws_caller_identity" "current" {}
+
+
+data "archive_file" "s5" {
+  type        = "zip"
+  source_file = "${path.module}/stageOne/s5.py"
+  output_path = "${path.module}/stageOne/s5.py.zip"
+}
+
