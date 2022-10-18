@@ -209,3 +209,8 @@ resource "aws_s3_bucket" "s21" {
     Environment = "development"
   }
 }
+
+resource "aws_lambda_event_source_mapping" "example" {
+  event_source_arn = aws_sqs_queue.s1.arn
+  function_name    = aws_lambda_function.a5.arn
+}
