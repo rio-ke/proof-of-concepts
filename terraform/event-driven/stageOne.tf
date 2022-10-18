@@ -22,8 +22,8 @@ resource "aws_lambda_layer_version" "l2" {
 
 data "archive_file" "s1" {
   type        = "zip"
-  source_file = "${path.module}/stageOne/main.py"
-  output_path = "${path.module}/stageOne/main.py.zip"
+  source_file = "${path.module}/stageOne/s2.py"
+  output_path = "${path.module}/stageOne/s2.py.zip"
 }
 
 resource "aws_iam_role" "s1" {
@@ -62,7 +62,7 @@ resource "aws_iam_role_policy_attachment" "s1" {
   policy_arn = aws_iam_policy.s1.arn
 }
 resource "aws_lambda_function" "s1" {
-  filename      = "${path.module}/stageOne/main.py.zip"
+  filename      = "${path.module}/stageOne/s2.py.zip"
   function_name = "stage-a2-lambda"
   role          = aws_iam_role.s1.arn
   handler       = "main.lambda_handler"
