@@ -1,10 +1,15 @@
 resource "aws_s3_bucket" "s1" {
-  bucket = "stage-a1-bucket-s3"
-  tags = {
-    Name        = "stage-a1-bucket-s3"
-    Environment = "development"
-  }
+  bucket = "dodo-a1-bucket-s3"
 }
+
+resource "aws_s3_bucket" "s22" {
+  bucket = "dodo-b1-bucket-s3"
+}
+
+resource "aws_s3_bucket" "s21" {
+  bucket = "dodo-abc1-bucket-s3"
+}
+
 
 resource "aws_lambda_layer_version" "l1" {
   filename   = "${path.module}/layer/boto3.zip"
@@ -190,22 +195,6 @@ resource "aws_lambda_function" "a5" {
       replication_destination_bucket_name = aws_s3_bucket.s22.bucket                                  # "b1-bucket-s3"
       sqsUrl = aws_sqs_queue.s1.url                               
     }
-  }
-}
-
-resource "aws_s3_bucket" "s22" {
-  bucket = "stage-b1-bucket-s3"
-  tags = {
-    Name        = "stage-b1-bucket-s3"
-    Environment = "development"
-  }
-}
-
-resource "aws_s3_bucket" "s21" {
-  bucket = "stage-abc1-bucket-s3"
-  tags = {
-    Name        = "stage-abc1-bucket-s3"
-    Environment = "development"
   }
 }
 
