@@ -71,7 +71,7 @@ resource "aws_lambda_function" "s1" {
   filename      = "${path.module}/stageOne/a2.py.zip"
   function_name = "stage-a2-lambda"
   role          = aws_iam_role.s1.arn
-  handler       = "main.lambda_handler"
+  handler       = "a2.lambda_handler"
   runtime       = "python3.9"
   layers = [aws_lambda_layer_version.l1.arn, aws_lambda_layer_version.l2.arn]
   environment {
@@ -186,7 +186,7 @@ resource "aws_lambda_function" "a5" {
   filename      = "${path.module}/stageOne/a5.py.zip"
   function_name = "stage-a5-lambda"
   role          = aws_iam_role.s1.arn
-  handler       = "main.lambda_handler"
+  handler       = "a5.lambda_handler"
   runtime       = "python3.9"
   layers = [aws_lambda_layer_version.l1.arn, aws_lambda_layer_version.l2.arn]
   environment {
