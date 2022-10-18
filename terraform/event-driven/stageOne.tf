@@ -187,14 +187,14 @@ resource "aws_lambda_function" "a5" {
   environment {
     variables = {
       destination_bucket_name = aws_s3_bucket.s21.name                        # abc1-bucket-s3
-      replication_destination_bucket_name = aws_s3_bucket.s2.name             # "b1-bucket-s3"
+      replication_destination_bucket_name = aws_s3_bucket.s22.name             # "b1-bucket-s3"
       sqsUrl = aws_sqs_queue.s1.url                               
     }
   }
 }
 
 
-resource "aws_s3_bucket" "s2" {
+resource "aws_s3_bucket" "s22" {
   bucket = "stage-b1-bucket-s3"
   tags = {
     Name        = "b1-bucket-s3"
