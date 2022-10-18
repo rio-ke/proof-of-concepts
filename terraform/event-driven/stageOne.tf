@@ -170,9 +170,22 @@ resource "aws_sns_topic_policy" "default" {
 data "aws_caller_identity" "current" {}
 
 
-data "archive_file" "s5" {
+data "archive_file" "a2" {
   type        = "zip"
-  source_file = "${path.module}/stageOne/s5.py"
-  output_path = "${path.module}/stageOne/s5.py.zip"
+  source_file = "${path.module}/stageOne/a5.py"
+  output_path = "${path.module}/stageOne/a5.py.zip"
 }
 
+resource "aws_lambda_function" "a5" {
+  filename      = "${path.module}/stageOne/a5.py.zip"
+  function_name = "stage-a5-lambda"
+  role          = aws_iam_role.s1.arn
+  handler       = "main.lambda_handler"
+  runtime       = "python3.9"
+  layers = [aws_lambda_layer_version.l1.arn, aws_lambda_layer_version.l2.arn]
+  environment {
+    variables = {
+      snsArn = aws_sns_topic.s1.arn
+    }
+  }
+}
