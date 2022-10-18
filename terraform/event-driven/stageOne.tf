@@ -61,6 +61,7 @@ resource "aws_iam_role_policy_attachment" "s1" {
   role       = aws_iam_role.s1.name
   policy_arn = aws_iam_policy.s1.arn
 }
+
 resource "aws_lambda_function" "s1" {
   filename      = "${path.module}/stageOne/a2.py.zip"
   function_name = "stage-a2-lambda"
@@ -185,7 +186,26 @@ resource "aws_lambda_function" "a5" {
   layers = [aws_lambda_layer_version.l1.arn, aws_lambda_layer_version.l2.arn]
   environment {
     variables = {
-      snsArn = aws_sns_topic.s1.arn
+      destination_bucket_name = aws_s3_bucket.s21.name                        # abc1-bucket-s3
+      replication_destination_bucket_name = aws_s3_bucket.s2.name             # "b1-bucket-s3"
+      sqsUrl = aws_sqs_queue.s1.url                               
     }
+  }
+}
+
+
+resource "aws_s3_bucket" "s2" {
+  bucket = "stage-b1-bucket-s3"
+  tags = {
+    Name        = "b1-bucket-s3"
+    Environment = "development"
+  }
+}
+
+resource "aws_s3_bucket" "s21" {
+  bucket = "stage-abc1-bucket-s3"
+  tags = {
+    Name        = "abc1-bucket-s3"
+    Environment = "development"
   }
 }
