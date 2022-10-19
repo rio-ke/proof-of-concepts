@@ -96,4 +96,5 @@ def jsonAttribute(event):
         return event["Records"][0]["s3"]
     else:
         return "values not match"
+jsonAttribute(getJsonData)
 ```
