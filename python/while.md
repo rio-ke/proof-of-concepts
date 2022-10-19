@@ -16,6 +16,7 @@ while count >= 1:
 3 x 8 = 24
 2 x 8 = 16
 1 x 8 = 8
+```
 ```py
 #!/usr/bin/env python3
 
