@@ -44,7 +44,7 @@ resource "aws_sns_topic_subscription" "s1" {
 
 resource "aws_sns_topic_policy" "s1" {
   arn    = aws_sns_topic.s1.arn
-  policy = data.aws_iam_policy_document.a2.json
+  policy = data.aws_iam_policy_document.a3.json
 }
 
 
