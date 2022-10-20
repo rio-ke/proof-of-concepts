@@ -12,11 +12,3 @@ resource "aws_s3_bucket_notification" "c1" {
   }
 }
 
-
-# resource "aws_s3_bucket" "s31" {
-#   bucket = "dodo-d1-bucket-s3-final-success"
-# }
-
-# resource "aws_s3_bucket" "s32" {
-#   bucket = "dodo-d1-bucket-s3-final-failure"
-# }

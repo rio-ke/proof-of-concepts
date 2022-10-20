@@ -3,7 +3,7 @@ resource "aws_s3_bucket" "a1" {
 }
 
 resource "aws_s3_bucket_notification" "a1" {
-  bucket = aws_s3_bucket.s1.id
+  bucket = aws_s3_bucket.a1.id
   lambda_function {
     lambda_function_arn = aws_lambda_function.a2.arn
     events              = ["s3:ObjectCreated:*"]
