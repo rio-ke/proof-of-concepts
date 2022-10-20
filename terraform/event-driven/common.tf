@@ -1,3 +1,5 @@
+data "aws_caller_identity" "current" {}
+
 resource "aws_lambda_layer_version" "l1" {
   filename   = "${path.module}/layer/boto3.zip"
   layer_name = "currentBoto3"
