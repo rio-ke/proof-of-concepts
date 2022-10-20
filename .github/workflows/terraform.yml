@@ -3,16 +3,16 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:
-    inputs:
-      name:
-        description: "target environment name"
-        required: true
-        default: "dev"
-      destroy:
-        description: "Destroy the resource"
-        required: false
-        default: false
+  # workflow_dispatch:
+  #   inputs:
+  #     name:
+  #       description: "target environment name"
+  #       required: true
+  #       default: "dev"
+  #     destroy:
+  #       description: "Destroy the resource"
+  #       required: false
+  #       default: false
 jobs:
   deploy_source:
     name: terraform
@@ -37,22 +37,29 @@ jobs:
           aws-access-key-id: ${{ secrets.ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.SECRET_KEY }}
           aws-region: ap-south-1
-      - name: terraform initial
+      - name: init
         run: |
           terraform init \
             -backend-config="bucket=terraform-cnl-backend" \
             -backend-config="key=${{ matrix.folder }}/${{ github.event.inputs.name }}-env.tfstate" \
             -backend-config="region=us-east-1" \
             -backend=true
-      - name: terraform plan
-        # if: github.event.inputs.destroy == 'false'
-        run: terraform  plan -var-file="${{ github.event.inputs.name }}-config.tfvars"
-      - name: terraform apply
-        # if: github.event.inputs.destroy == 'false'
-        run: terraform  apply -var-file="${{ github.event.inputs.name }}-config.tfvars" -auto-approve
+      - name: plan
+        run: terraform  plan -var-file="dev-config.tfvars"
+      - name: apply
+        run: terraform  apply -var-file="dev-config.tfvars" -auto-approve
       - name: show
-        # if: github.event.inputs.destroy == 'false'
         run: terraform show
-      - name: destroy
-        if: github.event.inputs.destroy == 'true'
-        run: terraform destroy -var-file="${{ github.event.inputs.name }}-config.tfvars" -auto-approve
+
+      # - name: terraform plan
+      #   if: github.event.inputs.destroy == 'false'
+      #   run: terraform  plan -var-file="${{ github.event.inputs.name }}-config.tfvars"
+      # - name: terraform apply
+      #   if: github.event.inputs.destroy == 'false'
+      #   run: terraform  apply -var-file="${{ github.event.inputs.name }}-config.tfvars" -auto-approve
+      # - name: show
+      #   if: github.event.inputs.destroy == 'false'
+      #   run: terraform show
+      # - name: destroy
+      #   if: github.event.inputs.destroy == 'true'
+      #   run: terraform destroy -var-file="${{ github.event.inputs.name }}-config.tfvars" -auto-approve
