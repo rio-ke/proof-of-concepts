@@ -10,7 +10,7 @@ resource "aws_lambda_function" "a2" {
   role          = aws_iam_role.common.arn
   handler       = "a2.lambda_handler"
   runtime       = "python3.9"
-  layers = [aws_lambda_layer_version.l1.arn, aws_lambda_layer_version.l2.arn]
+  layers        = [aws_lambda_layer_version.l1.arn, aws_lambda_layer_version.l2.arn]
   environment {
     variables = {
       snsArn = aws_sns_topic.a3.arn
@@ -30,12 +30,12 @@ resource "aws_lambda_function" "a5" {
   role          = aws_iam_role.common.arn
   handler       = "a5.lambda_handler"
   runtime       = "python3.9"
-  layers = [aws_lambda_layer_version.l1.arn, aws_lambda_layer_version.l2.arn]
+  layers        = [aws_lambda_layer_version.l1.arn, aws_lambda_layer_version.l2.arn]
   environment {
     variables = {
-      destination_bucket_name = aws_s3_bucket.c1.bucket                                              # abc1-bucket-s3
-      replication_destination_bucket_name = aws_s3_bucket.b1.bucket                                  # "b1-bucket-s3"
-      sqsUrl = aws_sqs_queue.a4.url                               
+      destination_bucket_name             = aws_s3_bucket.c1.bucket # abc1-bucket-s3
+      replication_destination_bucket_name = aws_s3_bucket.b1.bucket # "b1-bucket-s3"
+      sqsUrl                              = aws_sqs_queue.a4.url
     }
   }
 }

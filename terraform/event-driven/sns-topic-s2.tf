@@ -39,8 +39,8 @@ resource "aws_sns_topic_policy" "b3" {
 }
 
 resource "aws_sns_topic_subscription" "b3" {
-  topic_arn = aws_sns_topic.b3.arn
-  protocol  = "sqs"
-  endpoint  = aws_sqs_queue.b4.arn
-  raw_message_delivery            = true
+  topic_arn            = aws_sns_topic.b3.arn
+  protocol             = "sqs"
+  endpoint             = aws_sqs_queue.b4.arn
+  raw_message_delivery = true
 }

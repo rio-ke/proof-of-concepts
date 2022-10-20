@@ -1,2 +1,2 @@
-variable region {}
-variable alertSqsQueueURL {}
+variable "region" {}
+variable "alertSqsQueueURL" {}
