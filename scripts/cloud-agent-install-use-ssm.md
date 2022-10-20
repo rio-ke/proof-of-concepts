@@ -1,14 +1,14 @@
 
-conditional installtion
+conditional installation
 
 ```bash
 version=$(lsb_release --id --short)
 if [ "${version}" == "Ubuntu" ]; then
-    echo "This is ${verion} version"
+    echo "This is ${version} version"
 else if [ "${version}" == "RedHat" ]; then
-    echo "This is ${verion} version"
+    echo "This is ${version} version"
 else if [ "${version}" == "CentOS" ]; then
-    echo "This is ${verion} version"
+    echo "This is ${version} version"
 fi
 ```
 
