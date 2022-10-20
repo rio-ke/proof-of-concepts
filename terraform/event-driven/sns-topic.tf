@@ -1,5 +1,5 @@
 data "aws_iam_policy_document" "common" {
-  policy_id = "__default_policy_ID"
+  policy_id = "__default_policy__"
   statement {
     actions = [
       "SNS:Publish",
@@ -15,7 +15,7 @@ data "aws_iam_policy_document" "common" {
       test     = "StringEquals"
       variable = "AWS:SourceOwner"
       values = [
-        data.aws_caller_identity.current.account_id
+        data.aws_caller_identity.account.account_id
       ]
     }
     effect = "Allow"
@@ -24,7 +24,7 @@ data "aws_iam_policy_document" "common" {
       identifiers = ["*"]
     }
     resources = [aws_sns_topic.s1.arn, aws_sns_topic.s2.arn, aws_sns_topic.s3.arn]
-    sid       = "_sub_and_pub_"
+    sid       = "__sub_and_pub__"
   }
 }
 

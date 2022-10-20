@@ -1,4 +1,4 @@
-data "aws_caller_identity" "current" {}
+data "aws_caller_identity" "account" {}
 
 resource "aws_lambda_layer_version" "l1" {
   filename   = "${path.module}/layers/boto3.zip"
