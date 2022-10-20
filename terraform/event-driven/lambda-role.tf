@@ -33,4 +33,3 @@ resource "aws_iam_role_policy_attachment" "common" {
   role       = aws_iam_role.common.name
   policy_arn = aws_iam_policy.common.arn
 }
-
