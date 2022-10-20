@@ -10,6 +10,6 @@ def lambda_handler(event, context):
     modifiedEvents = event['Records']
     extraAttribute = {"zone": "internet"}
     [rearrange.update(extraAttribute) for rearrange in modifiedEvents]
-    response = snsClient.publish(MessageGroupId="stageone", TargetArn=snsArn, Message=json.dumps(
+    snsClient.publish(MessageGroupId="stageone", TargetArn=snsArn, Message=json.dumps(
         {'default': json.dumps(modifiedEvents)}), MessageStructure='json')
     print(f' <= event published to sns')

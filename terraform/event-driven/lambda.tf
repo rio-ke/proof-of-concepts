@@ -1,11 +1,11 @@
 data "archive_file" "s1" {
   type        = "zip"
-  source_file = "${path.module}/stageOne/a2.py"
-  output_path = "${path.module}/stageOne/a2.py.zip"
+  source_file = "${path.module}/lambdaHandlers/a2.py"
+  output_path = "${path.module}/lambdaHandlers/a2.py.zip"
 }
 
 resource "aws_lambda_function" "s1" {
-  filename      = "${path.module}/stageOne/a2.py.zip"
+  filename      = "${path.module}/lambdaHandlers/a2.py.zip"
   function_name = "stage-a2-lambda"
   role          = aws_iam_role.common.arn
   handler       = "a2.lambda_handler"
@@ -21,12 +21,12 @@ resource "aws_lambda_function" "s1" {
 
 data "archive_file" "a2" {
   type        = "zip"
-  source_file = "${path.module}/stageOne/a5.py"
-  output_path = "${path.module}/stageOne/a5.py.zip"
+  source_file = "${path.module}/lambdaHandlers/a5.py"
+  output_path = "${path.module}/lambdaHandlers/a5.py.zip"
 }
 
 resource "aws_lambda_function" "a5" {
-  filename      = "${path.module}/stageOne/a5.py.zip"
+  filename      = "${path.module}/lambdaHandlers/a5.py.zip"
   function_name = "stage-a5-lambda"
   role          = aws_iam_role.common.arn
   handler       = "a5.lambda_handler"
@@ -49,12 +49,12 @@ resource "aws_lambda_event_source_mapping" "a5" {
 
 data "archive_file" "b2" {
   type        = "zip"
-  source_file = "${path.module}/stageOne/b2.py"
-  output_path = "${path.module}/stageOne/b2.py.zip"
+  source_file = "${path.module}/lambdaHandlers/b2.py"
+  output_path = "${path.module}/lambdaHandlers/b2.py.zip"
 }
 
 resource "aws_lambda_function" "b2" {
-  filename      = "${path.module}/stageOne/b2.py.zip"
+  filename      = "${path.module}/lambdaHandlers/b2.py.zip"
   function_name = "stage-b2-lambda"
   role          = aws_iam_role.common.arn
   handler       = "b2.lambda_handler"
@@ -70,12 +70,12 @@ resource "aws_lambda_function" "b2" {
 
 data "archive_file" "b5" {
   type        = "zip"
-  source_file = "${path.module}/stageOne/b5.py"
-  output_path = "${path.module}/stageOne/b5.py.zip"
+  source_file = "${path.module}/lambdaHandlers/b5.py"
+  output_path = "${path.module}/lambdaHandlers/b5.py.zip"
 }
 
 resource "aws_lambda_function" "s1" {
-  filename      = "${path.module}/stageOne/b5.py.zip"
+  filename      = "${path.module}/lambdaHandlers/b5.py.zip"
   function_name = "stage-b5-lambda"
   role          = aws_iam_role.common.arn
   handler       = "b5.lambda_handler"
@@ -96,12 +96,12 @@ resource "aws_lambda_event_source_mapping" "b5" {
 
 data "archive_file" "c2" {
   type        = "zip"
-  source_file = "${path.module}/stageOne/c2.py"
-  output_path = "${path.module}/stageOne/c2.py.zip"
+  source_file = "${path.module}/lambdaHandlers/c2.py"
+  output_path = "${path.module}/lambdaHandlers/c2.py.zip"
 }
 
 resource "aws_lambda_function" "c2" {
-  filename      = "${path.module}/stageOne/c2.py.zip"
+  filename      = "${path.module}/lambdaHandlers/c2.py.zip"
   function_name = "stage-c2-lambda"
   role          = aws_iam_role.common.arn
   handler       = "c2.lambda_handler"
