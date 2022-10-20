@@ -73,7 +73,7 @@ data "archive_file" "b5" {
   output_path = "${path.module}/lambdaHandlers/b5.py.zip"
 }
 
-resource "aws_lambda_function" "s1" {
+resource "aws_lambda_function" "b5" {
   filename      = "${path.module}/lambdaHandlers/b5.py.zip"
   function_name = "stage-b5-lambda"
   role          = aws_iam_role.common.arn
