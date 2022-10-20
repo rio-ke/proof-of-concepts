@@ -1,5 +1,5 @@
 name: terraform
-on: 
+on:
   push:
     branches:
       - main
@@ -18,7 +18,7 @@ jobs:
     name: terraform
     strategy:
       matrix:
-        folder: [terraform/event-driven/]
+        folder: [terraform/event-driven]
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -45,10 +45,13 @@ jobs:
             -backend-config="region=us-east-1" \
             -backend=true
       - name: terraform plan
+        if: github.event.inputs.destroy == 'false'
         run: terraform  plan -var-file="${{ github.event.inputs.name }}-config.tfvars"
       - name: terraform apply
+        if: github.event.inputs.destroy == 'false'
         run: terraform  apply -var-file="${{ github.event.inputs.name }}-config.tfvars" -auto-approve
       - name: show
+        if: github.event.inputs.destroy == 'false'
         run: terraform show
       - name: destroy
         if: github.event.inputs.destroy == 'true'
