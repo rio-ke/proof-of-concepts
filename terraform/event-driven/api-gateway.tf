@@ -26,5 +26,5 @@ resource "aws_api_gateway_integration" "get" {
   type                    = "AWS"
   integration_http_method = "GET"
   credentials             = aws_iam_role.apigateway.arn
-  uri                     = "arn:aws:apigateway:${var.region}:sqs:path/${aws_sqs_queue.c4.name}"
+  uri                     = "arn:aws:apigateway:${var.region}:sqs:path/${data.aws_caller_identity.account.account_id}/${aws_sqs_queue.c4.name}"
 }
