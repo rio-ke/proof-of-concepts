@@ -1,5 +1,3 @@
-# First stage
-
 data "aws_iam_policy_document" "a3" {
   policy_id = "__default_policy__"
   statement {

@@ -44,17 +44,17 @@ jobs:
         run: |
           terraform init \
             -backend-config="bucket=terraform-cnl-backend" \
-            -backend-config="key=${{ matrix.folder }}/${{ github.event.inputs.name }}-env.tfstate" \
+            -backend-config="key=dev-env.tfstate" \
             -backend-config="region=us-east-1" \
             -backend=true
-      # - name: plan
-      #   run: terraform  plan -var-file="dev-config.tfvars"
-      # - name: apply
-      #   run: terraform  apply -var-file="dev-config.tfvars" -auto-approve
-      # - name: show
-      #   run: terraform show
-      - name: destroy
-        run: terraform  destroy -var-file="dev-config.tfvars" -auto-approve
+      - name: plan
+        run: terraform  plan -var-file="dev-config.tfvars"
+      - name: apply
+        run: terraform  apply -var-file="dev-config.tfvars" -auto-approve
+      - name: show
+        run: terraform show
+      # - name: destroy
+      #   run: terraform  destroy -var-file="dev-config.tfvars" -auto-approve
 
       # - name: terraform plan
       #   if: github.event.inputs.destroy == 'false'
@@ -68,3 +68,6 @@ jobs:
       # - name: destroy
       #   if: github.event.inputs.destroy == 'true'
       #   run: terraform destroy -var-file="${{ github.event.inputs.name }}-config.tfvars" -auto-approve
+
+
+            # -backend-config="key=${{ matrix.folder }}/${{ github.event.inputs.name }}-env.tfstate" \
