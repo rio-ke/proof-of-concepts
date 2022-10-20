@@ -4,7 +4,7 @@ on:
     branches:
       - main
     paths:
-      - 'terraform/event-driven/*'
+      - "terraform/event-driven/*"
 
   # workflow_dispatch:
   #   inputs:
@@ -47,12 +47,14 @@ jobs:
             -backend-config="key=${{ matrix.folder }}/${{ github.event.inputs.name }}-env.tfstate" \
             -backend-config="region=us-east-1" \
             -backend=true
-      - name: plan
-        run: terraform  plan -var-file="dev-config.tfvars"
-      - name: apply
-        run: terraform  apply -var-file="dev-config.tfvars" -auto-approve
-      - name: show
-        run: terraform show
+      # - name: plan
+      #   run: terraform  plan -var-file="dev-config.tfvars"
+      # - name: apply
+      #   run: terraform  apply -var-file="dev-config.tfvars" -auto-approve
+      # - name: show
+      #   run: terraform show
+      - name: destroy
+        run: terraform  destroy -var-file="dev-config.tfvars" -auto-approve
 
       # - name: terraform plan
       #   if: github.event.inputs.destroy == 'false'
