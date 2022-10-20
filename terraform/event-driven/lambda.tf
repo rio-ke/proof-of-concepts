@@ -18,14 +18,6 @@ resource "aws_lambda_function" "s1" {
   }
 }
 
-resource "aws_sns_topic" "s1" {
-  name                        = "a3-sns-topic.fifo"
-  fifo_topic                  = true
-  content_based_deduplication = true
-}
-
-
-
 resource "aws_sqs_queue" "s1" {
   name                        = "a4-sqs-queue.fifo"
   fifo_queue                  = true
@@ -56,7 +48,6 @@ resource "aws_sqs_queue_policy" "s1" {
     ]
   })
 }
-
 
 resource "aws_sns_topic_subscription" "s1" {
   topic_arn = aws_sns_topic.s1.arn
