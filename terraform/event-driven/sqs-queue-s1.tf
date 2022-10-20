@@ -7,7 +7,7 @@ resource "aws_sqs_queue" "a4" {
 }
 
 resource "aws_sqs_queue_policy" "a4" {
-  queue_url = aws_sqs_queue.s1.id
+  queue_url = aws_sqs_queue.a4.id
   policy = jsonencode({
     "Version" : "2012-10-17",
     "Id" : "sqspolicy",
