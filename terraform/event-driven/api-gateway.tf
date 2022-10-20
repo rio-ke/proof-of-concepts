@@ -27,4 +27,14 @@ resource "aws_api_gateway_integration" "get" {
   integration_http_method = "GET"
   credentials             = aws_iam_role.apigateway.arn
   uri                     = "arn:aws:apigateway:${var.region}:sqs:path/${data.aws_caller_identity.account.account_id}/${aws_sqs_queue.c4.name}"
+  request_templates = {
+    "application/json" = "Empty"
+  }
+}
+
+resource "aws_api_gateway_method_response" "post" {
+  rest_api_id = aws_api_gateway_rest_api.api.id
+  resource_id = aws_api_gateway_resource.root.id
+  http_method = aws_api_gateway_method.get.http_method
+  status_code = "200"
 }
