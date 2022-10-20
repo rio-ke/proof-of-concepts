@@ -3,7 +3,7 @@ resource "aws_s3_bucket" "b1" {
 }
 
 resource "aws_lambda_permission" "b1" {
-  statement_id  = "AllowS3Invoke"
+  statement_id  = "S3AllowInvoke"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.b2.arn
   principal     = "s3.amazonaws.com"
