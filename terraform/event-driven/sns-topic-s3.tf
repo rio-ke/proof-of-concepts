@@ -43,4 +43,5 @@ resource "aws_sns_topic_subscription" "c3" {
   topic_arn = aws_sns_topic.c3.arn
   protocol  = "sqs"
   endpoint  = aws_sqs_queue.c4.arn
+  raw_message_delivery            = true
 }
