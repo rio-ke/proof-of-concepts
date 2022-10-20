@@ -35,7 +35,7 @@ resource "aws_api_gateway_integration" "get" {
   }
 }
 
-resource "aws_api_gateway_method_response" "post" {
+resource "aws_api_gateway_method_response" "get" {
   rest_api_id = aws_api_gateway_rest_api.api.id
   resource_id = aws_api_gateway_resource.root.id
   http_method = aws_api_gateway_method.get.http_method
@@ -43,4 +43,11 @@ resource "aws_api_gateway_method_response" "post" {
     response_models = {
     "application/json" = "Empty"
   }
+}
+
+resource "aws_api_gateway_integration_response" "get" {
+  rest_api_id = aws_api_gateway_rest_api.api.id
+  resource_id = aws_api_gateway_resource.root.id
+  http_method = aws_api_gateway_method.get.http_method
+  status_code = aws_api_gateway_method_response.get.status_code
 }
