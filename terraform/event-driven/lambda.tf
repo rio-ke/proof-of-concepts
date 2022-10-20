@@ -93,3 +93,23 @@ resource "aws_lambda_event_source_mapping" "b5" {
   event_source_arn = aws_sqs_queue.s2.arn
   function_name    = aws_lambda_function.b5.arn
 }
+
+data "archive_file" "c2" {
+  type        = "zip"
+  source_file = "${path.module}/stageOne/c2.py"
+  output_path = "${path.module}/stageOne/c2.py.zip"
+}
+
+resource "aws_lambda_function" "c2" {
+  filename      = "${path.module}/stageOne/c2.py.zip"
+  function_name = "stage-c2-lambda"
+  role          = aws_iam_role.common.arn
+  handler       = "c2.lambda_handler"
+  runtime       = "python3.9"
+  layers = [aws_lambda_layer_version.l1.arn, aws_lambda_layer_version.l2.arn]
+  environment {
+    variables = {
+      snsArn = aws_sns_topic.s3.arn
+    }
+  }
+}
