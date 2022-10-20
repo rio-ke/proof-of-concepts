@@ -15,9 +15,6 @@ resource "aws_s3_bucket" "s22" {
   bucket = "dodo-b1-bucket-s3"
 }
 
-
-
-
 resource "aws_s3_bucket_notification" "b1" {
   bucket = aws_s3_bucket.s22.id
   lambda_function {
@@ -30,7 +27,6 @@ resource "aws_s3_bucket_notification" "b1" {
 resource "aws_s3_bucket" "s21" {
   bucket = "dodo-abc1-bucket-s3"
 }
-
 
 resource "aws_s3_bucket_notification" "c1" {
   bucket = aws_s3_bucket.s21.id
