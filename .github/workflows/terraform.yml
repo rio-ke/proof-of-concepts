@@ -3,6 +3,9 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'terraform/event-driven/*'
+
   # workflow_dispatch:
   #   inputs:
   #     name:
