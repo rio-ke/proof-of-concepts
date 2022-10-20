@@ -1,5 +1,5 @@
 resource "aws_sqs_queue" "a4" {
-  name                        = "a4-sqs-queue.fifo"
+  name                        = "op-a4-sqs.fifo"
   fifo_queue                  = true
   content_based_deduplication = true
   deduplication_scope         = "messageGroup"

@@ -6,7 +6,7 @@ data "archive_file" "c2" {
 
 resource "aws_lambda_function" "c2" {
   filename      = "${path.module}/lambdaHandlers/c2.py.zip"
-  function_name = "stage-c2-lambda"
+  function_name = "op-c2-lambda"
   role          = aws_iam_role.common.arn
   handler       = "c2.lambda_handler"
   runtime       = "python3.9"

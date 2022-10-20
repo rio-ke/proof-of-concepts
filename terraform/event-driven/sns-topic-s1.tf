@@ -31,7 +31,7 @@ data "aws_iam_policy_document" "a3" {
 }
 
 resource "aws_sns_topic" "a3" {
-  name                        = "a3-sns-topic.fifo"
+  name                        = "op-a3-sns.fifo"
   fifo_topic                  = true
   content_based_deduplication = true
 }

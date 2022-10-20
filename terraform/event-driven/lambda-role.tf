@@ -1,5 +1,5 @@
 resource "aws_iam_role" "common" {
-  name = "stage-a2-lambda-lambda-role"
+  name = "op-lambda-role"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -16,7 +16,7 @@ resource "aws_iam_role" "common" {
 }
 
 resource "aws_iam_policy" "common" {
-  name = "stage-a2-lambda-lambda-role-policy"
+  name = "op-lambda-role-policy"
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
