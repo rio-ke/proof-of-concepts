@@ -11,4 +11,3 @@ resource "aws_s3_bucket_notification" "c1" {
     id                  = "op-s3-to-lambda-tag-notification"
   }
 }
-
