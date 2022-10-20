@@ -13,7 +13,7 @@ resource "aws_lambda_function" "a2" {
   layers = [aws_lambda_layer_version.l1.arn, aws_lambda_layer_version.l2.arn]
   environment {
     variables = {
-      snsArn = aws_sns_topic.a1.arn
+      snsArn = aws_sns_topic.a3.arn
     }
   }
 }
@@ -35,7 +35,7 @@ resource "aws_lambda_function" "a5" {
     variables = {
       destination_bucket_name = aws_s3_bucket.c1.bucket                                              # abc1-bucket-s3
       replication_destination_bucket_name = aws_s3_bucket.b1.bucket                                  # "b1-bucket-s3"
-      sqsUrl = aws_sqs_queue.a3.url                               
+      sqsUrl = aws_sqs_queue.a4.url                               
     }
   }
 }
