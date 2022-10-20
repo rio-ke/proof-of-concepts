@@ -13,7 +13,7 @@ resource "aws_lambda_permission" "a1" {
 resource "null_resource" "a1" {
   depends_on   = [aws_lambda_permission.a1]
   provisioner "local-exec" {
-    command = "sleep 3m"
+    command = "sleep 1m"
   }
 }
 
@@ -23,6 +23,6 @@ resource "aws_s3_bucket_notification" "a1" {
   lambda_function {
     lambda_function_arn = aws_lambda_function.a2.arn
     events              = ["s3:ObjectCreated:*"]
-    # id                  = "op-s3-to-lambda-notification"
+    id                  = "op-s3-to-lambda-notification"
   }
 }
