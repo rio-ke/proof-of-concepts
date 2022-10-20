@@ -1,3 +1,5 @@
+# First stage
+
 data "aws_iam_policy_document" "a3" {
   policy_id = "__default_policy__"
   statement {
@@ -28,8 +30,6 @@ data "aws_iam_policy_document" "a3" {
   }
 }
 
-# First stage
-
 resource "aws_sns_topic" "s1" {
   name                        = "a3-sns-topic.fifo"
   fifo_topic                  = true
@@ -47,8 +47,7 @@ resource "aws_sns_topic_policy" "s1" {
   policy = data.aws_iam_policy_document.a3.json
 }
 
-
-## second stage
+# second stage
 
 data "aws_iam_policy_document" "b3" {
   policy_id = "__default_policy__"
