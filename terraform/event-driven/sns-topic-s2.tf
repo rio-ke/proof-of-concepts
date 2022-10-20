@@ -23,7 +23,7 @@ data "aws_iam_policy_document" "b3" {
       type        = "AWS"
       identifiers = ["*"]
     }
-    resources = [aws_sns_topic.s2.arn]
+    resources = [aws_sns_topic.b3.arn]
     sid       = "__sub_and_pub__"
   }
 }

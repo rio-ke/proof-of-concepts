@@ -35,7 +35,7 @@ resource "aws_lambda_function" "b5" {
   layers = [aws_lambda_layer_version.l1.arn, aws_lambda_layer_version.l2.arn]
   environment {
     variables = {
-      destination_bucket_name = aws_s3_bucket.b1.bucket                                              # abc1-bucket-s3
+      destination_bucket_name = aws_s3_bucket.c1.bucket                                              # abc1-bucket-s3
       sqsUrl                  = aws_sqs_queue.b4.url                          
     }
   }
