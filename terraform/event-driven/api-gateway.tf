@@ -18,3 +18,13 @@ resource "aws_api_gateway_method" "get" {
   http_method   = "GET"
   authorization = "NONE"
 }
+
+resource "aws_api_gateway_integration" "get" {
+  rest_api_id             = aws_api_gateway_rest_api.api.id
+  resource_id             = aws_api_gateway_resource.root.id
+  http_method             = aws_api_gateway_method.get.http_method
+  type                    = "AWS"
+  integration_http_method = "GET"
+  credentials             = aws_iam_role.apigateway.arn
+  uri                     = "arn:aws:apigateway:${var.region}:sqs:path/${aws_sqs_queue.c4.name}"
+}
