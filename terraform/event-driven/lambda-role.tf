@@ -1,4 +1,4 @@
-resource "aws_iam_role" "s1" {
+resource "aws_iam_role" "common" {
   name = "stage-a2-lambda-lambda-role"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -15,7 +15,7 @@ resource "aws_iam_role" "s1" {
   })
 }
 
-resource "aws_iam_policy" "s1" {
+resource "aws_iam_policy" "common" {
   name = "stage-a2-lambda-lambda-role-policy"
   policy = jsonencode({
     Version = "2012-10-17"
@@ -29,8 +29,8 @@ resource "aws_iam_policy" "s1" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "s1" {
-  role       = aws_iam_role.s1.name
-  policy_arn = aws_iam_policy.s1.arn
+resource "aws_iam_role_policy_attachment" "common" {
+  role       = aws_iam_role.common.name
+  policy_arn = aws_iam_policy.common.arn
 }
 
