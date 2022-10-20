@@ -18,7 +18,6 @@ resource "aws_lambda_function" "s1" {
   }
 }
 
-
 data "archive_file" "a2" {
   type        = "zip"
   source_file = "${path.module}/lambdaHandlers/a5.py"
