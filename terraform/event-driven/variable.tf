@@ -1,1 +1,1 @@
-region = "ap-south-1"
+variable region {}
