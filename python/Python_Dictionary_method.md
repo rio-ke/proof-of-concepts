@@ -1,6 +1,6 @@
 Dictionary:
 ------------
-   `Python dictionary is an ordered collection of items. Each item of a dictionary has a **key/value** pair.`
+   `Python dictionary is an ordered collection of items. Each item of a dictionary has a key/value pair.`
 
 **Examples:**
 ------------
