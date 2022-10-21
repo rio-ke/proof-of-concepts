@@ -4,6 +4,10 @@ stageOneBucket = "op-a1-bucket-s3"
 stageTwoBucket = "op-b1-bucket-s3"
 stageThreeBucket = "op-abc1-bucket-s3"
 
+
+successBucket = "op-d1-bucket-s3-final-success"
+failureBucket = "op-d2-bucket-s3-final-failure"
+
 stageOneSns = "op-a3-sns.fifo"
 stageTwoSns = "op-b3-sns.fifo"
 stageThreeSns = "op-c3-sns.fifo"
