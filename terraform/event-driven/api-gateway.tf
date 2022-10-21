@@ -1,5 +1,5 @@
 resource "aws_api_gateway_rest_api" "api" {
-  name        = "op-api"
+  name        = var.apigateway 
   description = "This api to call sqs messages"
   endpoint_configuration {
     types = ["REGIONAL"]
