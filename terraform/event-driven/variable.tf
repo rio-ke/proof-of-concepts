@@ -4,6 +4,6 @@ variable "stageOneBucket" {}
 variable "stageTwoBucket" {}
 variable "stageThreeBucket" {}
 
-variable "stageTwoSns" {}
+variable "stageOneSns" {}
 variable "stageTwoSns" {}
 variable "stageThreeSns" {}
