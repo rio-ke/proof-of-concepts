@@ -6,7 +6,7 @@ data "archive_file" "c2" {
 
 resource "aws_lambda_function" "c2" {
   filename      = "${path.module}/lambdaHandlers/c2.py.zip"
-  function_name = "op-c2-lambda"
+  function_name = var.stageThreeLambdaOne
   role          = aws_iam_role.common.arn
   handler       = "c2.lambda_handler"
   runtime       = "python3.9"
@@ -27,7 +27,7 @@ data "archive_file" "c6" {
 
 resource "aws_lambda_function" "c6" {
   filename      = "${path.module}/lambdaHandlers/c6.py.zip"
-  function_name = "op-c6-lambda"
+  function_name = var.stageThreeLambdaTwo 
   role          = aws_iam_role.common.arn
   handler       = "c6.lambda_handler"
   runtime       = "python3.9"
