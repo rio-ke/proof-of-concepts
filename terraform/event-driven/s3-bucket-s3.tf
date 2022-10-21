@@ -1,6 +1,6 @@
 
 resource "aws_s3_bucket" "c1" {
-  bucket = "op-abc1-bucket-s3"
+  bucket = var.stageThreeBucket 
 }
 
 resource "aws_lambda_permission" "c1" {
@@ -10,13 +10,6 @@ resource "aws_lambda_permission" "c1" {
   principal     = "s3.amazonaws.com"
   source_arn    = aws_s3_bucket.c1.arn
 }
-
-# resource "null_resource" "a1" {
-#   depends_on   = [aws_lambda_permission.c1]
-#   provisioner "local-exec" {
-#     command = "sleep 1m"
-#   }
-# }
 
 resource "aws_s3_bucket_notification" "c1" {
   bucket = aws_s3_bucket.c1.id
