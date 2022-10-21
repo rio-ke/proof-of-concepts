@@ -28,7 +28,7 @@ data "aws_iam_policy_document" "b3" {
   }
 }
 resource "aws_sns_topic" "b3" {
-  name                        = "op-b3-sns.fifo"
+  name                        = var.stageTwoSns
   fifo_topic                  = true
   content_based_deduplication = true
 }
