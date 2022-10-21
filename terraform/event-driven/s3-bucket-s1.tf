@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "a1" {
-  bucket = "op-a1-bucket-s3"
+  bucket = var.stageOneBucket 
 }
 
 resource "aws_lambda_permission" "a1" {
@@ -9,13 +9,6 @@ resource "aws_lambda_permission" "a1" {
   principal     = "s3.amazonaws.com"
   source_arn    = aws_s3_bucket.a1.arn
 }
-
-# resource "null_resource" "a1" {
-#   depends_on   = [aws_lambda_permission.a1]
-#   provisioner "local-exec" {
-#     command = "sleep 1m"
-#   }
-# }
 
 resource "aws_s3_bucket_notification" "a1" {
   bucket = aws_s3_bucket.a1.id
