@@ -7,3 +7,8 @@ variable "stageThreeBucket" {}
 variable "stageOneSns" {}
 variable "stageTwoSns" {}
 variable "stageThreeSns" {}
+
+
+variable "stageOneSqs" {}
+variable "stageTwoSqs" {}
+variable "stageThreeSqs" {}
