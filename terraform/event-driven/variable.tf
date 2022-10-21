@@ -12,3 +12,12 @@ variable "stageThreeSns" {}
 variable "stageOneSqs" {}
 variable "stageTwoSqs" {}
 variable "stageThreeSqs" {}
+
+
+
+variable "stageOneLambdaOne" {}
+variable "stageOneLambdaTwo" {}
+variable "stageTwoLambdaOne" {}
+variable "stageTwoLambdaTwo" {}
+variable "stageThreeLambdaOne" {}
+variable "stageThreeLambdaTwo" {}
