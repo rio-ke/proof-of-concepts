@@ -8,4 +8,6 @@ stageOneSns = "op-a3-sns.fifo"
 stageTwoSns = "op-b3-sns.fifo"
 stageThreeSns = "op-c3-sns.fifo"
 
-
+stageOneSqs = "op-a4-sqs.fifo"
+stageTwoSqs = "op-b4-sqs.fifo"
+stageThreeSqs =  "op-c4-sqs.fifo"
