@@ -1,7 +1,9 @@
-### Sets
+Sets
+----
 `A set is an unordered collection of items. Every set element is unique (no duplicates) and must be immutable (cannot be changed).`
 
 **Examples for set**
+----
 ```py
 #!/usr/bin/env python3
 vowels = {'a', 'e', 'i', 'u'}
