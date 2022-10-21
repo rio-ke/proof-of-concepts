@@ -29,7 +29,7 @@ data "aws_iam_policy_document" "a3" {
 }
 
 resource "aws_sns_topic" "a3" {
-  name                        = "op-a3-sns.fifo"
+  name                        = var.stageOneSns  
   fifo_topic                  = true
   content_based_deduplication = true
 }
