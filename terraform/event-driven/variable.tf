@@ -3,10 +3,9 @@ variable "alertSqsQueueURL" {}
 variable "stageOneBucket" {}
 variable "stageTwoBucket" {}
 variable "stageThreeBucket" {}
-
 variable "successBucket" {}
 variable "failureBucket" {}
-
+variable "apigateway" {}
 variable "stageOneSns" {}
 variable "stageTwoSns" {}
 variable "stageThreeSns" {}
