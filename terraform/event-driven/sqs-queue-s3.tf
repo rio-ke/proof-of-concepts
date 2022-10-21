@@ -1,5 +1,5 @@
 resource "aws_sqs_queue" "c4" {
-  name                        = "op-c4-sqs.fifo"
+  name                        = var.stageThreeSqs
   fifo_queue                  = true
   content_based_deduplication = true
   deduplication_scope         = "messageGroup"
