@@ -4,17 +4,15 @@ variable "stageOneBucket" {}
 variable "stageTwoBucket" {}
 variable "stageThreeBucket" {}
 
+variable "successBucket" {}
+variable "failureBucket" {}
+
 variable "stageOneSns" {}
 variable "stageTwoSns" {}
 variable "stageThreeSns" {}
-
-
 variable "stageOneSqs" {}
 variable "stageTwoSqs" {}
 variable "stageThreeSqs" {}
-
-
-
 variable "stageOneLambdaOne" {}
 variable "stageOneLambdaTwo" {}
 variable "stageTwoLambdaOne" {}
