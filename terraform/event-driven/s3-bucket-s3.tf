@@ -1,6 +1,11 @@
 
 resource "aws_s3_bucket" "c1" {
   bucket = var.stageThreeBucket 
+#   acl    = "private"
+#   logging {
+#     target_bucket = aws_s3_bucket.log_bucket.id
+#     target_prefix = "log/${var.stageThreeBucket}/"
+#   }
 }
 
 resource "aws_lambda_permission" "c1" {
