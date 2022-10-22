@@ -34,7 +34,7 @@ resource "aws_lambda_function" "c6" {
   layers        = [aws_lambda_layer_version.l1.arn, aws_lambda_layer_version.l2.arn]
   environment {
     variables = {
-      apiGatewayUrl                   = aws_api_gateway_deployment.get.invoke_url
+      apiGatewayUrl                   = aws_api_gateway_stage.get.invoke_url
       sqsUrl                          = aws_sqs_queue.c4.url
       apiGatewayId                    = aws_api_gateway_rest_api.api.id
       originBucketName                = aws_s3_bucket.c1.bucket
