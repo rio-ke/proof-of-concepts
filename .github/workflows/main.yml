@@ -59,6 +59,13 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: init
+      - name: init
+        run: |
+          terraform init \
+            -backend-config="bucket=terraform-cnl-backend" \
+            -backend-config="key=dev-env.tfstate" \
+            -backend-config="region=us-east-1" \
+            -backend=true
       - name: plan
         run: terraform  plan -var-file="dev-config.tfvars"
       - name: 'Upload Artifact'
@@ -66,7 +73,7 @@ jobs:
         with:
           name: plan
           path: .
-      - name: apply
-        run: terraform  apply -var-file="dev-config.tfvars" -auto-approve
-      - name: show
-        run: terraform show
+      # - name: apply
+      #   run: terraform  apply -var-file="dev-config.tfvars" -auto-approve
+      # - name: show
+      #   run: terraform show
