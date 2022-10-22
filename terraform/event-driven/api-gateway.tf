@@ -58,9 +58,9 @@ resource "aws_api_gateway_stage" "get" {
 }
 
 resource "aws_api_gateway_deployment" "get" {
-  depends_on  = [aws_api_gateway_stage.get]
+  depends_on  = [aws_api_gateway_integration_response.get]
   rest_api_id = aws_api_gateway_rest_api.api.id
-  stage_name  = "sqsQueueReader"
+#   stage_name  = "sqsQueueReader"
 }
 
 resource "aws_wafv2_web_acl_association" "waf" {
