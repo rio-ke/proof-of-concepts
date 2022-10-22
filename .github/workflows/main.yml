@@ -6,6 +6,7 @@ on:
     paths:
       - "terraform/event-driven/*"
   workflow_dispatch:
+
 jobs:
   init:
     name: init
@@ -42,6 +43,7 @@ jobs:
         with:
           name: init
   plan:
+    needs: init
     name: plan
     strategy:
       matrix:
