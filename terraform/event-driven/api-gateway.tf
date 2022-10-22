@@ -57,8 +57,8 @@ resource "aws_api_gateway_deployment" "get" {
 
 resource "aws_api_gateway_stage" "get" {
   deployment_id = aws_api_gateway_deployment.get.id
-  rest_api_id   = prod.api.id
-  stage_name    = "example"
+  rest_api_id   = aws_api_gateway_rest_api.api.id
+  stage_name    = "prod"
 }
 
 resource "aws_wafv2_web_acl_association" "waf" {
