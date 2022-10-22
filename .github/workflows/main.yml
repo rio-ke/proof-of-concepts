@@ -42,6 +42,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: init
+          path: .
   plan:
     needs: init
     name: plan
@@ -64,6 +65,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: plan
+          path: .
       - name: apply
         run: terraform  apply -var-file="dev-config.tfvars" -auto-approve
       - name: show
