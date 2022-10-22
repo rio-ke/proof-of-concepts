@@ -1,5 +1,10 @@
 resource "aws_s3_bucket" "b1" {
   bucket = var.stageTwoBucket
+#   acl    = "private"
+#   logging {
+#     target_bucket = aws_s3_bucket.log_bucket.id
+#     target_prefix = "log/${var.stageTwoBucket}/"
+#   }
 }
 
 resource "aws_lambda_permission" "b1" {
@@ -12,7 +17,6 @@ resource "aws_lambda_permission" "b1" {
 
 resource "aws_s3_bucket_notification" "b1" {
   bucket = aws_s3_bucket.b1.id
-  # depends_on   = [null_resource.b1]
   lambda_function {
     lambda_function_arn = aws_lambda_function.b2.arn
     events              = ["s3:ObjectTagging:*"]
