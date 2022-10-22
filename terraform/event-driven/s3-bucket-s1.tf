@@ -1,5 +1,10 @@
 resource "aws_s3_bucket" "a1" {
   bucket = var.stageOneBucket 
+#   acl    = "private"
+#   logging {
+#     target_bucket = aws_s3_bucket.log_bucket.id
+#     target_prefix = "log/${var.stageOneBucket}/"
+#   }
 }
 
 resource "aws_lambda_permission" "a1" {
