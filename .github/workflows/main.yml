@@ -1,0 +1,67 @@
+name: terraform
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "terraform/event-driven/*"
+jobs:
+  init:
+    name: init
+    strategy:
+      matrix:
+        folder: [terraform/event-driven]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ matrix.folder }}
+    steps:
+      - name: checkout
+        uses: actions/checkout@v1
+      - name: setup terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.1.8
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.SECRET_KEY }}
+          aws-region: ap-south-1
+      - name: init
+        run: |
+          terraform init \
+            -backend-config="bucket=terraform-cnl-backend" \
+            -backend-config="key=dev-env.tfstate" \
+            -backend-config="region=us-east-1" \
+            -backend=true
+      - name: 'Upload Artifact'
+        uses: actions/upload-artifact@v3
+        with:
+          name: init
+  plan:
+    name: plan
+    strategy:
+      matrix:
+        folder: [terraform/event-driven]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ matrix.folder }}
+    steps:
+      - name: Download a single artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: init
+      - name: plan
+        run: terraform  plan -var-file="dev-config.tfvars"
+      - name: 'Upload Artifact'
+        uses: actions/upload-artifact@v3
+        with:
+          name: plan
+      - name: apply
+        run: terraform  apply -var-file="dev-config.tfvars" -auto-approve
+      - name: show
+        run: terraform show
