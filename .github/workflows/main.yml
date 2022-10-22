@@ -1,10 +1,11 @@
-name: terraform
+name: main
 on:
   push:
     branches:
       - main
     paths:
       - "terraform/event-driven/*"
+  workflow_dispatch:
 jobs:
   init:
     name: init
