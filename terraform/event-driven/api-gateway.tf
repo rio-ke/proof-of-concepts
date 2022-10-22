@@ -52,13 +52,13 @@ resource "aws_api_gateway_integration_response" "get" {
 resource "aws_api_gateway_deployment" "get" {
   depends_on  = [aws_api_gateway_integration.get]
   rest_api_id = aws_api_gateway_rest_api.api.id
-  stage_name  = "prod"
+  stage_name  = "sqsqueue"
 }
 
 resource "aws_api_gateway_stage" "get" {
   deployment_id = aws_api_gateway_deployment.get.id
   rest_api_id   = aws_api_gateway_rest_api.api.id
-  stage_name    = "prod"
+  stage_name    = "sqsqueue"
 }
 
 resource "aws_wafv2_web_acl_association" "waf" {
