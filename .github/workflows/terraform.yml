@@ -6,9 +6,9 @@ on:
     paths:
       - "terraform/event-driven/*"
 env:
-  terraformCreate: false
-  terraformDelete: true
-  terraformShow: true
+  terraformCreate: False
+  terraformDelete: True
+  terraformShow: True
 
 jobs:
   create:
