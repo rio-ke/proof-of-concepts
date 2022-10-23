@@ -46,5 +46,5 @@ jobs:
         run: terraform  apply -var-file="dev-config.tfvars" -auto-approve
       - name: show
         run: terraform show
-      # - name: destroy
-      #   run: terraform  destroy -var-file="dev-config.tfvars" -auto-approve
+      - name: destroy
+        run: terraform  destroy -var-file="dev-config.tfvars" -auto-approve
