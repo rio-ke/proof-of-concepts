@@ -3,7 +3,7 @@ resource "aws_api_gateway_account" "log" {
 }
 
 resource "aws_api_gateway_rest_api" "api" {
-  name        = var.apigateway 
+  name        = var.apigateway
   description = "This api to call sqs messages"
   endpoint_configuration {
     types = ["REGIONAL"]
@@ -57,19 +57,19 @@ resource "aws_api_gateway_stage" "get" {
   deployment_id = aws_api_gateway_deployment.get.id
   rest_api_id   = aws_api_gateway_rest_api.api.id
   stage_name    = "sqsQueueReader"
-    access_log_settings {
+  access_log_settings {
     destination_arn = aws_cloudwatch_log_group.log.arn
-    format          = jsonencode({ 
-        "requestId":"$context.requestId", 
-        "ip": "$context.identity.sourceIp", 
-        "caller":"$context.identity.caller", 
-        "user":"$context.identity.user",
-        "requestTime":"$context.requestTime", 
-        "httpMethod":"$context.httpMethod",
-        "resourcePath":"$context.resourcePath",
-        "status":"$context.status",
-        "protocol":"$context.protocol", 
-        "responseLength":"$context.responseLength" 
+    format = jsonencode({
+      "requestId" : "$context.requestId",
+      "ip" : "$context.identity.sourceIp",
+      "caller" : "$context.identity.caller",
+      "user" : "$context.identity.user",
+      "requestTime" : "$context.requestTime",
+      "httpMethod" : "$context.httpMethod",
+      "resourcePath" : "$context.resourcePath",
+      "status" : "$context.status",
+      "protocol" : "$context.protocol",
+      "responseLength" : "$context.responseLength"
     })
   }
 }
@@ -77,7 +77,7 @@ resource "aws_api_gateway_stage" "get" {
 resource "aws_api_gateway_deployment" "get" {
   depends_on  = [aws_api_gateway_integration_response.get]
   rest_api_id = aws_api_gateway_rest_api.api.id
-#   stage_name  = "sqsQueueReader"
+  #   stage_name  = "sqsQueueReader"
 }
 
 resource "aws_wafv2_web_acl_association" "waf" {
@@ -91,43 +91,43 @@ resource "aws_cloudwatch_log_group" "log" {
 }
 
 resource "aws_iam_role" "log" {
-    name               = "${var.apigateway}-apigw-cw-role"
-    assume_role_policy = jsonencode({
-        "Version": "2012-10-17",
-        "Statement": [
-            {
-            "Sid": "",
-            "Effect": "Allow",
-            "Principal": {
-                "Service": "apigateway.amazonaws.com"
-            },
-            "Action": "sts:AssumeRole"
-            }
-        ]
-    })
+  name = "${var.apigateway}-apigw-cw-role"
+  assume_role_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Sid" : "",
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : "apigateway.amazonaws.com"
+        },
+        "Action" : "sts:AssumeRole"
+      }
+    ]
+  })
 }
 
 resource "aws_iam_role_policy" "log" {
-    name = "${var.apigateway}-cw-policy"
-    role = aws_iam_role.log.id
-    policy = jsonencode({
-        "Version": "2012-10-17",
-        "Statement": [
-            {
-                "Effect": "Allow",
-                "Action": [
-                    "logs:CreateLogGroup",
-                    "logs:CreateLogStream",
-                    "logs:DescribeLogGroups",
-                    "logs:DescribeLogStreams",
-                    "logs:PutLogEvents",
-                    "logs:GetLogEvents",
-                    "logs:FilterLogEvents"
-                ],
-                "Resource": "*"
-            }
-        ]
-    })
+  name = "${var.apigateway}-cw-policy"
+  role = aws_iam_role.log.id
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:DescribeLogGroups",
+          "logs:DescribeLogStreams",
+          "logs:PutLogEvents",
+          "logs:GetLogEvents",
+          "logs:FilterLogEvents"
+        ],
+        "Resource" : "*"
+      }
+    ]
+  })
 }
 
 resource "aws_api_gateway_method_settings" "get" {
