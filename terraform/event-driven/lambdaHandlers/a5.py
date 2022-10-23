@@ -52,7 +52,7 @@ def lambda_handler(event, context):
                 tagging = {'TagSet' : [{'Key': 'zone', 'Value': fileZone }]}
                 s3Client.put_object_tagging(Bucket=sourceBucketName, Key=fileName, Tagging=tagging)
                 print(f' <= {fileName} file has been tagged in {sourceBucketName} bucket')
-                # Copy to second and third state buckets
+                # Copy to second and third stage buckets
                 s3Client.copy_object(CopySource=copyObject, Bucket=_metadataBucket, Key=fileName, TaggingDirective='COPY', ChecksumAlgorithm='SHA1',)
                 s3Client.copy_object(CopySource=copyObject, Bucket=_scanningBucket, Key=fileName, TaggingDirective='COPY', ChecksumAlgorithm='SHA1')
                 print(f' => {fileName} file has been copy to {_metadataBucket} and {_scanningBucket} buckets')
