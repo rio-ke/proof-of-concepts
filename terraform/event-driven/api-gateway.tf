@@ -68,3 +68,47 @@ resource "aws_wafv2_web_acl_association" "waf" {
   web_acl_arn  = aws_wafv2_web_acl.waf.arn
 }
 
+
+resource "aws_cloudwatch_log_group" "log" {
+  name = "${var.apigateway}-${aws_api_gateway_rest_api.api.id}/sqsQueueReader"
+}
+
+resource "aws_iam_role" "log" {
+    name               = "${var.apigateway}-apigw-cw-role"
+    assume_role_policy = jsonencode({
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+            "Sid": "",
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "apigateway.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+            }
+        ]
+    })
+}
+
+resource "aws_iam_role_policy" "log" {
+    name = "${var.apigateway}-cw-policy"
+    role = aws_iam_role.cloudwatch.id
+    policy = jsonencode({
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Effect": "Allow",
+                "Action": [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:DescribeLogGroups",
+                    "logs:DescribeLogStreams",
+                    "logs:PutLogEvents",
+                    "logs:GetLogEvents",
+                    "logs:FilterLogEvents"
+                ],
+                "Resource": "*"
+            }
+        ]
+    })
+}
