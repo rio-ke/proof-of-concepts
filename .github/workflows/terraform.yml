@@ -38,8 +38,8 @@ jobs:
             -backend=true
       - name: fmt
         run: terraform fmt
-#       - name: validate
-#         run: terraform validate       
+      - name: validate
+        run: terraform validate       
       - name: plan
         run: terraform  plan  -var-file="dev-config.tfvars"
       - name: apply
