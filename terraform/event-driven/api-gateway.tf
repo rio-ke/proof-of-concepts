@@ -1,3 +1,7 @@
+resource "aws_api_gateway_account" "log" {
+  cloudwatch_role_arn = aws_iam_role.log.arn
+}
+
 resource "aws_api_gateway_rest_api" "api" {
   name        = var.apigateway 
   description = "This api to call sqs messages"
