@@ -89,7 +89,7 @@ resource "aws_wafv2_web_acl_association" "waf" {
 
 
 resource "aws_cloudwatch_log_group" "log" {
-  name = "${var.apigateway}-${aws_api_gateway_rest_api.api.id}/sqsQueueReader"
+  name = "/aws/apigateway/${var.apigateway}/sqsQueueReader"
 }
 
 resource "aws_iam_role" "log" {
