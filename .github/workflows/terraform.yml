@@ -3,8 +3,8 @@ on:
   push:
     branches:
       - main
-    paths:
-      - "terraform/event-driven/*"
+    # paths:
+    #   - "terraform/event-driven/*"
 
 env:
   terraformCreate: False
