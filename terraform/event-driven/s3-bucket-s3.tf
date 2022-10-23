@@ -1,5 +1,9 @@
 resource "aws_s3_bucket" "c1" {
   bucket = var.stageThreeBucket
+}
+
+resource "aws_s3_bucket_acl" "c1" {
+  bucket = aws_s3_bucket.c1.id
   acl    = "private"
 }
 

@@ -1,6 +1,5 @@
 resource "aws_s3_bucket" "a1" {
   bucket = var.stageOneBucket
-  acl    = "private"
 }
 
 resource "aws_s3_bucket_acl" "a1" {
