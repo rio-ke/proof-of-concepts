@@ -1,6 +1,6 @@
 resource "aws_s3_bucket" "a1" {
   bucket = var.stageOneBucket
-  logging {
+  aws_s3_bucket_logging {
     target_bucket = aws_s3_bucket.d3.id
     target_prefix = "log/${var.stageOneBucket}/"
   }
