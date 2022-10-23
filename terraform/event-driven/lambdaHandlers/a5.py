@@ -20,10 +20,11 @@ def findS3EventObject(event):
         for _source in range(len(event['Records'])):
             _reformedListRecord = event['Records'][_source]
             _reformedBody       = json.loads(_reformedListRecord["body"])
-            _reformedMessage    = json.loads(_reformedBody["Message"])
+            _reformedMessageList= json.dumps(_reformedBody[0])
+            _reformedMessage    = json.loads(_reformedMessageList)
             _receiptHandle      = _reformedListRecord['receiptHandle']
-            _s3Event            = _reformedMessage[0]['s3']
-            _zone               = _reformedMessage[0]['zone']
+            _s3Event            = _reformedMessage['s3']
+            _zone               = _reformedMessage['zone']
             _object             = json.dumps({'s3': _s3Event, 'zone': _zone, "receiptHandle": _receiptHandle})
             _listOfObjetcts.append(_object)
 
@@ -37,25 +38,31 @@ def lambda_handler(event, context):
     json.dumps(event, indent=3)
     _s3ObjectIdentifier = findS3EventObject(event)
     if _s3ObjectIdentifier != []:
-        for s3 in _s3ObjectIdentifier:
-            fileName = urllib.parse.unquote_plus(s3['s3']['object']['key'])
-            sourceBucketName = urllib.parse.unquote_plus(s3['s3']['bucket']['name'])
-            fileZone = s3['zone']
-            queueId = s3['receiptHandle']
-            copyObject = json.dumps({ 'Bucket': sourceBucketName, 'Key': fileName })
+        for _s3 in _s3ObjectIdentifier:
+            s3Data = json.loads(_s3)
+            fileName = urllib.parse.unquote_plus(s3Data['s3']['object']['key'])
+            sourceBucketName = urllib.parse.unquote_plus(s3Data['s3']['bucket']['name'])
+            fileZone = s3Data['zone']
+            queueId = s3Data['receiptHandle']
+            copyObject = { 'Bucket': sourceBucketName, 'Key': fileName }
             getObjectAvailable = getObjectDetails(sourceBucketName, fileName)
-            
+
             if getObjectAvailable == True:
+                # Tags the bucket object
                 tagging = {'TagSet' : [{'Key': 'zone', 'Value': fileZone }]}
                 s3Client.put_object_tagging(Bucket=sourceBucketName, Key=fileName, Tagging=tagging)
                 print(f' <= {fileName} file has been tagged in {sourceBucketName} bucket')
+                # Copy to second and third state buckets
                 s3Client.copy_object(CopySource=copyObject, Bucket=_metadataBucket, Key=fileName, TaggingDirective='COPY', ChecksumAlgorithm='SHA1',)
                 s3Client.copy_object(CopySource=copyObject, Bucket=_scanningBucket, Key=fileName, TaggingDirective='COPY', ChecksumAlgorithm='SHA1')
                 print(f' => {fileName} file has been copy to {_metadataBucket} and {_scanningBucket} buckets')
+                # Delete the source bucket object 
                 s3Client.delete_object(Bucket=sourceBucketName, Key=fileName)
                 print(f' <= {fileName} file has been deleted from {sourceBucketName} bucket')
+                # delete the sqs queue
                 deleteQueueMessage(_sqsUrl, queueId)
                 print(f' <= {fileName} queue has been deleted')
             else:
+                # delete the sqs queue without object copy.
                 deleteQueueMessage(_sqsUrl, queueId)
                 print(f' <= {fileName} queue has been deleted')
