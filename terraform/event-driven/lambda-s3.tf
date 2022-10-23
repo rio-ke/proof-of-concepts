@@ -48,3 +48,23 @@ resource "aws_lambda_function" "c6" {
     }
   }
 }
+
+resource "aws_cloudwatch_event_rule" "c6" {
+  name                = "${var.stageThreeLambdaTwo}-event-rule"
+  description         = "Everyday everyone minitues"
+  schedule_expression = "cron(0/1 * ? * * *)"
+}
+
+resource "aws_cloudwatch_event_target" "c6" {
+  rule      = aws_cloudwatch_event_rule.c6.name
+  target_id = "lambda"
+  arn       = aws_lambda_function.c6.arn
+}
+
+resource "aws_lambda_permission" "c6" {
+  statement_id  = "AllowExecutionFromCloudWatch"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.c6.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.c6.arn
+}
