@@ -27,21 +27,21 @@ data "archive_file" "c6" {
 }
 
 resource "aws_lambda_function" "c6" {
-  filename      = data.archive_file.c6.output_path
-  source_code_hash          = data.archive_file.c6.output_base64sha256
-  function_name = var.stageThreeLambdaTwo
-  role          = aws_iam_role.common.arn
-  handler       = "c6.lambda_handler"
-  runtime       = "python3.9"
-  layers        = [aws_lambda_layer_version.l1.arn, aws_lambda_layer_version.l2.arn]
+  filename         = data.archive_file.c6.output_path
+  source_code_hash = data.archive_file.c6.output_base64sha256
+  function_name    = var.stageThreeLambdaTwo
+  role             = aws_iam_role.common.arn
+  handler          = "c6.lambda_handler"
+  runtime          = "python3.9"
+  layers           = [aws_lambda_layer_version.l1.arn, aws_lambda_layer_version.l2.arn]
   environment {
     variables = {
       apiGatewayUrl                   = aws_api_gateway_stage.get.invoke_url
       sqsUrl                          = aws_sqs_queue.c4.url
       apiGatewayId                    = aws_api_gateway_rest_api.api.id
-      originBucketName                = aws_s3_bucket.c1.bucket
-      success_destination_bucket_name = aws_s3_bucket.d1.bucket
-      failed_destination_bucket_name  = aws_s3_bucket.d2.bucket
+      originBucketName                = data.aws_s3_bucket.c1.id
+      success_destination_bucket_name = data.aws_s3_bucket.d1.id
+      failed_destination_bucket_name  = data.aws_s3_bucket.d2.id
       alertSqsQueueURL                = var.alertSqsQueueURL
     }
   }

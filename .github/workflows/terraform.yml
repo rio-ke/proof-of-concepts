@@ -7,8 +7,8 @@ on:
     #   - "terraform/event-driven/*"
 
 env:
-  terraformCreate: False
-  terraformDelete: True
+  terraformCreate: True
+  terraformDelete: False
 
 jobs:
   create:

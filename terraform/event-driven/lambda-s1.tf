@@ -35,8 +35,8 @@ resource "aws_lambda_function" "a5" {
   layers           = [aws_lambda_layer_version.l1.arn, aws_lambda_layer_version.l2.arn]
   environment {
     variables = {
-      metadataBucket = aws_s3_bucket.c1.bucket
-      scanningBucket = aws_s3_bucket.b1.bucket
+      metadataBucket = data.aws_s3_bucket.c1.id
+      scanningBucket = data.aws_s3_bucket.b1.id
       sqsUrl         = aws_sqs_queue.a4.url
     }
   }
