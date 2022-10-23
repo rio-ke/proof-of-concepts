@@ -9,7 +9,6 @@ on:
 env:
   terraformCreate: False
   terraformDelete: True
-  terraformShow: True
 
 jobs:
   create:
@@ -107,22 +106,18 @@ jobs:
         working-directory: ${{ matrix.folder }}
     steps:
       - name: checkout
-        if: ${{ env.terraformShow == 'True' }}
         uses: actions/checkout@v1
       - name: setup terraform
-        if: ${{ env.terraformShow == 'True' }}
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 1.1.8
       - name: configure aws credentials
-        if: ${{ env.terraformShow == 'True' }}
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.SECRET_KEY }}
           aws-region: ap-southeast-1
       - name: init
-        if: ${{ env.terraformShow == 'True' }}
         run: |
           terraform init \
             -backend-config="bucket=op-terraform-state-file-1234" \
@@ -130,5 +125,4 @@ jobs:
             -backend-config="region=ap-southeast-1" \
             -backend=true
       - name: show
-        if: ${{ env.terraformShow == 'True' }}
         run: terraform show
