@@ -3,6 +3,11 @@ resource "aws_s3_bucket" "a1" {
   acl    = "private"
 }
 
+resource "aws_s3_bucket_acl" "a1" {
+  bucket = aws_s3_bucket.a1.id
+  acl    = "private"
+}
+
 resource "aws_s3_bucket_logging" "a1" {
   bucket        = aws_s3_bucket.a1.id
   target_bucket = aws_s3_bucket.d3.id

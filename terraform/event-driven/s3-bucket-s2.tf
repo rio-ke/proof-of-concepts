@@ -1,5 +1,9 @@
 resource "aws_s3_bucket" "b1" {
   bucket = var.stageTwoBucket
+}
+
+resource "aws_s3_bucket_acl" "b1" {
+  bucket = aws_s3_bucket.b1.id
   acl    = "private"
 }
 
