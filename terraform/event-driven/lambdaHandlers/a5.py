@@ -44,6 +44,7 @@ def lambda_handler(event, context):
             queueId = s3['receiptHandle']
             copyObject = json.dumps({ 'Bucket': sourceBucketName, 'Key': fileName })
             getObjectAvailable = getObjectDetails(sourceBucketName, fileName)
+            
             if getObjectAvailable == True:
                 tagging = {'TagSet' : [{'Key': 'zone', 'Value': fileZone }]}
                 s3Client.put_object_tagging(Bucket=sourceBucketName, Key=fileName, Tagging=tagging)
