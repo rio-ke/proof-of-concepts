@@ -5,7 +5,7 @@ data "archive_file" "c2" {
 }
 
 resource "aws_lambda_function" "c2" {
-  filename      = "${path.module}/lambdaHandlers/c2.py.zip"
+  filename      = filebase64sha256("${path.module}/lambdaHandlers/c2.py.zip")
   function_name = var.stageThreeLambdaOne
   role          = aws_iam_role.common.arn
   handler       = "c2.lambda_handler"
