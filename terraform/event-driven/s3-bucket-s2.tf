@@ -1,9 +1,11 @@
 resource "aws_s3_bucket" "b1" {
   bucket = var.stageTwoBucket
-  logging {
-    target_bucket = aws_s3_bucket.d3.id
-    target_prefix = "log/${var.stageTwoBucket}/"
-  }
+}
+
+resource "aws_s3_bucket_logging" "b1" {
+  bucket        = aws_s3_bucket.b1.id
+  target_bucket = aws_s3_bucket.d3.id
+  target_prefix = "log/${var.stageTwoBucket}/"
 }
 
 resource "aws_lambda_permission" "b1" {
