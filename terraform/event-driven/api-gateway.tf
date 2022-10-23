@@ -131,7 +131,8 @@ resource "aws_iam_role_policy" "log" {
 resource "aws_api_gateway_method_settings" "get" {
   rest_api_id = aws_api_gateway_rest_api.api.id
   stage_name  = aws_api_gateway_stage.get.stage_name
-  method_path = "${trimprefix(aws_api_gateway_resource.source.path, "/")}/${aws_api_gateway_method.get.http_method}"
+  method_path = "*/*"
+  # method_path = "${trimprefix(aws_api_gateway_resource.get.path, "/")}/${aws_api_gateway_method.get.http_method}"
   settings {
     metrics_enabled = true
     logging_level   = "INFO"
