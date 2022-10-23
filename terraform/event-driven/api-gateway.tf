@@ -52,7 +52,7 @@ resource "aws_api_gateway_integration_response" "get" {
   http_method = aws_api_gateway_method.get.http_method
   status_code = aws_api_gateway_method_response.get.status_code
   depends_on = [
-    aws_api_gateway_rest_api.api, aws_api_gateway_method.get, aws_api_gateway_method_response
+    aws_api_gateway_rest_api.api, aws_api_gateway_method.get, aws_api_gateway_method_response.get
   ]
 }
 
