@@ -95,7 +95,8 @@ jobs:
         if: ${{ env.terraformDelete == 'True' }}
         run: terraform  destroy -var-file="dev-config.tfvars" -auto-approve
 
-  show: 
+  show:
+    needs: create
     strategy:
       matrix:
         folder: [terraform/event-driven]
