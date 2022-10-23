@@ -32,7 +32,7 @@ resource "aws_s3_bucket_notification" "b1" {
   lambda_function {
     lambda_function_arn = aws_lambda_function.b2.arn
     events              = ["s3:ObjectTagging:*"]
-    id                  = "${var.stageTwoBucket}-s3-to-lambda-notification"
+    id                  = "s3-to-lambda-notification"
   }
 }
 
