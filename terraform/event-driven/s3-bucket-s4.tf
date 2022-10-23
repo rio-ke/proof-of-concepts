@@ -1,4 +1,4 @@
-data "aws_s3_bucket" "d3" {
+data "aws_s3_bucket" "d1" {
   bucket = var.successBucket
 }
 
@@ -13,7 +13,7 @@ data "aws_s3_bucket" "d3" {
 #   restrict_public_buckets = true
 # }
 
-data "aws_s3_bucket" "d3" {
+data "aws_s3_bucket" "d2" {
   bucket = var.failureBucket
 }
 
