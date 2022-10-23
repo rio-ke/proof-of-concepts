@@ -13,7 +13,6 @@ env:
 jobs:
   create:
     if: '${{ env.terraformCreate }}'
-    name: create
     strategy:
       matrix:
         folder: [terraform/event-driven]
@@ -53,7 +52,6 @@ jobs:
 
   delete: 
     if: '${{ env.terraformDelete }}'
-    name: delete
     strategy:
       matrix:
         folder: [terraform/event-driven]
@@ -87,7 +85,6 @@ jobs:
 
   show: 
     if: '${{ env.terraformShow }}'
-    name: show
     strategy:
       matrix:
         folder: [terraform/event-driven]
