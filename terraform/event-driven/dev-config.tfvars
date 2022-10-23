@@ -1,5 +1,5 @@
 region           = "ap-southeast-1"
-alertSqsQueueURL = "https://sqs.ap-south-1.amazonaws.com/xxx/sqs-final-trigger-queue-to-application"
+alertSqsQueueURL = "https://sqs.ap-southeast-1.amazonaws.com/676487226531/alert"
 stageOneBucket   = "jn-a1-bucket-s3"
 stageTwoBucket   = "jn-b1-bucket-s3"
 stageThreeBucket = "jn-abc1-bucket-s3"
