@@ -13,6 +13,7 @@ resource "aws_lambda_function" "b2" {
   handler          = "b2.lambda_handler"
   runtime          = "python3.9"
   layers           = [aws_lambda_layer_version.l1.arn, aws_lambda_layer_version.l2.arn]
+  timeout          = 60
   environment {
     variables = {
       snsArn = aws_sns_topic.b3.arn
@@ -35,6 +36,7 @@ resource "aws_lambda_function" "b5" {
   handler          = "b5.lambda_handler"
   runtime          = "python3.9"
   layers           = [aws_lambda_layer_version.l1.arn, aws_lambda_layer_version.l2.arn]
+  timeout          = 60
   environment {
     variables = {
       destination_bucket_name = data.aws_s3_bucket.c1.id

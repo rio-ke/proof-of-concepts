@@ -12,6 +12,7 @@ resource "aws_lambda_function" "a2" {
   handler          = "a2.lambda_handler"
   runtime          = "python3.9"
   layers           = [aws_lambda_layer_version.l1.arn, aws_lambda_layer_version.l2.arn]
+  timeout          = 60
   environment {
     variables = {
       snsArn = aws_sns_topic.a3.arn
@@ -33,6 +34,7 @@ resource "aws_lambda_function" "a5" {
   handler          = "a5.lambda_handler"
   runtime          = "python3.9"
   layers           = [aws_lambda_layer_version.l1.arn, aws_lambda_layer_version.l2.arn]
+  timeout          = 60
   environment {
     variables = {
       metadataBucket = data.aws_s3_bucket.c1.id
