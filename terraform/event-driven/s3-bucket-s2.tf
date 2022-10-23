@@ -1,6 +1,6 @@
 resource "aws_s3_bucket" "b1" {
   bucket = var.stageTwoBucket
-  aws_s3_bucket_logging {
+  logging {
     target_bucket = aws_s3_bucket.d3.id
     target_prefix = "log/${var.stageTwoBucket}/"
   }
