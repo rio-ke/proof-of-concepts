@@ -51,6 +51,9 @@ resource "aws_api_gateway_integration_response" "get" {
   resource_id = aws_api_gateway_rest_api.api.root_resource_id # aws_api_gateway_resource.root.id
   http_method = aws_api_gateway_method.get.http_method
   status_code = aws_api_gateway_method_response.get.status_code
+  depends_on = [
+    aws_api_gateway_rest_api.api, aws_api_gateway_method.get, aws_api_gateway_method_response
+  ]
 }
 
 resource "aws_api_gateway_stage" "get" {
