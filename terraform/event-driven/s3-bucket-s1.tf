@@ -2,9 +2,11 @@ resource "aws_s3_bucket" "a1" {
   bucket = var.stageOneBucket
 }
 
-resource "aws_s3_bucket_acl" "a1" {
-  bucket = aws_s3_bucket.a1.id
-  acl    = "private"
+resource "aws_s3_bucket_public_access_block" "a1" {
+  bucket                  = aws_s3_bucket.a1.id
+  block_public_acls       = true
+  block_public_policy     = true
+  restrict_public_buckets = true
 }
 
 resource "aws_s3_bucket_logging" "a1" {
