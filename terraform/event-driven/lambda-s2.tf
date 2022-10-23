@@ -6,13 +6,13 @@ data "archive_file" "b2" {
 }
 
 resource "aws_lambda_function" "b2" {
-  filename      = data.archive_file.b2.output_path
-  hash          = data.archive_file.b2.output_base64sha256
-  function_name = var.stageTwoLambdaOne 
-  role          = aws_iam_role.common.arn
-  handler       = "b2.lambda_handler"
-  runtime       = "python3.9"
-  layers        = [aws_lambda_layer_version.l1.arn, aws_lambda_layer_version.l2.arn]
+  filename         = data.archive_file.b2.output_path
+  source_code_hash = data.archive_file.b2.output_base64sha256
+  function_name    = var.stageTwoLambdaOne
+  role             = aws_iam_role.common.arn
+  handler          = "b2.lambda_handler"
+  runtime          = "python3.9"
+  layers           = [aws_lambda_layer_version.l1.arn, aws_lambda_layer_version.l2.arn]
   environment {
     variables = {
       snsArn = aws_sns_topic.b3.arn
@@ -28,13 +28,13 @@ data "archive_file" "b5" {
 }
 
 resource "aws_lambda_function" "b5" {
-  filename      = data.archive_file.b5.output_path
-  hash          = data.archive_file.b5.output_base64sha256
-  function_name = var.stageTwoLambdaTwo 
-  role          = aws_iam_role.common.arn
-  handler       = "b5.lambda_handler"
-  runtime       = "python3.9"
-  layers        = [aws_lambda_layer_version.l1.arn, aws_lambda_layer_version.l2.arn]
+  filename         = data.archive_file.b5.output_path
+  source_code_hash = data.archive_file.b5.output_base64sha256
+  function_name    = var.stageTwoLambdaTwo
+  role             = aws_iam_role.common.arn
+  handler          = "b5.lambda_handler"
+  runtime          = "python3.9"
+  layers           = [aws_lambda_layer_version.l1.arn, aws_lambda_layer_version.l2.arn]
   environment {
     variables = {
       destination_bucket_name = aws_s3_bucket.c1.bucket # abc1-bucket-s3
