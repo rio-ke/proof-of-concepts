@@ -1,5 +1,6 @@
 resource "aws_s3_bucket" "c1" {
   bucket = var.stageThreeBucket
+  acl    = "private"
 }
 
 resource "aws_s3_bucket_logging" "c1" {
