@@ -6,13 +6,13 @@ on:
     paths:
       - "terraform/event-driven/*"
 env:
-  terraformCreate: true
-  terraformDelete: false
+  terraformCreate: false
+  terraformDelete: true
   terraformShow: true
 
 jobs:
   create:
-    if: ${{ env.terraformCreate == true }}
+    if: ${{ env.terraformCreate }} == true
     name: create
     strategy:
       matrix:
@@ -50,11 +50,9 @@ jobs:
         run: terraform  plan  -var-file="dev-config.tfvars"
       - name: apply
         run: terraform  apply -var-file="dev-config.tfvars" -auto-approve
-      - name: show
-        run: terraform show
 
   delete: 
-    if: ${{ env.terraformDelete  == true }} 
+    if: ${{ env.terraformDelete }} == true 
     name: delete
     strategy:
       matrix:
@@ -88,7 +86,7 @@ jobs:
         run: terraform  destroy -var-file="dev-config.tfvars" -auto-approve
 
   show: 
-    if: ${{ env.terraformShow  == true }} 
+    if: ${{ env.terraformShow }} == true
     name: show
     strategy:
       matrix:
