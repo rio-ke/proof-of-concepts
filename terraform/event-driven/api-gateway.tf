@@ -107,7 +107,7 @@ resource "aws_iam_role" "log" {
 
 resource "aws_iam_role_policy" "log" {
     name = "${var.apigateway}-cw-policy"
-    role = aws_iam_role.cloudwatch.id
+    role = aws_iam_role.log.id
     policy = jsonencode({
         "Version": "2012-10-17",
         "Statement": [
