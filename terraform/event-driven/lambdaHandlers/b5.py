@@ -7,8 +7,8 @@ import os
 s3Client = boto3.client('s3')
 sqsClient = boto3.client('sqs')
 
-destination_bucket_name = os.environ['destination_bucket_name']                         # 'abc1-bucket-s3'
-sqsUrl = os.environ['sqsUrl']                                                           # "https://sqs.ap-south-1.amazonaws.com/653413855845/b4-sqs.fifo"
+_metadataBucket = os.environ['metadataBucket'] 
+sqsUrl = os.environ['sqsUrl']    
 
 
 def deleteQueueMessage(sqsUrl, ReceiptHandle):
@@ -49,13 +49,13 @@ def lambda_handler(event, context):
 
             if sourceGetObjectAvailable == True or targetGetObjectAvailable == True :
                 updationTags = getTags(sourceBucketName, fileName)
-                s3Client.put_object_tagging(Bucket=destination_bucket_name, Key=fileName, Tagging={'TagSet': updationTags})
+                s3Client.put_object_tagging(Bucket=_metadataBucket, Key=fileName, Tagging={'TagSet': updationTags})
                 s3Client.delete_object(Bucket=sourceBucketName, Key=fileName)
                 deleteQueueMessage(sqsUrl, queueId)
                 print(json.dumps({
                     "file": fileName,
                     "sourceBucket": sourceBucketName,
-                    "destinationBucket": destination_bucket_name,
+                    "destinationBucket": _metadataBucket,
                     "queueMessageDeleteStatus": True,
                     "tagUpdate": True,
                     "copyStatus": True,

@@ -12,4 +12,4 @@ def lambda_handler(event, context):
     [rearrange.update(extraAttribute) for rearrange in modifiedEvents]
     snsClient.publish(MessageGroupId="stageone", TargetArn=snsArn, Message=json.dumps(
         {'default': json.dumps(modifiedEvents)}), MessageStructure='json')
-    print(f' <= event published to sns')
+    print(f'=> event published to sns')

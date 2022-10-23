@@ -38,20 +38,20 @@ resource "aws_lambda_function" "c6" {
   timeout          = 60
   environment {
     variables = {
-      apiGatewayUrl                   = aws_api_gateway_stage.get.invoke_url
-      sqsUrl                          = aws_sqs_queue.c4.url
-      apiGatewayId                    = aws_api_gateway_rest_api.api.id
-      originBucketName                = data.aws_s3_bucket.c1.id
-      success_destination_bucket_name = data.aws_s3_bucket.d1.id
-      failed_destination_bucket_name  = data.aws_s3_bucket.d2.id
-      alertSqsQueueURL                = var.alertSqsQueueURL
+      apiGatewayUrl       = aws_api_gateway_stage.get.invoke_url
+      sqsUrl              = aws_sqs_queue.c4.url
+      apiGatewayId        = aws_api_gateway_rest_api.api.id
+      originBucketName    = data.aws_s3_bucket.c1.id
+      success_bucket_name = data.aws_s3_bucket.d1.id
+      failed_bucket_name  = data.aws_s3_bucket.d2.id
+      alertSqsQueueURL    = var.alertSqsQueueURL
     }
   }
 }
 
 resource "aws_cloudwatch_event_rule" "c6" {
   name                = "${var.stageThreeLambdaTwo}-event-rule"
-  description         = "Everyday everyone minitues"
+  description         = "Everyday every one min"
   schedule_expression = "cron(0/1 * ? * * *)"
 }
 

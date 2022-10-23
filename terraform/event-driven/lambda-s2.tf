@@ -39,8 +39,8 @@ resource "aws_lambda_function" "b5" {
   timeout          = 60
   environment {
     variables = {
-      destination_bucket_name = data.aws_s3_bucket.c1.id
-      sqsUrl                  = aws_sqs_queue.b4.url
+      metadataBucket = data.aws_s3_bucket.c1.id
+      sqsUrl         = aws_sqs_queue.b4.url
     }
   }
 }
