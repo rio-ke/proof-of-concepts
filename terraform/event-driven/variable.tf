@@ -5,6 +5,7 @@ variable "stageTwoBucket" {}
 variable "stageThreeBucket" {}
 variable "successBucket" {}
 variable "failureBucket" {}
+variable "logBucket" {}
 variable "apigateway" {}
 variable "stageOneSns" {}
 variable "stageTwoSns" {}

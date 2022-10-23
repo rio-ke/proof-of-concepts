@@ -1,10 +1,9 @@
 resource "aws_s3_bucket" "b1" {
   bucket = var.stageTwoBucket
-#   acl    = "private"
-#   logging {
-#     target_bucket = aws_s3_bucket.log_bucket.id
-#     target_prefix = "log/${var.stageTwoBucket}/"
-#   }
+  logging {
+    target_bucket = aws_s3_bucket.d3.id
+    target_prefix = "log/${var.stageTwoBucket}/"
+  }
 }
 
 resource "aws_lambda_permission" "b1" {
