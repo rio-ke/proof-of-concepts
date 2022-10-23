@@ -5,7 +5,8 @@ data "archive_file" "c2" {
 }
 
 resource "aws_lambda_function" "c2" {
-  filename      = data.archive_file.c2.output_base64sha256
+  filename      = data.archive_file.c2.output_path
+  hash          = data.archive_file.c2.output_base64sha256
   function_name = var.stageThreeLambdaOne
   role          = aws_iam_role.common.arn
   handler       = "c2.lambda_handler"
@@ -26,8 +27,9 @@ data "archive_file" "c6" {
 }
 
 resource "aws_lambda_function" "c6" {
-  filename      = data.archive_file.c6.output_base64sha256
-  function_name = var.stageThreeLambdaTwo 
+  filename      = data.archive_file.c6.output_path
+  hash          = data.archive_file.c6.output_base64sha256
+  function_name = var.stageThreeLambdaTwo
   role          = aws_iam_role.common.arn
   handler       = "c6.lambda_handler"
   runtime       = "python3.9"

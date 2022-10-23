@@ -6,7 +6,8 @@ data "archive_file" "b2" {
 }
 
 resource "aws_lambda_function" "b2" {
-  filename      = data.archive_file.b2.output_base64sha256 
+  filename      = data.archive_file.b2.output_path
+  hash          = data.archive_file.b2.output_base64sha256
   function_name = var.stageTwoLambdaOne 
   role          = aws_iam_role.common.arn
   handler       = "b2.lambda_handler"
@@ -27,8 +28,8 @@ data "archive_file" "b5" {
 }
 
 resource "aws_lambda_function" "b5" {
-  # filename      = filebase64sha256("${path.module}/lambdaHandlers/b5.py.zip")
-  filename      = filebase64sha256(data.archive_file.b5.output_path) 
+  filename      = data.archive_file.b5.output_path
+  hash          = data.archive_file.b5.output_base64sha256
   function_name = var.stageTwoLambdaTwo 
   role          = aws_iam_role.common.arn
   handler       = "b5.lambda_handler"
