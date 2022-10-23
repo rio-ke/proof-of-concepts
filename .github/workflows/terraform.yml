@@ -5,15 +5,15 @@ on:
       - main
     paths:
       - "terraform/event-driven/*"
-      
-environment:
-  terraformCreate: "False"
-  terraformDelete: "True"
-  terraformShow: "True"
+
+env:
+  terraformCreate: False
+  terraformDelete: True
+  terraformShow: True
 
 jobs:
   create:
-    if: ${{ env.terraformCreate }} == "True"
+    if: ${{env.terraformCreate}}
     strategy:
       matrix:
         folder: [terraform/event-driven]
@@ -52,7 +52,7 @@ jobs:
         run: terraform  apply -var-file="dev-config.tfvars" -auto-approve
 
   delete: 
-    if: ${{ env.terraformDelete }} == "True"
+    if: ${{env.terraformDelete}}
     strategy:
       matrix:
         folder: [terraform/event-driven]
@@ -85,7 +85,7 @@ jobs:
         run: terraform  destroy -var-file="dev-config.tfvars" -auto-approve
 
   show: 
-    if: ${{ env.terraformShow }} == "True"
+    if: ${{env.terraformShow}}
     strategy:
       matrix:
         folder: [terraform/event-driven]
