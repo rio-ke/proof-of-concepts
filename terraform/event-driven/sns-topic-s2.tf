@@ -27,6 +27,7 @@ data "aws_iam_policy_document" "b3" {
     sid       = "__sub_and_pub__"
   }
 }
+
 resource "aws_sns_topic" "b3" {
   name                        = var.stageTwoSns
   fifo_topic                  = true
