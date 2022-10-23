@@ -31,3 +31,5 @@ resource "aws_s3_bucket_notification" "c1" {
     id                  = "${var.stageThreeBucket}-s3-to-lambda-notification"
   }
 }
+
+
