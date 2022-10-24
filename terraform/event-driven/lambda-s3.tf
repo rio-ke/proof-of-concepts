@@ -12,7 +12,7 @@ resource "aws_lambda_function" "c2" {
   handler          = "c2.lambda_handler"
   runtime          = "python3.9"
   layers           = [aws_lambda_layer_version.l1.arn, aws_lambda_layer_version.l2.arn]
-  timeout          = 60
+  timeout          = var.lambdaTimeout
   environment {
     variables = {
       snsArn = aws_sns_topic.c3.arn
@@ -34,7 +34,7 @@ resource "aws_lambda_function" "c6" {
   handler          = "c6.lambda_handler"
   runtime          = "python3.9"
   layers           = [aws_lambda_layer_version.l1.arn, aws_lambda_layer_version.l2.arn]
-  timeout          = 60
+  timeout          = var.lambdaTimeout
   environment {
     variables = {
       apiGatewayUrl       = aws_api_gateway_stage.get.invoke_url

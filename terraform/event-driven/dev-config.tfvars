@@ -20,3 +20,4 @@ stageTwoLambdaTwo   = "jn-b5-lambda"
 stageThreeLambdaOne = "jn-c2-lambda"
 stageThreeLambdaTwo = "jn-c6-lambda"
 infraZone           = "internet"
+lambdaTimeout        = 60
