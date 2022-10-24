@@ -87,7 +87,7 @@ jobs:
         run: terraform  apply -var-file="dev-config.tfvars" -auto-approve
 
   delete:
-    needs: plan
+    needs: show
     strategy:
       matrix:
         folder: [terraform/event-driven]
