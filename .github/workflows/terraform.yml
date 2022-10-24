@@ -50,9 +50,9 @@ jobs:
       - name: validate
         if: ${{ env.terraformCreate == 'True' }}
         run: terraform validate       
-      - name: plan
-        run: terraform  plan  -var-file="dev-config.tfvars"
-        if: ${{ env.terraformCreate == 'True' }}
+        #      - name: plan
+        #run: terraform  plan  -var-file="dev-config.tfvars"
+        #if: ${{ env.terraformCreate == 'True' }}
       - name: apply
         if: ${{ env.terraformCreate == 'True' }}
         run: terraform  apply -var-file="dev-config.tfvars" -auto-approve
