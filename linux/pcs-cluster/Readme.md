@@ -1,11 +1,11 @@
-server configuration
+**server configuration**
 
 | name  | ip address    |
 | ----- | ------------- |
 | node1 | 172.31.41.94  |
 | node2 | 172.31.38.157 |
 
-__node1 and node2 /etc/hosts entry__ 
+**node1 and node2 make an /etc/hosts entry**
 
 ```bash
 cat <<EOF >> /etc/hosts
@@ -16,7 +16,7 @@ hostnamectl set-hostname node2
 hostnamectl set-hostname node1
 ```
 
-__node1 and node2 preparation of the pcs clusters__
+**preparation of the pcs clusters on node1 and node2**
 
 ```bash
 yum update -y
@@ -35,6 +35,8 @@ cat <<EOF >> /etc/httpd/conf.d/status.conf
 </Location>
 EOF
 ```
+
+**prepare the drbd configuration both node1 and node2**
 
 ```bash
 cat <<EOF >>  /etc/drbd.d/clusterdb.res
@@ -83,4 +85,20 @@ resource clusterdb {
   }
 }
 EOF
+```
+
+**prepare the drbd setup both node1 and node2**
+
+```bash
+drbdadm create-md clusterdb
+drbdadm up clusterdb
+systemctl start drbd
+systemctl enable drbd
+```
+
+
+**initiate the cluster on node1**
+
+```bash
+drbdadm -- --overwrite-data-of-peer primary clusterdb
 ```
