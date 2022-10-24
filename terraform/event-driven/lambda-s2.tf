@@ -33,7 +33,7 @@ resource "aws_iam_policy" "b2" {
       {
         Action   = ["sns:Publish"]
         Effect   = "Allow"
-        Resource = "*"
+        Resource = ["${aws_sns_topic.c3.arn}"]
       }
     ]
   })
@@ -43,7 +43,6 @@ resource "aws_iam_role_policy_attachment" "b2" {
   role       = aws_iam_role.a2.name
   policy_arn = aws_iam_policy.a2.arn
 }
-
 
 data "archive_file" "b2" {
   type        = "zip"

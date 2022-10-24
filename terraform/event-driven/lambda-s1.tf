@@ -33,7 +33,7 @@ resource "aws_iam_policy" "a2" {
       {
         Action   = ["sns:Publish"]
         Effect   = "Allow"
-        Resource = "*"
+        Resource = ["${aws_sns_topic.a3.arn}"]
       }
     ]
   })
