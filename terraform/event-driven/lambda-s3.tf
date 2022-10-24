@@ -20,7 +20,6 @@ resource "aws_lambda_function" "c2" {
   }
 }
 
-
 data "archive_file" "c6" {
   type        = "zip"
   source_file = "${path.module}/lambdaHandlers/c6.py"
