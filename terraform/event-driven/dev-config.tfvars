@@ -20,4 +20,4 @@ stageThreeLambdaOne = "jn-c2-lambda"
 stageThreeLambdaTwo = "jn-c6-lambda"
 infraZone           = "internet"
 lambdaTimeout       = 60
-sqsAlertQueue       = alert
+sqsAlertQueue       = "alert"
