@@ -36,14 +36,11 @@ resource "aws_iam_policy" "b5" {
         Resource = ["${aws_sqs_queue.b4.arn}"]
       },
       {
-        Action   = ["s3:ListBucket"]
-        Effect   = "Allow"
-        Resource = ["${data.aws_s3_bucket.c1.arn}"]
-      },
-      {
         Action   = ["s3:*"]
         Effect   = "Allow"
-        Resource = ["${data.aws_s3_bucket.c1.arn}/*"]
+        Resource = ["*"]
+        # Resource = ["${data.aws_s3_bucket.c1.arn}/*"]
+
       }
     ]
   })
