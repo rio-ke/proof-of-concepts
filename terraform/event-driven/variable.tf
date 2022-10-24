@@ -21,4 +21,5 @@ variable "stageThreeLambdaOne" {}
 variable "stageThreeLambdaTwo" {}
 variable "infraZone" {}
 variable "lambdaTimeout" {}
+variable "sqsAlertQueue" {}
 

@@ -1,5 +1,4 @@
 region              = "ap-southeast-1"
-alertSqsQueueURL    = "https://sqs.ap-southeast-1.amazonaws.com/676487226531/alert"
 stageOneBucket      = "jn-a1-bucket-s3"
 stageTwoBucket      = "jn-b1-bucket-s3"
 stageThreeBucket    = "jn-abc1-bucket-s3"
@@ -20,4 +19,5 @@ stageTwoLambdaTwo   = "jn-b5-lambda"
 stageThreeLambdaOne = "jn-c2-lambda"
 stageThreeLambdaTwo = "jn-c6-lambda"
 infraZone           = "internet"
-lambdaTimeout        = 60
+lambdaTimeout       = 60
+sqsAlertQueue       = alert
