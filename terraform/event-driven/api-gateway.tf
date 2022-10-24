@@ -7,7 +7,7 @@ resource "aws_api_gateway_rest_api" "api" {
   description = "This api to call sqs messages"
   endpoint_configuration {
     types            = ["PRIVATE"] # ["REGIONAL"]
-    vpc_endpoint_ids = []
+    # vpc_endpoint_ids = []
   }
 }
 
