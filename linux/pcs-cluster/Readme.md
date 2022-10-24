@@ -94,11 +94,18 @@ drbdadm create-md clusterdb
 drbdadm up clusterdb
 systemctl start drbd
 systemctl enable drbd
+systemctl status drbd
 ```
-
 
 **initiate the cluster on node1**
 
 ```bash
 drbdadm -- --overwrite-data-of-peer primary clusterdb
+```
+
+**create the folder both node1 and node2**
+
+```bash
+mkdir /webdata
+mkdir /mysql
 ```
