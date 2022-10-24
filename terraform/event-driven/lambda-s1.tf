@@ -15,7 +15,8 @@ resource "aws_lambda_function" "a2" {
   timeout          = 60
   environment {
     variables = {
-      snsArn = aws_sns_topic.a3.arn
+      snsArn    = aws_sns_topic.a3.arn
+      infraZone = var.infraZone
     }
   }
 }

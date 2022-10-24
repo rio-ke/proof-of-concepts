@@ -19,3 +19,4 @@ variable "stageTwoLambdaOne" {}
 variable "stageTwoLambdaTwo" {}
 variable "stageThreeLambdaOne" {}
 variable "stageThreeLambdaTwo" {}
+variable "infraZone" {}
