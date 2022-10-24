@@ -103,9 +103,48 @@ systemctl status drbd
 drbdadm -- --overwrite-data-of-peer primary clusterdb
 ```
 
+**check the drbd sync status both node1 and node2**
+
+```bash
+ cat /proc/drbd
+```
+
 **create the folder both node1 and node2**
 
 ```bash
 mkdir /webdata
 mkdir /mysql
+```
+
+**lvm configuration change both node1 and node2**
+
+```bash
+vim /etc/lvm/lvm.conf
+add:  filter = [ "r|/dev/vdb1|", "r|/dev/disk/*|", "r|/dev/block/*|", "a|.*|" ]     # near 128 line
+edit: write_cache_state = 1 to write_cache_state = 0                                # near 128 line
+edit: use_lvmetad = 1 to  use_lvmetad = 0                                           # 958 line near by
+```
+
+**update the lvm configuration on node1 and node2**
+
+```bash
+lvmconf --enable-halvm --services --startstopservices
+dracut -H -f /boot/initramfs-$(uname -r).img $(uname -r)
+reboot
+```
+
+**reconnect both node1 and node2**
+
+```bash
+cat /proc/drbd
+systemctl start pcsd.service
+systemctl enable pcsd.service
+passwd hacluster
+```
+
+**any one of server you can mark as a primary**
+
+```bash
+# assume node1
+drbdadm primary --force clusterdb
 ```
