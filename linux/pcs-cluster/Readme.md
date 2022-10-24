@@ -112,8 +112,8 @@ drbdadm -- --overwrite-data-of-peer primary clusterdb
 **create the folder both node1 and node2**
 
 ```bash
-mkdir /webdata
-mkdir /mysql
+mkdir /drbd-webdata
+mkdir /drbd-mysql
 ```
 
 **lvm configuration change both node1 and node2**
