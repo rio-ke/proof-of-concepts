@@ -33,7 +33,7 @@ resource "aws_iam_policy" "c6" {
       {
         Action   = ["sqs:*"]
         Effect   = "Allow"
-        Resource = ["${aws_sqs_queue.c4.arn}", "${data.aws_sqs_queue.alert.url}"]
+        Resource = ["${aws_sqs_queue.c4.arn}", "${data.aws_sqs_queue.alert.arn}"]
       },
       {
         Action   = ["s3:*"]
