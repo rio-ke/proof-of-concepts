@@ -71,6 +71,10 @@ resource "aws_lambda_function" "c6" {
   runtime          = "python3.9"
   layers           = [aws_lambda_layer_version.l1.arn, aws_lambda_layer_version.l2.arn]
   timeout          = var.lambdaTimeout
+  vpc_config {
+    # subnet_ids         = []
+    # security_group_ids = []
+  }
   environment {
     variables = {
       apiGatewayUrl       = aws_api_gateway_stage.get.invoke_url
