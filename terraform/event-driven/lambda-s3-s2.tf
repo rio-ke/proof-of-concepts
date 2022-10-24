@@ -38,7 +38,7 @@ resource "aws_iam_policy" "c6" {
       {
         Action   = ["s3:*"]
         Effect   = "Allow"
-        Resource = ["${data.aws_s3_bucket.c1.arn}", "${data.aws_s3_bucket.d1.arn}", "${data.aws_s3_bucket.d2.arn}"]
+        Resource = ["${data.aws_s3_bucket.c1.arn}/*", "${data.aws_s3_bucket.d1.arn}/*", "${data.aws_s3_bucket.d2.arn}/*"]
       },
       {
         Action   = ["s3:DeleteObject", "s3:DeleteObjectVersion"]

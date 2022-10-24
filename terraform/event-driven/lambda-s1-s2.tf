@@ -38,7 +38,7 @@ resource "aws_iam_policy" "a5" {
       {
         Action   = ["s3:*"]
         Effect   = "Allow"
-        Resource = ["${data.aws_s3_bucket.b1.arn}", "${data.aws_s3_bucket.c1.arn}"]
+        Resource = ["${data.aws_s3_bucket.b1.arn}/*", "${data.aws_s3_bucket.c1.arn}/*"]
       }
     ]
   })
