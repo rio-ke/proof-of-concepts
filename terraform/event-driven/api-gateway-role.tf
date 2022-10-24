@@ -23,6 +23,19 @@ resource "aws_iam_policy" "apigateway" {
       {
         Effect = "Allow",
         Action = [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:DescribeLogGroups",
+          "logs:DescribeLogStreams",
+          "logs:PutLogEvents",
+          "logs:GetLogEvents",
+          "logs:FilterLogEvents"
+        ],
+        Resource = "*"
+      },
+      {
+        Effect = "Allow",
+        Action = [
           "sqs:GetQueueUrl",
           "sqs:ChangeMessageVisibility",
           "sqs:ListDeadLetterSourceQueues",
