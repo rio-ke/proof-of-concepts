@@ -36,6 +36,11 @@ resource "aws_iam_policy" "c6" {
         Resource = ["${aws_sqs_queue.c4.arn}", "${data.aws_sqs_queue.alert.arn}"]
       },
       {
+        Action   = ["s3:ListBucket"]
+        Effect   = "Allow"
+        Resource = ["${data.aws_s3_bucket.c1.arn}", "${data.aws_s3_bucket.d1.arn}", "${data.aws_s3_bucket.d2.arn}"]
+      },
+      {
         Action   = ["s3:*"]
         Effect   = "Allow"
         Resource = ["${data.aws_s3_bucket.c1.arn}/*", "${data.aws_s3_bucket.d1.arn}/*", "${data.aws_s3_bucket.d2.arn}/*"]
