@@ -181,23 +181,32 @@ pcs resource group add resourcegroup virtualip lvm webfsone webfstwo  webserver
 pcs constraint order promote drbd_clusterdb_clone then start resourcegroup INFINITY
 pcs constraint colocation add resourcegroup  with master drbd_clusterdb_clone INFINITY
 pcs resource create ftpserver systemd:vsftpd --group resourcegroup
+```
 
-#mv /etc/my.cnf /jino2/my.cnf
-#mkdir -p /jino2/data
-#vim /jino2/my.cnf
+**MySQL presteps**
+
+```bash
+mv /etc/my.cnf /drbd-mysql/my.cnf
+mkdir -p /drbd-mysql/data
+vim /drbd-mysql/my.cnf
 datadir=/drbd-mysql/data
 bind-address=192.168.122.100
 (or)
 bind-address=0.0.0.0
-mysql_install_db --no-defaults --datadir=/jino2/data
-chown -R mysql:mysql /jino2/
-pcs resource create dbserver ocf:heartbeat:mysql config="/jino2/my.cnf" datadir="/jino2/data" pid="/var/lib/mysql/mysql.pid" socket="/var/lib/mysql/mysql.sock" user="mysql" group="mysql" additional_parameters="--user=mysql" --group resourcegroup
+
+mysql_install_db --no-defaults --datadir=/drbd-mysql/data
+chown -R mysql:mysql /drbd-mysql/
+pcs resource create dbserver ocf:heartbeat:mysql config="/drbd-mysql/my.cnf" datadir="/drbd-mysql/data" pid="/var/lib/mysql/mysql.pid" socket="/var/lib/mysql/mysql.sock" user="mysql" group="mysql" additional_parameters="--user=mysql" --group resourcegroup
+```
+
+```bash
 mysql –h 192.168.0.4 –u root –p
 GRANT ALL ON *.* TO 'root'@'%' IDENTIFIED BY 'MyDBpassword';
 FLUSH PRIVILEGES;
 CREATE DATABASE cluster_db;
+```
 
-
+```bash
 pcs resource defaults resource-stickiness=100
 pcs resource op defaults timeout=240s
 pcs stonith describe fence_ipmilan
