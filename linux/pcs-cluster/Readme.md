@@ -21,7 +21,10 @@ hostnamectl set-hostname node1
 ```bash
 yum update -y
 # install packages like httpd, drbd, pcs
-yum install pacemaker drbd pcs psmisc policycoreutils-python httpd -y
+rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
+rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-3.el7.elrepo.noarch.rpm
+yum install -y kmod-drbd84 drbd84-utils -y
+yum install pacemaker pcs psmisc policycoreutils-python httpd -y
 # disble the selinux
 setenforce 0
 # disable the firewalld
