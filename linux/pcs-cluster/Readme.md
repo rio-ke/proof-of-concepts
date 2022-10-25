@@ -196,14 +196,18 @@ mv /etc/my.cnf /drbd-dbdata/my.cnf
 mkdir -p /drbd-dbdata/data
 vim /drbd-dbdata/my.cnf
 datadir=/drbd-dbdata/data
-bind-address=192.168.122.100
-(or)
 bind-address=0.0.0.0
+```
 
+**initiate the mysql cluster**
+
+```bash
 mysql_install_db --no-defaults --datadir=/drbd-dbdata/data
 chown -R mysql:mysql /drbd-dbdata/
 pcs resource create dbserver ocf:heartbeat:mysql config="/drbd-dbdata/my.cnf" datadir="/drbd-dbdata/data" pid="/var/lib/mysql/mysql.pid" socket="/var/lib/mysql/mysql.sock" user="mysql" group="mysql" additional_parameters="--user=mysql" --group resourcegroup
 ```
+
+**mysql service validation**
 
 ```bash
 mysql –h 192.168.0.4 –u root –p
@@ -212,19 +216,7 @@ FLUSH PRIVILEGES;
 CREATE DATABASE cluster_db;
 ```
 
-```bash
-pcs resource defaults resource-stickiness=100
-pcs resource op defaults timeout=240s
-pcs stonith describe fence_ipmilan
-pcs cluster cib stonith_cfg
-pcs -f stonith_cfg stonith create ipmi-fencing fence_ipmilan pcmk_host_list="node1 node2" ipaddr=10.0.0.1 login=testuser passwd=acd123
-pcs -f stonith_cfg property set stonith-enabled=true
-pcs -f stonith_cfg property
-pcs cluster cib-push stonith_cfg --config
-
-pcs cluster stop node2
-stonith_admin --reboot node2
-```
+**drbd issues findings**
 
 **Recover a split brain**
 
@@ -266,6 +258,23 @@ EOF
 chmod 755 /drbd-webdata/crm_logger.sh
 pcs resource create ClusterMon-External ClusterMon user=apache update=10 extra_options="-E /usr/local/bin/crm_logger.sh --watch-fencing" htmlfile=/drbd-webdata/cluster_mon.html pidfile=/var/run/crm_mon-external.pid clone
 ```
+
+**stonith configuration**
+
+```bash
+pcs resource defaults resource-stickiness=100
+pcs resource op defaults timeout=240s
+pcs stonith describe fence_ipmilan
+pcs cluster cib stonith_cfg
+pcs -f stonith_cfg stonith create ipmi-fencing fence_ipmilan pcmk_host_list="node1 node2" ipaddr=10.0.0.1 login=testuser passwd=acd123
+pcs -f stonith_cfg property set stonith-enabled=true
+pcs -f stonith_cfg property
+pcs cluster cib-push stonith_cfg --config
+pcs cluster stop node2
+stonith_admin --reboot node2
+```
+
+
 **reference**
 
 ```bash
