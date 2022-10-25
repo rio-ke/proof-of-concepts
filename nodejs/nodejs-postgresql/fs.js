@@ -1,8 +1,7 @@
 var fs = require("fs");
 
 const readTheContentFromFile = (pathLocation) => {
-  data = fs.readFileSync(pathLocation);
-  return data.toString();
+  return fs.readFileSync(pathLocation).toString();
 };
 
 module.exports = readTheContentFromFile;
