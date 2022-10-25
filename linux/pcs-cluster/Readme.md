@@ -170,7 +170,7 @@ lvcreate --name drbd-dbdata --size 2G drbd-vg
 # (optional): vgchange -ay drbd-vg   (active Volume group)
 # (optional): vgchange -an drbd-vg   (Deactive Volume group)
 pcs cluster auth node1 node2 -u hacluster -p .
-pcs cluster setup --name mycluster node1 node2
+pcs cluster setup --name fourtimes node1 node2
 pcs cluster start --all
 pcs cluster enable --all
 pcs property set stonith-enabled=false
