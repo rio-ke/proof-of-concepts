@@ -182,12 +182,12 @@ pcs -f drbd_cfg resource create drbd_clusterdb ocf:linbit:drbd drbd_resource=clu
 pcs -f drbd_cfg resource master drbd_clusterdb_clone drbd_clusterdb master-max=1 master-node-max=1 clone-max=2 clone-node-max=1 notify=true
 pcs cluster cib-push drbd_cfg
 pcs resource create lvm ocf:heartbeat:LVM volgrpname=drbd-vg
-pcs resource create webfsone Filesystem device="/dev/drbd-vg/drbd-webdata" directory="/drbd-webdata" fstype="xfs"
-pcs resource create webfstwo Filesystem device="/dev/drbd-vg/drbd-dbdata" directory="/drbd-dbdata" fstype="xfs"
+pcs resource create webdata Filesystem device="/dev/drbd-vg/drbd-webdata" directory="/drbd-webdata" fstype="xfs"
+pcs resource create dbdata Filesystem device="/dev/drbd-vg/drbd-dbdata" directory="/drbd-dbdata" fstype="xfs"
 pcs resource create virtualip ocf:heartbeat:IPaddr2 ip=192.168.0.200 cidr_netmask=24
 pcs resource create webserver ocf:heartbeat:apache configfile=/etc/httpd/conf/httpd.conf statusurl="http://localhost/server-status"
-pcs resource group add resourcegroup virtualip lvm webfsone webfstwo  webserver
-pcs constraint order promote drbd_clusterdb_clone then start resourcegroup INFINITY
+pcs resource group add resourcegroup virtualip lvm webdata dbdata  webserver
+pcs constraint order promote drbd_clusterdb_clone then start resourcegroup  # INFINITY
 pcs constraint colocation add resourcegroup  with master drbd_clusterdb_clone INFINITY
 pcs resource create ftpserver systemd:vsftpd --group resourcegroup
 ```
