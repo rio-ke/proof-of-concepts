@@ -1,4 +1,3 @@
-  
     https://wiki.myhypervisor.ca/books/linux/page/drbd-pacemaker-corosync-mysql-cluster-centos7
 
 **server configuration**
@@ -167,10 +166,10 @@ pvcreate /dev/drbd0
 vgcreate drbd-vg /dev/drbd0
 lvcreate --name drbd-webdata --size 2G drbd-vg
 lvcreate --name drbd-dbdata --size 2G drbd-vg
-mkfs.xfs /dev/drbd-vg/drbd-webdata 
-mkfs.xfs /dev/drbd-vg/drbd-dbdata 
-# (optional): vgchange -ay drbd-vg   (active Volume group)
-# (optional): vgchange -an drbd-vg   (Deactive Volume group)
+mkfs.xfs /dev/drbd-vg/drbd-webdata
+mkfs.xfs /dev/drbd-vg/drbd-dbdata
+# optional: vgchange -ay drbd-vg   #=> active Volume group
+# optional: vgchange -an drbd-vg   #=> Deactive Volume group
 pcs cluster auth node1 node2 -u hacluster -p .
 pcs cluster setup --name fourtimes node1 node2
 pcs cluster start --all
@@ -192,7 +191,7 @@ pcs constraint colocation add resourcegroup  with master drbd_clusterdb_clone IN
 pcs resource create ftpserver systemd:vsftpd --group resourcegroup
 ```
 
-**MySQL presteps**
+**MySQL integrated with pcs cluster**
 
 ```bash
 mv /etc/my.cnf /drbd-dbdata/my.cnf
@@ -307,7 +306,6 @@ chmod 755 /jino1/crm_logger.sh
 
 pcs resource create ClusterMon-External ClusterMon user=apache update=10 extra_options="-E /usr/local/bin/crm_logger.sh --watch-fencing" htmlfile=/jino1/cluster_mon.html pidfile=/var/run/crm_mon-external.pid clone
 ```
-
 
 **Recover a split brain**
 
