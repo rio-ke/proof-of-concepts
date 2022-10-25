@@ -59,6 +59,7 @@ def getObjectDetails(buckeName, fileName):
 def lambda_handler(event, context):
     while True:
         res = requests.get(apiGatewayUrl)
+        # res = requests.get(apiGatewayUrl, headers={"x-apigw-api-id": apiGatewayId})
         if res.status_code == 200:
             stageOne = res.json()
             if stageOne['ReceiveMessageResponse']['ReceiveMessageResult']['messages'] == None:
