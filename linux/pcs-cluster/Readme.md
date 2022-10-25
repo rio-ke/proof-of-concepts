@@ -75,13 +75,13 @@ resource clusterdb {
   }
   on node1 {
     device /dev/drbd0;
-    disk /dev/xvdb;
+    disk /dev/sdb;
     address 192.168.0.104:7788;
     flexible-meta-disk internal;
   }
  on node2 {
     device /dev/drbd0;
-    disk /dev/xvdb;
+    disk /dev/sdb;
     address 192.168.0.105:7788;
     meta-disk internal;
   }
