@@ -284,3 +284,10 @@ http://blog.zorangagic.com/2016/02/drbd.html
 http://avid.force.com/pkb/articles/en_US/Compatibility/Troubleshooting-DRBD-on-MediaCentral#A
 http://sheepguardingllama.com/2011/06/drbd-error-device-is-held-open-by-someone/
 ```
+
+
+**active-active cluster from active-passive cluster**
+
+Configure SONITH. It will help you to fix this issue. or else it is not possible to complete
+
+![image](https://user-images.githubusercontent.com/57703276/197835585-d9ef7962-023a-4755-9b78-3c6af61ff636.png)
