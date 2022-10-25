@@ -27,7 +27,7 @@ yum update -y
 rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
 rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-3.el7.elrepo.noarch.rpm
 yum install -y kmod-drbd84 drbd84-utils -y
-yum install pacemaker pcs psmisc policycoreutils-python httpd -y
+yum install pacemaker pcs psmisc policycoreutils-python httpd -y vim
 # disble the selinux
 setenforce 0
 # disable the firewalld
@@ -121,7 +121,7 @@ drbdadm -- --overwrite-data-of-peer primary clusterdb
 
 ```bash
 mkdir /drbd-webdata
-mkdir /drbd-mysql
+mkdir /drbd-dbdata
 ```
 
 **lvm configuration change both node1 and node2**
@@ -166,7 +166,7 @@ drbdadm primary --force clusterdb
 pvcreate /dev/drbd0
 vgcreate drbd-vg /dev/drbd0
 lvcreate --name drbd-webdata --size 2G drbd-vg
-lvcreate --name drbd-mysql --size 2G drbd-vg
+lvcreate --name drbd-dbdata --size 2G drbd-vg
 # (optional): vgchange -ay drbd-vg   (active Volume group)
 # (optional): vgchange -an drbd-vg   (Deactive Volume group)
 pcs cluster auth node1 node2 -u hacluster -p .
@@ -181,7 +181,7 @@ pcs -f drbd_cfg resource master drbd_clusterdb_clone drbd_clusterdb master-max=1
 pcs cluster cib-push drbd_cfg
 pcs resource create lvm ocf:heartbeat:LVM volgrpname=drbd-vg
 pcs resource create webfsone Filesystem device="/dev/drbd-vg/drbd-webdata" directory="/drbd-webdata" fstype="xfs"
-pcs resource create webfstwo Filesystem device="/dev/drbd-vg/drbd-mysql" directory="/drbd-mysql" fstype="xfs"
+pcs resource create webfstwo Filesystem device="/dev/drbd-vg/drbd-dbdata" directory="/drbd-dbdata" fstype="xfs"
 pcs resource create virtualip ocf:heartbeat:IPaddr2 ip=192.168.122.100 cidr_netmask=24 nic=etho
 pcs resource create webserver ocf:heartbeat:apache configfile=/etc/httpd/conf/httpd.conf statusurl="http://localhost/server-status"
 pcs resource group add resourcegroup virtualip lvm webfsone webfstwo  webserver
@@ -193,17 +193,17 @@ pcs resource create ftpserver systemd:vsftpd --group resourcegroup
 **MySQL presteps**
 
 ```bash
-mv /etc/my.cnf /drbd-mysql/my.cnf
-mkdir -p /drbd-mysql/data
-vim /drbd-mysql/my.cnf
-datadir=/drbd-mysql/data
+mv /etc/my.cnf /drbd-dbdata/my.cnf
+mkdir -p /drbd-dbdata/data
+vim /drbd-dbdata/my.cnf
+datadir=/drbd-dbdata/data
 bind-address=192.168.122.100
 (or)
 bind-address=0.0.0.0
 
-mysql_install_db --no-defaults --datadir=/drbd-mysql/data
-chown -R mysql:mysql /drbd-mysql/
-pcs resource create dbserver ocf:heartbeat:mysql config="/drbd-mysql/my.cnf" datadir="/drbd-mysql/data" pid="/var/lib/mysql/mysql.pid" socket="/var/lib/mysql/mysql.sock" user="mysql" group="mysql" additional_parameters="--user=mysql" --group resourcegroup
+mysql_install_db --no-defaults --datadir=/drbd-dbdata/data
+chown -R mysql:mysql /drbd-dbdata/
+pcs resource create dbserver ocf:heartbeat:mysql config="/drbd-dbdata/my.cnf" datadir="/drbd-dbdata/data" pid="/var/lib/mysql/mysql.pid" socket="/var/lib/mysql/mysql.sock" user="mysql" group="mysql" additional_parameters="--user=mysql" --group resourcegroup
 ```
 
 ```bash
