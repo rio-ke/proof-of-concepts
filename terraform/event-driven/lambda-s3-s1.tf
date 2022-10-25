@@ -40,8 +40,8 @@ resource "aws_iam_policy" "c2" {
 }
 
 resource "aws_iam_role_policy_attachment" "c2" {
-  role       = aws_iam_role.a2.name
-  policy_arn = aws_iam_policy.a2.arn
+  role       = aws_iam_role.c2.name
+  policy_arn = aws_iam_policy.c2.arn
 }
 
 data "archive_file" "c2" {
