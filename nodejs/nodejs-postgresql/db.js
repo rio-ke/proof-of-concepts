@@ -3,8 +3,8 @@ const { Pool } = require("pg");
 const HOST = process.env.HOST || "localhost";
 const DBPORT = process.env.HOST || 5432;
 
-const psqlDbConnection = (user, password, database, host=HOST, port = DBPORT) => {
-  return (pool = new Pool({ user, host, database, password, port }));
+const psqlDbConnection = (user, password, database, host=HOST, port=DBPORT) => {
+  return new Pool({ user, host, database, password, port });
 };
 
 const psqlDbQuery = (credential, query, callback) => {
@@ -24,7 +24,7 @@ psqlErrorHandler = (error) => {
     return { errorMessage: "Something is wrong with db." };
   else if (routine == "ParseFuncOrColumn")
     return { errorMessage: "Error with the default function in Psql" };
-  else if (routine != "auth_failed" && routine != "InitPostgres" && routine == "ParseFuncOrColumn" )
+  else if (routine != "auth_failed" && routine != "InitPostgres" && routine == "ParseFuncOrColumn")
     return { code, severity, routine };
   else return null;
 };
