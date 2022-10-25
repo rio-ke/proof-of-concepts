@@ -2,7 +2,7 @@
 
 | name  | ip address    |
 | ----- | ------------- |
-| node1 | 192.168.0.104  |
+| node1 | 192.168.0.104 |
 | node2 | 192.168.0.105 |
 
 **node1 and node2 make an /etc/hosts entry**
@@ -21,9 +21,9 @@ hostnamectl set-hostname node1
 ```bash
 yum update -y
 # install packages like httpd, drbd, pcs
-yum install pacemaker drbd pcs psmisc policycoreutils-python httpd
+yum install pacemaker drbd pcs psmisc policycoreutils-python httpd -y
 # disble the selinux
-setenforce
+setenforce 0
 # disable the firewalld
 systemctl stop firewalld
 systemctl disable firewalld
@@ -68,7 +68,7 @@ resource clusterdb {
   }
   syncer {
     rate 150M;
-    # Also Linbit told me so personally. 
+    # Also Linbit told me so personally.
     # The recommended range for this should be between 7 and 3833. The default value is 127
     al-extents 257;
     on-no-data-accessible io-error;
@@ -138,6 +138,7 @@ reboot
 **reconnect both node1 and node2**
 
 ```bash
+setenforce 0
 cat /proc/drbd
 systemctl start pcsd.service
 systemctl enable pcsd.service
@@ -163,7 +164,7 @@ lvcreate --name drbd-mysql --size 2G drbd-vg
 # (optional): vgchange -ay drbd-vg   (active Volume group)
 # (optional): vgchange -an drbd-vg   (Deactive Volume group)
 pcs cluster auth node1 node2 -u hacluster -p .
-pcs cluster setup --name mycluster node1 node2  
+pcs cluster setup --name mycluster node1 node2
 pcs cluster start --all
 pcs cluster enable --all
 pcs property set stonith-enabled=false
