@@ -210,10 +210,10 @@ pcs resource create dbserver ocf:heartbeat:mysql config="/drbd-dbdata/my.cnf" da
 **mysql service validation**
 
 ```bash
-mysql –h 192.168.0.4 –u root –p
+mysql –h 192.168.0.200 –u root –p
 GRANT ALL ON *.* TO 'root'@'%' IDENTIFIED BY 'MyDBpassword';
 FLUSH PRIVILEGES;
-CREATE DATABASE cluster_db;
+CREATE DATABASE rcmsdata;
 ```
 
 **drbd issues findings**
