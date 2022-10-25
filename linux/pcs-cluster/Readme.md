@@ -2,15 +2,15 @@
 
 | name  | ip address    |
 | ----- | ------------- |
-| node1 | 172.31.41.94  |
-| node2 | 172.31.38.157 |
+| node1 | 192.168.0.104  |
+| node2 | 192.168.0.105 |
 
 **node1 and node2 make an /etc/hosts entry**
 
 ```bash
 cat <<EOF >> /etc/hosts
-172.31.38.157 node2
-172.31.41.94 node1
+192.168.0.105 node2
+192.168.0.104 node1
 EOF
 hostnamectl set-hostname node2
 hostnamectl set-hostname node1
@@ -76,13 +76,13 @@ resource clusterdb {
   on node1 {
     device /dev/drbd0;
     disk /dev/xvdb;
-    address 172.31.41.94:7788;
+    address 192.168.0.104:7788;
     flexible-meta-disk internal;
   }
  on node2 {
     device /dev/drbd0;
     disk /dev/xvdb;
-    address 172.31.38.157:7788;
+    address 192.168.0.105:7788;
     meta-disk internal;
   }
 }
