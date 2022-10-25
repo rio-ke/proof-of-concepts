@@ -1,3 +1,6 @@
+  
+    https://wiki.myhypervisor.ca/books/linux/page/drbd-pacemaker-corosync-mysql-cluster-centos7
+
 **server configuration**
 
 | name  | ip address    |
