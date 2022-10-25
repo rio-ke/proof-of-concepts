@@ -307,3 +307,29 @@ chmod 755 /jino1/crm_logger.sh
 
 pcs resource create ClusterMon-External ClusterMon user=apache update=10 extra_options="-E /usr/local/bin/crm_logger.sh --watch-fencing" htmlfile=/jino1/cluster_mon.html pidfile=/var/run/crm_mon-external.pid clone
 ```
+
+
+**Recover a split brain**
+
+**Secondary node**
+
+```bash
+drbdadm secondary all
+drbdadm disconnect all
+drbdadm -- --discard-my-data connect all
+```
+
+**Primary node**
+
+```bash
+drbdadm primary all
+drbdadm disconnect all
+drbdadm connect all
+```
+
+**On both**
+
+```bash
+drbdadm status
+cat /proc/drbd
+```
