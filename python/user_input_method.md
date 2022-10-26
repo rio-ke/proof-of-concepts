@@ -22,7 +22,7 @@ It is not integer
 Enter something: 123
 It is integer
 ```
-**`user input using try`**
+**`user input using try/except`**
 ```py
 #!/usr/bin/env python3
 user_input = input("Enter the values: ")
