@@ -1,5 +1,6 @@
-## User Input
-**user input using function**
+User Input concept
+---
+**`user input using function`**
 ```py
 #!/usr/bin/env python3
 user_input = input("Enter the values: ")
@@ -21,7 +22,7 @@ It is not integer
 Enter something: 123
 It is integer
 ```
-**user input using try**
+**`user input using try`**
 ```py
 #!/usr/bin/env python3
 user_input = input("Enter the values: ")
