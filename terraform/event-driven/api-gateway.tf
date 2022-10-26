@@ -6,7 +6,7 @@ resource "aws_api_gateway_rest_api" "api" {
   name        = var.apigateway
   description = "This api to call sqs messages"
   endpoint_configuration {
-    types            = ["PRIVATE"] # ["REGIONAL"]
+    types = ["PRIVATE"]
     # vpc_endpoint_ids = []
   }
 }
@@ -142,4 +142,20 @@ resource "aws_api_gateway_method_settings" "get" {
     metrics_enabled = true
     logging_level   = "INFO"
   }
+}
+
+
+resource "aws_api_gateway_rest_api_policy" "api" {
+  rest_api_id = aws_api_gateway_rest_api.api.id
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Principal" : "*",
+        "Action" : "execute-api:Invoke",
+        "Resource" : "${aws_api_gateway_deployment.get.execution_arn}*"
+      }
+    ]
+  })
 }
