@@ -66,6 +66,7 @@ resource "aws_lambda_function" "b5" {
   runtime          = "python3.9"
   layers           = [aws_lambda_layer_version.l1.arn, aws_lambda_layer_version.l2.arn]
   timeout          = var.lambdaTimeout
+  tags             = merge(var.default_tags, { Name = "${var.stageTwoLambdaTwo}" })
   environment {
     variables = {
       metadataBucket = data.aws_s3_bucket.c1.id

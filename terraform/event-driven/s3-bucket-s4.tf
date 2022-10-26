@@ -28,9 +28,9 @@ data "aws_s3_bucket" "d2" {
 #   restrict_public_buckets = true
 # }
 
-data "aws_s3_bucket" "d3" {
-  bucket = var.logBucket
-}
+# data "aws_s3_bucket" "d3" {
+#   bucket = var.logBucket
+# }
 
 # resource "aws_s3_bucket" "d3" {
 #   bucket = var.logBucket

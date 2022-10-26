@@ -32,6 +32,8 @@ resource "aws_sns_topic" "b3" {
   name                        = var.stageTwoSns
   fifo_topic                  = true
   content_based_deduplication = true
+  tags                        = merge(var.default_tags, { Name = "${var.stageTwoSns}" })
+
 }
 
 resource "aws_sns_topic_policy" "b3" {

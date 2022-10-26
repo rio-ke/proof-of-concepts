@@ -21,3 +21,8 @@ stageThreeLambdaTwo = "jn-c6-lambda"
 infraZone           = "internet"
 lambdaTimeout       = 60
 sqsAlertQueue       = "alert"
+default_tags = {
+  Environment = "Test"
+  Owner       = "TFProviders"
+  Project     = "Test"
+}

@@ -4,7 +4,7 @@ variable "stageTwoBucket" {}
 variable "stageThreeBucket" {}
 variable "successBucket" {}
 variable "failureBucket" {}
-variable "logBucket" {}
+# variable "logBucket" {}
 variable "apigateway" {}
 variable "stageOneSns" {}
 variable "stageTwoSns" {}
@@ -22,3 +22,7 @@ variable "infraZone" {}
 variable "lambdaTimeout" {}
 variable "sqsAlertQueue" {}
 
+variable "default_tags" {
+  description = "Default Tags for resources created by terraform"
+  type        = map(string)
+}

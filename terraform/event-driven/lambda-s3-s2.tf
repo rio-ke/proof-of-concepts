@@ -71,6 +71,7 @@ resource "aws_lambda_function" "c6" {
   runtime          = "python3.9"
   layers           = [aws_lambda_layer_version.l1.arn, aws_lambda_layer_version.l2.arn]
   timeout          = var.lambdaTimeout
+  tags             = merge(var.default_tags, { Name = "${var.stageThreeLambdaTwo}" })
   # vpc_config {
     # subnet_ids         = []
     # security_group_ids = []

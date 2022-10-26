@@ -59,6 +59,7 @@ resource "aws_lambda_function" "c2" {
   runtime          = "python3.9"
   layers           = [aws_lambda_layer_version.l1.arn, aws_lambda_layer_version.l2.arn]
   timeout          = var.lambdaTimeout
+  tags             = merge(var.default_tags, { Name = "${var.stageThreeLambdaOne}" })
   environment {
     variables = {
       snsArn = aws_sns_topic.c3.arn

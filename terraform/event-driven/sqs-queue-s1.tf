@@ -4,6 +4,8 @@ resource "aws_sqs_queue" "a4" {
   content_based_deduplication = true
   deduplication_scope         = "messageGroup"
   fifo_throughput_limit       = "perQueue"
+  tags                        = merge(var.default_tags, { Name = "${var.stageOneSqs}" })
+
 }
 
 resource "aws_sqs_queue_policy" "a4" {

@@ -65,4 +65,5 @@ resource "aws_lambda_function" "a2" {
       infraZone = var.infraZone
     }
   }
+  tags = merge(var.default_tags, { Name = "${var.stageOneLambdaOne}" })
 }
