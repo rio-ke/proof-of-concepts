@@ -27,7 +27,7 @@ food = {'pizza': 324, 'sandwich': 78, 'hot dog': 90}
 food_list = list(food.values())
 print(food_list) #[324, 78, 90]
 ```
-
+**_Combine two functions with arguments_**
 ```py
 #!/usr/bin/env python3
 def addNumers(a, b):
@@ -42,11 +42,10 @@ print(toFindNumEvenOrOdd(addNumers(3,2)))
 ```
 **_Arbitary keyword Arguments_**
 ```py
-#!/usr/bin/env python3
- 
+#!/usr/bin/env python3 
 def main(**data):
     print(data)
-
+    
 main(name="ram",name1="ashli",name2="joe")
 
 # Output:
@@ -54,9 +53,9 @@ main(name="ram",name1="ashli",name2="joe")
 ```
 **_Arbitary Arguments Function_**
 ```py
+#!/usr/bin/env python3 
 def main(*data):
     print(data)
-
 
 main("ram", "ashli", "joe")
 
