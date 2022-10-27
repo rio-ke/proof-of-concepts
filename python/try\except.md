@@ -10,7 +10,8 @@ except Exception as e:
 
 # Output
 0
-
+```
+```py
 try:
     a = 20/0
 except Exception as e:
