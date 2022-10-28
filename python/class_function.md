@@ -1,3 +1,5 @@
+Object Oriented Program (OOP)
+---
 ```py
 #!/usr/bin/env python3
 
@@ -31,4 +33,16 @@ print(demo.__dict__)
 del (demo.age)
 print(demo.__dict__)
 
+```
+**_class with object_**
+```py
+#!/usr/bin/env python3
+class test:
+    course = "python"
+
+
+# object method
+a = test()
+print(a.course)
+print(test.__dict__)
 ```
