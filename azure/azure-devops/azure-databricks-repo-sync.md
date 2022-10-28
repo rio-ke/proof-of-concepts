@@ -1,3 +1,4 @@
+```yml
 steps:
   - bash: |
       dataBricksURL=$(databricks-url)
@@ -45,3 +46,4 @@ steps:
       repoInfo=$(curl -s -XPOST ${dataBricksURL}/api/2.0/repos -d @data.json  -H "Content-Type: application/json" -H "Authorization: Bearer ${bearerToken}" | jq .)
       echo "Synced repo update is: ${repoInfo}"
     displayName: "databricksSyncRepo"
+```
