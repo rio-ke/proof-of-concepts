@@ -1,13 +1,12 @@
 ```py
 #!/usr/bin/env python3
 
-
 class demo():
-    name = "ashli"
+    name = "kumar"
     age = 13
     
 # normal print method
-print(demo.name) # ashli
+print(demo.name) # kumar
 
 # get attribute 
 print(getattr(demo, 'age')) # 13
