@@ -16,4 +16,19 @@ setattr(demo, "name", "joe")
 print(demo.name) # joe
 setattr(demo, "gender", "female")
 print(demo.gender) # female
+
+# dot notation attribute
+demo.city = "Chennai"
+print(demo.city)  # Chennai
+
+#  module in dict method
+print(demo.__dict__)
+
+# delattr - delete the specified attribute
+delattr(demo,"city")
+print(demo.__dict__)
+
+del (demo.age)
+print(demo.__dict__)
+
 ```
