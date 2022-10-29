@@ -157,7 +157,7 @@ drbdadm primary --force clusterdb
 
 **drbd integrate with pcs cluster**
 
-**node2 terminal**
+**open drbd primary node terminal**
 
 ```bash
 pvcreate /dev/drbd0
