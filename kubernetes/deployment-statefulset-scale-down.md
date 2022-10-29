@@ -17,7 +17,7 @@ for namespace in $getNameSpaceDetails; do
             while true; do
                 runningDeploymentsetReplicas=$(kubectl get "${deploymentset}" -n "${namespace}" | egrep -v 'NAME' | awk '{print $2}' | awk -F/ '{print $1}')
                 if [ $totalDeploymentsetReplicas == $runningDeploymentsetReplicas ]; then
-                    echo "${deploymentset} has been scal down"
+                    echo "${deploymentset} has been scal down in ${namespace} namespace"
                     sleep 2
                     break
                 else
