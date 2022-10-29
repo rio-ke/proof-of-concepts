@@ -348,3 +348,27 @@ spec:
       port: 3306
 
 ```
+
+_Deamonset_
+
+```yml
+---
+apiVersion: apps/v1
+kind: DaemonSet # replica equal to number of nodes 20
+metadata:
+  name: frontend
+spec:
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+```
