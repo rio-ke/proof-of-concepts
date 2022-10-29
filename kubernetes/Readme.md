@@ -305,3 +305,46 @@ spec:
         ports:
         - containerPort: 80
 ```
+
+_statefulset_
+
+```yml
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: db
+spec:
+  serviceName: "db" # Mandatory**
+  replicas: 2
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+        - name: db
+          image: mysql:5.7
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: PasswordChange
+          ports:
+            - containerPort: 3306
+              name: db
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+spec:
+  type: ClusterIP
+  selector:
+    app: db
+  ports:
+    - name: mysql
+      port: 3306
+
+```
