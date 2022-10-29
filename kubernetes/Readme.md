@@ -415,3 +415,86 @@ spec:
             periodSeconds: 10
             failureThreshold: 30
 ```
+
+_init containers_
+
+```yml
+# Main service
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node
+spec:
+  replicas: 3
+  minReadySeconds: 10
+  selector:
+    matchLabels:
+      app: node
+  template:
+    metadata:
+      name: web
+      labels:
+        app: node
+    spec:
+      containers:
+      - name: node-server
+        image: jjino/node-redis:v1.0
+        ports:
+        - containerPort: 8080
+      initContainers:
+      - name: init
+        image: jjino/test:latest
+        args:
+        - sh
+        - -c
+        - while true; do STATUS=$(redis-cli -h redis -p 6379 ping); if [ $STATUS = "PONG" ]; then echo "Connected"; break; else echo "Not connected"; fi; sleep 10; done
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: node
+spec:
+  selector:
+    app: node
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+  type: LoadBalancer
+
+# dependency service
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      role: redis
+  template:
+    metadata:
+      name: redis
+      labels:
+        role: redis
+    spec:
+      containers:
+      - name: redis-server
+        image: redis
+        ports:
+        - containerPort: 6379 
+          protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+spec:
+  selector:
+    role: redis
+  type: ClusterIP
+  ports:
+  - port: 6379
+```
