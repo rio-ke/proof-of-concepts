@@ -498,3 +498,36 @@ spec:
   ports:
   - port: 6379
 ```
+
+_loadbalancer with targetPort_
+
+```yml
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: db
+  namespace: op
+  labels:
+    group: db
+spec:
+  containers:
+    - name: db
+      image: jjino/node-api:v1001
+      ports:
+        - containerPort: 9000 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+  namespace: op
+spec:
+  type: LoadBalancer 
+  selector:
+    group: db
+  ports:
+    - name: mysql
+      port: 80
+      targetPort: 9000
+```
