@@ -239,3 +239,45 @@ spec:
     - name: mysql
       port: 3306
 ```
+
+_secret map as a env_
+
+```yml
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: db
+data:
+  MYSQL_ROOT_PASSWORD: UGFzc3dvcmRDaGFuZ2UK
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: db
+  namespace: op
+  labels:
+    group: db
+spec:
+  containers:
+    - name: db
+      image: mysql:5.7
+      envFrom:
+        - secretRef:
+            name: db
+      ports:
+        - containerPort: 3306
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+  namespace: op
+spec:
+  type: ClusterIP
+  selector:
+    group: db
+  ports:
+    - name: mysql
+      port: 3306
+```
