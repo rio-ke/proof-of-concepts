@@ -197,3 +197,45 @@ _change the exist service type_
 ```bash
 kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
 ```
+
+_configmap map as a environment variable_
+
+```yml
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db
+data:
+  MYSQL_ROOT_PASSWORD: PasswordChange
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: db
+  namespace: op
+  labels:
+    group: db
+spec:
+  containers:
+    - name: db
+      image: mysql:5.7
+      envFrom:
+        - configMapRef:
+            name: db
+      ports:
+        - containerPort: 3306
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+  namespace: op
+spec:
+  type: ClusterIP
+  selector:
+    group: db
+  ports:
+    - name: mysql
+      port: 3306
+```
