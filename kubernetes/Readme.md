@@ -705,3 +705,32 @@ spec:
       port: 80
       targetPort: 9000
 ```
+
+_tolerations_
+
+```yml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      tolerations:
+      - key: "operation"
+        operator: "Exists"
+        effect: "NoSchedule" # supported values: "NoSchedule", "PreferNoSchedule", "NoExecute"
+      containers:
+        - name: frontend
+          image: nginx:latest
+          ports:
+            - containerPort: 80
+```
