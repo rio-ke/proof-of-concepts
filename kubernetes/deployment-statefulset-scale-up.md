@@ -18,7 +18,7 @@ for namespace in $getNameSpaceDetails; do
                     sleep 2
                     break
                 else
-                    echo "${deploymentset} is restarting"
+                    echo "${deploymentset} is restarting in ${namespace} namespace"
                     sleep 2
                 fi
             done
