@@ -531,3 +531,34 @@ spec:
       port: 80
       targetPort: 9000
 ```
+
+_nodePort service_
+
+```yml
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: db
+  labels:
+    group: db
+spec:
+  containers:
+    - name: db
+      image: jjino/node-api:v1001
+      ports:
+        - containerPort: 9000 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+spec:
+  type: NodePort
+  selector:
+    group: db
+  ports:
+    - name: mysql
+      port: 80
+      targetPort: 9000
+```
