@@ -14,7 +14,7 @@ for namespace in $getNameSpaceDetails; do
             while true; do
                 runningDeploymentsetReplicas=$(kubectl get "${deploymentset}" -n "${namespace}" | egrep -v 'NAME' | awk '{print $2}' | awk -F/ '{print $1}')
                 if [ $totalDeploymentsetReplicas == $runningDeploymentsetReplicas ]; then
-                    echo "${deploymentset} has been restarted"
+                    echo "${deploymentset} has been scale up in ${namespace} namespace"
                     sleep 2
                     break
                 else
@@ -26,6 +26,6 @@ for namespace in $getNameSpaceDetails; do
     else
         echo "No resources found in ${namespace}."
     fi
-    echo "Restart process has been completed in ${namespace} namespace"
+    echo "Scale up process has been completed in ${namespace} namespace"
 done
 ```
