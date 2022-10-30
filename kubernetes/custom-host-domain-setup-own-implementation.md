@@ -49,3 +49,5 @@ kubectl logs --namespace kube-system --selector k8s-app=kube-dns
 
 Results
   once everything validate you can use those domain name instead of ipaddress to configure the application level configurations.
+
+Reference[https://support.huaweicloud.com/intl/en-us/usermanual-cce/cce_01_0361.html]
