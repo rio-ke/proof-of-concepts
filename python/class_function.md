@@ -67,3 +67,19 @@ result = student()
 # call the function
 result.printStudentDetails()
 ```
+
+**_class - init python method_**
+```py
+#!/usr/bin/env python3
+class user:
+    def __init__(self, name):
+        print("Welcome to the python init method in python.")
+        self.name = name
+
+    def printAll(self):
+        print(self.name)
+    
+
+obj1 = user("joe")
+obj1.printAll()
+```
