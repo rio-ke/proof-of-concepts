@@ -50,7 +50,7 @@ student.printStudentDetails()
 # getattr - get the value using get attribute
 getattr(student,"printStudentDetails")()
 ```
-**_class with self argument and object_**
+**_class with self instance attribute and object_**
 ```py
 #!/usr/bin/env python3
 class student:
