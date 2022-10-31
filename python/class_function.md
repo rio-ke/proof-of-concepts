@@ -46,6 +46,9 @@ class student:
         print("Age  : ", student.age)
 
 student.printStudentDetails()
+
+# getattr - get the value using get attribute
+getattr(student,"printStudentDetails")()
 ```
 **_class with self argument and object_**
 ```py
