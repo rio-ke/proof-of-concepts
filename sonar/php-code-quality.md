@@ -1,26 +1,26 @@
 
-create the file under your repos
+_requiremenets_
 
 
 |PROJECT NAME| SONAR TOKEN| SONAR HOST |
 |---|---|---|
 |operation-unknown|sqp_66b2b406460c1d356c0b6d31216b8b693b5a7169|operation-unkown.ml|
 
-create the github secret under github repo settings
+_create the github secret under github repo settings_
 
 ```bash
 SONAR_TOKEN = sqp_66b2b406460c1d356c0b6d31216b8b693b5a7169
 SONAR_HOST_URL = operation-unkown.ml
 ```
 
-Create the file under you repo with project name
+_Create the file under you repo with project name_
 
 ```bash
 cat <<EOF > sonar-project.properties
 sonar.projectKey=operation-unknown
 EOF
 ```
-github workflows
+_github workflows_
 
 ```yml
 name: Build
