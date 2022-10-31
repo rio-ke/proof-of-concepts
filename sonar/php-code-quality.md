@@ -45,3 +45,8 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 ```
+
+ _result_
+ 
+ Fianlly you can view the result under the sonar project console.
+ 
