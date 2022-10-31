@@ -34,15 +34,19 @@ del (demo.age)
 print(demo.__dict__)
 
 ```
-**_class with object_**
+**_class with self argumetn and object_**
 ```py
 #!/usr/bin/env python3
-class test:
-    course = "python"
+class student:
+    name = "Ashli"
+    age = 20
 
+    def printStudentDetails(self):
+        print("Name : ", student.name)
+        print("Age  : ", student.age)
 
-# object method
-a = test()
-print(a.course)
-print(test.__dict__)
+# object
+result = student()
+# call the function
+result.printStudentDetails()
 ```
