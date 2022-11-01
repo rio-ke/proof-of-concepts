@@ -6,7 +6,6 @@
 actionState=$1
 setType=$2
 nameOfSets=$3
-nameSpace=$4
 
 if [[ $actionState == "restart" ]]; then
     getDeplomentsets=$(kubectl get "${setType}" 2>/dev/null | awk '{print $1}' | egrep -v 'NAME')
