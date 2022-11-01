@@ -77,11 +77,21 @@ fi
 
 ```
 
-execution
+deploymentset execution method for 
 
 ```bash
 # filename should be main.sh
 # bash main.sh up deploy frontend default
 # bash main.sh up deploy frontend default
 # bash main.sh down deploy frontend default
+```
+
+
+statefulset execution method for 
+
+```bash
+# filename should be main.sh
+# bash main.sh up sts frontend default
+# bash main.sh up sts frontend default
+# bash main.sh down sts frontend default
 ```
