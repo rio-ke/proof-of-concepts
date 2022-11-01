@@ -47,7 +47,7 @@ elif [[ $actionState == "up" ]]; then
             done
         done
     else
-        echo "No resources found in ${nameSpace}."
+        echo "No resources found"
     fi
 elif [[ $actionState == "down" ]]; then
     getDeplomentsets=$(kubectl get "${setType}" 2>/dev/null | awk '{print $1}' | egrep -v 'NAME')
