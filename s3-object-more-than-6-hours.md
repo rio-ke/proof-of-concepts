@@ -17,17 +17,18 @@ def findObjectMoreThan6Hours(bucketName):
     if listOfObjects != []:
         return json.dumps({
             "Alert": True,
+            "Bucket": bucketName,
             "objectLists": listOfObjects,
             "Action": True
         })
     else:
         return json.dumps({
             "Alert": False,
+            "Bucket": bucketName,
             "objectLists": listOfObjects,
             "Action": False
         })
 
 def lambda_handler(event, context):
     print(findObjectMoreThan6Hours(BUCKET))
-
 ```
