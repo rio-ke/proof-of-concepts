@@ -32,3 +32,7 @@ def findObjectMoreThan6Hours(bucketName):
 def lambda_handler(event, context):
     print(findObjectMoreThan6Hours(BUCKET))
 ```
+
+_result_
+
+![image](https://user-images.githubusercontent.com/57703276/199409282-3ebbb03f-1c89-45bb-9bfe-6a623859a894.png)
