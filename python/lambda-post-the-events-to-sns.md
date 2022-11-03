@@ -99,3 +99,5 @@ _search events in cloudwatch_
 { $.bucketName = "dsk-b1-bucket-s3" }
 { $.file = "mlutils.py" }
 ```
+
+https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/FilterAndPatternSyntax.html
