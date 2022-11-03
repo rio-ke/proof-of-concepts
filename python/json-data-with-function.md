@@ -1,4 +1,5 @@
-**_Get the values from json object_**
+_Get the values from json object_
+
 ```py
 #!/usr/bin/env python3
 import json
