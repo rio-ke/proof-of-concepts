@@ -1,7 +1,10 @@
-## Python if...else Statement
-**Python `if Statement` Flowchart**
+_python if else Statement_
+
+_if Statement_
 
 ![image](https://user-images.githubusercontent.com/57703276/195426333-e237ec19-5095-4973-b720-d1c7362804b5.png)
+
+_script_
 
 ```py
 #! /usr/bin/env python3
