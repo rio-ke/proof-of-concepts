@@ -1,9 +1,9 @@
-Dictionary:
-------------
+_Dictionary_
+
    `Python dictionary is an ordered collection of items. Each item of a dictionary has a key/value pair.`
 
-**Examples:**
-------------
+_Examples_
+
 ```py
 my_dict = {1: 'apple', 2: 'ball'}
 print(my_dict[1]) # {1: 'apple', 2: 'ball'}
