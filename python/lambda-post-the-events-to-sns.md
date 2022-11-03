@@ -100,4 +100,4 @@ _search events in cloudwatch_
 { $.file = "mlutils.py" }
 ```
 
-https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/FilterAndPatternSyntax.html
+[cloudwatch](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/FilterAndPatternSyntax.html)
