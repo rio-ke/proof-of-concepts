@@ -97,5 +97,5 @@ _search events in cloudwatch_
 
 ```conf
 { $.bucketName = "dsk-b1-bucket-s3" }
-{ $.file = "dsk-b1-bucket-s3" }
+{ $.file = "mlutils.py" }
 ```
