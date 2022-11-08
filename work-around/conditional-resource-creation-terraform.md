@@ -10,9 +10,19 @@ resource "aws_s3_bucket" "b" {
   bucket = "my-tf-test-bucket"
 }
 
-# If you want to create the resource that value should be set as true
+variable "resourceCreation" {}
+```
 
-variable "resourceCreation" {
-  default = false
-}
+
+dev.tfvars
+
+```tf
+resourceCreation=true
+```
+
+
+prod.tfvars
+
+```tf
+resourceCreation=true
 ```
