@@ -1,7 +1,6 @@
 ---
-- name: Update repositories cache and install "foo" package
+- name: Update repositories cache
   apt:
-    name: foo
     update_cache: yes
 
 - name: Install a ssm .deb package from the internet.
