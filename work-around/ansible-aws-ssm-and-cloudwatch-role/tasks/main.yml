@@ -3,7 +3,7 @@
   apt:
     update_cache: yes
 
-- name: Install a ssm .deb package from the internet.
+- name: Install a amazon-ssm-agent .deb package from the internet.
   apt:
     deb: https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/debian_amd64/amazon-ssm-agent.deb
 
@@ -13,7 +13,7 @@
     name: amazon-ssm-agent
     enabled: yes
 
-- name: Install a cloudwatch .deb package from the internet.
+- name: Install a amazon-cloudwatch-agent .deb package from the internet.
   apt:
     deb: https://s3.amazonaws.com/amazoncloudwatch-agent/ubuntu/amd64/latest/amazon-cloudwatch-agent.deb
 
