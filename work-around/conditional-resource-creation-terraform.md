@@ -20,9 +20,7 @@ dev.tfvars
 resourceCreation=true
 ```
 
-other environment should be
-
-prod.tfvars
+other environment should be prod.tfvars
 
 ```tf
 resourceCreation=false
