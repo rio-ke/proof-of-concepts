@@ -8,6 +8,7 @@ wget https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/debian_amd64
 sudo dpkg -i amazon-ssm-agent.deb
 sudo systemctl start amazon-ssm-agent
 sudo systemctl enable amazon-ssm-agent
+sleep 5
 wget https://s3.amazonaws.com/amazoncloudwatch-agent/ubuntu/amd64/latest/amazon-cloudwatch-agent.deb
 sudo dpkg -i amazon-cloudwatch-agent.deb
 sudo mkdir -p /usr/share/collectd/
