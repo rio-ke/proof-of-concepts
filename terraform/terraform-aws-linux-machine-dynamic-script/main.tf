@@ -1,7 +1,7 @@
 data "template_file" "scriptData" {
   template = file("scripts/main.sh")
   vars = {
-    efsvol = var.ssmParameterName
+    ssmParameterName = var.ssmParameterName
   }
 }
 
