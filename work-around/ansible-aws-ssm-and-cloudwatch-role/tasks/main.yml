@@ -1,0 +1,44 @@
+---
+- name: Update repositories cache and install "foo" package
+  apt:
+    name: foo
+    update_cache: yes
+
+- name: install awscli pkg
+  apt:
+    name: awscli
+    state: present
+
+- name: Install a ssm .deb package from the internet.
+  apt:
+    deb: https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/debian_amd64/amazon-ssm-agent.deb
+
+- name: Make sure a amazon-ssm-agent service is running
+  systemd:
+    state: started
+    name: amazon-ssm-agent
+    enabled: yes
+
+- name: Install a cloudwatch .deb package from the internet.
+  apt:
+    deb: https://s3.amazonaws.com/amazoncloudwatch-agent/ubuntu/amd64/latest/amazon-cloudwatch-agent.deb
+
+- name: Create a directory if it does not exist
+  file:
+    path: /usr/share/collectd/
+    state: directory
+
+- name: Touch a file, using symbolic modes to set the permissions
+  file:
+    path: /usr/share/collectd/types.db
+    state: touch
+
+- name: Execute the command in remote shell
+  shell: |
+    "sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c ssm:{{ssmParameterName}}"
+
+- name: Make sure a amazon-cloudwatch-agent service is running
+  systemd:
+    state: started
+    name: amazon-cloudwatch-agent
+    enabled: yes

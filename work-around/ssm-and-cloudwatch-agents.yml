@@ -1,0 +1,6 @@
+---
+- name: Install aws amazon-ssm-agent and amazon-cloudwatch-agent
+  roles:
+    - role: ansible-aws-ssm-and-cloudwatch-role
+      vars:
+        ssmParameterName: "ubuntu"
