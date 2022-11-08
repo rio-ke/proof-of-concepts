@@ -4,11 +4,6 @@
     name: foo
     update_cache: yes
 
-- name: install awscli pkg
-  apt:
-    name: awscli
-    state: present
-
 - name: Install a ssm .deb package from the internet.
   apt:
     deb: https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/debian_amd64/amazon-ssm-agent.deb
