@@ -11,7 +11,7 @@ resource "aws_lambda_layer_version" "layer" {
 }
 
 resource "aws_iam_role" "role" {
-  name = "${var.lambdaRole}-role"
+  name = "${var.SensitiveFileMonitorLambdaRole}-role"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -28,7 +28,7 @@ resource "aws_iam_role" "role" {
 }
 
 resource "aws_iam_policy" "policy" {
-  name = "${var.lambdaRole}-role-policy"
+  name = "${var.SensitiveFileMonitorLambdaRole}-role-policy"
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -40,7 +40,7 @@ resource "aws_iam_policy" "policy" {
       {
         Effect   = "Allow",
         Action   = ["logs:CreateLogStream", "logs:PutLogEvents"],
-        Resource = ["arn:aws:logs:${var.region}:${data.aws_caller_identity.account.account_id}:log-group:/aws/lambda/${var.lambdaRole}:*"]
+        Resource = ["arn:aws:logs:${var.region}:${data.aws_caller_identity.account.account_id}:log-group:/aws/lambda/${var.SensitiveFileMonitorLambdaRole}:*"]
       },
       {
         Action   = ["s3:*"]
@@ -81,7 +81,7 @@ data "archive_file" "zip" {
 resource "aws_lambda_function" "lambda" {
   filename         = data.archive_file.zip.output_path
   source_code_hash = data.archive_file.zip.output_base64sha256
-  function_name    = var.lambdaRole
+  function_name    = var.SensitiveFileMonitorLambdaRole
   role             = aws_iam_role.role.arn
   handler          = "c6.lambda_handler"
   runtime          = "python3.9"
@@ -95,7 +95,7 @@ resource "aws_lambda_function" "lambda" {
 }
 
 resource "aws_cloudwatch_event_rule" "rule" {
-  name                = "${var.lambdaRole}-event-rule"
+  name                = "${var.SensitiveFileMonitorLambdaRole}-event-rule"
   description         = "Everyday every one hour trigger"
   schedule_expression = "cron(0 */1 ? * * *)"
 }
@@ -107,7 +107,7 @@ resource "aws_cloudwatch_event_target" "event" {
 }
 
 resource "aws_lambda_permission" "permission" {
-  statement_id  = "${var.lambdaRole}InvokePermission"
+  statement_id  = "${var.SensitiveFileMonitorLambdaRole}InvokePermission"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.lambda.function_name
   principal     = "events.amazonaws.com"
@@ -115,12 +115,11 @@ resource "aws_lambda_permission" "permission" {
 }
 
 
-variable "lambdaRole" {}
+variable "SensitiveFileMonitorLambdaRole" {}
 variable "monitorBucketName" {}
 variable "lambdaTimeout" {}
 variable "region" {}
 
 
 # https://docs.snowflake.com/en/user-guide/data-load-s3-config-aws-iam-role.html
-
 ```
