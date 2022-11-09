@@ -86,6 +86,4 @@ if [[ $option == 1 || $option == 2 || $option == 3 ]]; then
 		fi
 	done
 fi
-echo "Do you want to continue with scaling part <y/n> : "
-
 ```
