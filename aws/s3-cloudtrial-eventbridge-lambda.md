@@ -14,7 +14,7 @@ _event object_
   }
 }
 ```
-_lambda direct call from eventbridge_
+_The lambda will be triggered by the event bridge_
 
 ```py
 import json
@@ -30,7 +30,7 @@ def lambda_handler(event, context):
 ```
 
 
-_event bridge message sent to sqs and trigger the lambda_
+_eventbridge message is sent to sqs, and sqs will trigger the lambda_
 
 ```py
 import json
