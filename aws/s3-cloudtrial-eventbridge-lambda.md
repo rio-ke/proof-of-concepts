@@ -19,9 +19,12 @@ _lambda code_
 ```py
 import json
 
-def lambda_handler(event, context):
+def findBuckeAndfileName(event):
     s3Events = event['detail']['requestParameters']
     bucketName=s3Events['bucketName']
     fileName=s3Events['key']
-    print(json.dumps({'bucketName': bucketName, 'fileName': fileName}))
+    return json.dumps({'bucketName': bucketName, 'fileName': fileName})
+    
+def lambda_handler(event, context):
+    print(findBuckeAndfileName(event))
 ```
