@@ -1,4 +1,19 @@
 
+event object
+
+```json
+{
+  "source": ["aws.s3"],
+  "detail-type": ["AWS API Call via CloudTrail"],
+  "detail": {
+    "eventSource": ["s3.amazonaws.com"],
+    "eventName": ["PutObject"],
+    "requestParameters": {
+      "bucketName": ["jn-logs-s3"]
+    }
+  }
+}
+```
 
 ```json
 {
