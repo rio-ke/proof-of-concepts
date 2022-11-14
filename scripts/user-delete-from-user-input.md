@@ -2,7 +2,7 @@
 
 ```bash
 #!/usr/bin/env bash
-
+set -x
 USERNAME="jino dodo"
 
 for NAME in $USERNAME; do
