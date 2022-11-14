@@ -8,12 +8,12 @@ USERNAME="jino dodo"
 for NAME in $USERNAME; do
     USER=$(cat /etc/passwd | grep ${NAME} | awk -F: '{print $1}')
     if [ "${USER}" == "${NAME}" ]; then
-        echo "${USER} is available in the system"
-        echo "${NAME} is going to be delete"
+        echo "${USER} user is available in the system"
+        echo "${NAME} user is going to be delete"
         sudo killall -u "${NAME}"
         sudo userdel -r "${NAME}"
     else
-        echo "${NAME} is not available in the system"
+        echo "${NAME} user is not available in the system"
     fi
     echo ""
 done
