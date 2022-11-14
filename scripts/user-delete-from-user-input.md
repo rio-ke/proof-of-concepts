@@ -18,3 +18,12 @@ for NAME in $USERNAME; do
     echo ""
 done
 ```
+
+```bash
+#!/usr/bin/env bash
+USERNAME="jino ubuntu"
+for NAME in $USERNAME; do
+    USER=$(cat /etc/passwd | grep "${NAME}" | awk -F: '{print $1}')
+    echo "${USER}"
+done
+```
