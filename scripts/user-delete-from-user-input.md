@@ -19,6 +19,8 @@ for NAME in $USERNAME; do
 done
 ```
 
+_validation_
+
 ```bash
 #!/usr/bin/env bash
 USERNAME="jino ubuntu"
