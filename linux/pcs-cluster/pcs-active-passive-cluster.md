@@ -192,6 +192,9 @@ pcs resource create ftpserver systemd:vsftpd --group resourcegroup
 **MySQL integrated with pcs cluster**
 
 ```bash
+sudo rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2022
+sudo yum localinstall https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm
+sudo yum install mysql-community-server
 mv /etc/my.cnf /drbd-dbdata/my.cnf
 mkdir -p /drbd-dbdata/data
 vim /drbd-dbdata/my.cnf
