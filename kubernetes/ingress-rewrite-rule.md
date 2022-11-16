@@ -30,14 +30,14 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: modops-incidents-modops-model
+                name: ml-incidents-modops-model
                 port:
                   number: 80
           - path: /api/ml/ml-changes-modops-model/(.*)
             pathType: Prefix
             backend:
               service:
-                name: modops-changes-modops-model
+                name: ml-changes-modops-model
                 port:
                   number: 80
 ```
