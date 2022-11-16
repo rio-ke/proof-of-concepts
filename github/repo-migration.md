@@ -28,3 +28,9 @@ git remote rm origin
 git remote add origin "https://${targetGitUsername}:${targetGitPassword}@github.com/operation-unknown/api-automation-testing.git"
 git push origin --all --force
 ```
+
+if any error while cloning the repos
+
+```bash
+git config --global http.sslverify false
+```
