@@ -5,6 +5,10 @@ _dependencies_
 * [git lfs package needs to be installed](
 https://docs.github.com/en/repositories/working-with-files/managing-large-files/installing-git-large-file-storage)
 
+```bash
+sudo apt install git-lfs
+git lfs install
+```
 _commands_
 
 ```bash
