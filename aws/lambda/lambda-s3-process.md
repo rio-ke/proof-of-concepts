@@ -4,6 +4,10 @@ _lambda-s3-process.md_
 import json
 import urllib
 import boto3
+import logging
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 s3Client = boto3.client('s3')
 sqsClient = boto3.client('sqs')
@@ -31,8 +35,8 @@ def findS3EventObject(event):
             
     return listOfObjetcts
 
-def printLogging(sourceBucketName, fileName):
-    return json.dumps({ 'Bucket': sourceBucketName, 'fileName': fileName })
+def printLogging(sourceBucketName, fileName, state):
+    return json.dumps({ 'Bucket': sourceBucketName, 'fileName': fileName, 'processState': state })
     
 def getObjectDetails(buckeName, fileName):
     _results = s3Client.list_objects(Bucket=buckeName, Prefix=fileName)
@@ -57,15 +61,16 @@ def lambda_handler(event, context):
             sourceBucketName = urllib.parse.unquote_plus(s3Data['s3']['bucketName'])
             fileName = urllib.parse.unquote_plus(s3Data['s3']['key'])
             receiptHandle = s3Data['receiptHandle']
-            eventObject = { 'Bucket': sourceBucketName, 'fileName': fileName }
-            print(printLogging(sourceBucketName, fileName))
             
             getSourceBucketObjectAvailablility = getObjectDetails(sourceBucketName, fileName)
             if getSourceBucketObjectAvailablility == True:
                 createNewTags(sourceBucketName, fileName, "zone", "internet")
                 copyS3Object(sourceBucketName, metadataBucket, fileName)
+                copyS3Object(sourceBucketName, scanningBucket, fileName)
                 deleteS3Object(sourceBucketName, fileName)
                 deleteQueueMessage(sqsUrl, receiptHandle)
+                logger.info(printLogging(sourceBucketName, fileName, "Success"))
             else:
                 deleteQueueMessage(sqsUrl, receiptHandle)
+                logger.error(printLogging(sourceBucketName, fileName, "Failure"))
 ```
