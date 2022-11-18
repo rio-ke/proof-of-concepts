@@ -7,8 +7,17 @@ import boto3
 s3Client = boto3.client('s3', config=boto3.session.Config(signature_version='s3v4',))
 
 def preSignedURL(bucketName, filename, ExpiresIn):
-    return s3Client.generate_presigned_url('get_object', Params={'Bucket': bucketName, 'Key': filename}, ExpiresIn=600)
-
+    return s3Client.generate_presigned_url('get_object', Params={'Bucket': bucketName, 'Key': filename}, ExpiresIn=ExpiresIn)
+    
+def validationDict(data):
+    bucketName = 'bucketName' in data.keys()
+    keyfile = 'keyfile' in data.keys()
+    expires = 'expires' in data.keys()
+    if (bucketName == True and keyfile == True and expires == True):
+        return True
+    else:
+        return False
+        
 def lambda_handler(event, context):
     requestMethod = event['httpMethod']
 
