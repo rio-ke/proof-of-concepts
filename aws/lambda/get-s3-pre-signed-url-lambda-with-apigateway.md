@@ -59,7 +59,7 @@ def lambda_handler(event, context):
 
                 if searchFileFromBucket == True:
                     preSignedUrl=preSignedURL(bucketName, keyfile, expires)
-                    return returnSuccessStatus(statusCode, message, preSignedUrl)
+                    return returnSuccessStatus(200, "Success", preSignedUrl)
                 else: 
                     return returnStatus(403, 'Requested bucket and file does not exist')
             else:
