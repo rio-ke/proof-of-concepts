@@ -7,15 +7,6 @@ import boto3
 s3ClientInit = boto3.client('s3')
 s3Client = boto3.client('s3', config=boto3.session.Config(signature_version='s3v4',))
 
-
-'''
-{
-    "bucketName": "a3-s3-bucket-success",
-    "keyfile": "Jino.J.pdf",
-    "expires": 100
-}
-'''
-
 def getObjectDetails(buckeName, fileName):
     _results = s3ClientInit.list_objects(Bucket=buckeName, Prefix=fileName)
     return 'Contents' in _results
@@ -30,11 +21,11 @@ def findABucketObject(bucketName, fileName):
                     return True
                 else:
                     return False
-            # else: 
-            #     return False
     else: 
         return False
 
+def returnStatus(statusCode, message, data=None):
+    return {'statusCode': statusCode,'body': json.dumps({ 'statusCode': statusCode, "message": message, "data": data })}
 
 
 def preSignedURL(bucketName, filename, ExpiresIn):
@@ -66,15 +57,14 @@ def lambda_handler(event, context):
 
                 if searchFileFromBucket == True:
                     preSignedUrl=preSignedURL(bucketName, keyfile, expires)
-                    return {'statusCode': 200,'body': json.dumps({ 'statusCode': 200, 'message': 'Success', 'url': preSignedUrl})}
-
+                    return returnStatus(statusCode, message, preSignedUrl)
                 else: 
-                    return {'statusCode': 403,'body': json.dumps({ 'statusCode': 403, 'message': 'Requested bucket and file does not exist' })}
+                    return returnStatus(403, 'Requested bucket and file does not exist')
             else:
-                return {'statusCode': 403,'body': json.dumps({ 'statusCode': 403, 'message': 'Forbidden' })}
+                return returnStatus(403, "Forbidden")
         else:
-            return {'statusCode': 400,'body': json.dumps({ 'statusCode': 400, "message": "Bad Request"})}
+            return returnStatus(400, "Bad Request")
     else:
-        message = requestMethod + " is not allowed"
-        return {'statusCode': 400,'body': json.dumps({ 'statusCode': 400, "message": message })}
+        message = requestMethod + " method is not allowed"
+        return returnStatus(400, message)
 ```
