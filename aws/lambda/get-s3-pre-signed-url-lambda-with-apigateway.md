@@ -24,9 +24,11 @@ def findABucketObject(bucketName, fileName):
     else: 
         return False
 
-def returnStatus(statusCode, message, data=None):
+def returnSuccessStatus(statusCode, message, data=None):
     return {'statusCode': statusCode,'body': json.dumps({ 'statusCode': statusCode, "message": message, "data": data })}
 
+def returnStatus(statusCode, message):
+    return {'statusCode': statusCode,'body': json.dumps({ 'statusCode': statusCode, "message": message })}
 
 def preSignedURL(bucketName, filename, ExpiresIn):
     return s3Client.generate_presigned_url('get_object', Params={'Bucket': bucketName, 'Key': filename}, ExpiresIn=ExpiresIn)
@@ -57,7 +59,7 @@ def lambda_handler(event, context):
 
                 if searchFileFromBucket == True:
                     preSignedUrl=preSignedURL(bucketName, keyfile, expires)
-                    return returnStatus(statusCode, message, preSignedUrl)
+                    return returnSuccessStatus(statusCode, message, preSignedUrl)
                 else: 
                     return returnStatus(403, 'Requested bucket and file does not exist')
             else:
