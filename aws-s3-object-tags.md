@@ -2,7 +2,7 @@
 
 ```py
 import boto3
-
+# https://docs.aws.amazon.com/lambda/latest/dg/with-s3-example.html
 def getBucjetSpecificTag(bucketName, fileName, tagKeyName):
     s3Client = boto3.client('s3')
     tags = s3Client.get_object_tagging(Bucket=bucketName, Key=fileName)
