@@ -5,8 +5,8 @@ name: $(Build.SourceBranchName) # Release Identifier
 resources:
   repositories:
     - repository: templates
-      name: ey-org/devops-build-templates
-      endpoint: apps for Insurance (1)
+      name: operation-unknown/proof-of-concepts
+      endpoint: apps for dataset
       type: github
       ref: refs/heads/end-to-end-automation
 
@@ -55,11 +55,11 @@ variables:
       value: $(Build.SourceBranchName)-$(Build.BuildNumber)
       #value: $(Build.SourceBranchName)
   - group: service-connections-actuaite
-  - group: azure-feed-artifacts-service-connections
+  - group: azure-feed-artifacts
   - group: apps-repository
   - group: release-params-actuaite
   - name: module
-    value: nexusforinsurance
+    value: apps-dataset
   - name: component
     value: dataset-app
   - name: projectName
@@ -81,5 +81,115 @@ extends:
     qaDeploy: ${{ parameters.qaDeploy }}
     uatDeploy: ${{ parameters.uatDeploy }}
     demoDeploy: ${{ parameters.demoDeploy }}
+```
+_main template_
 
+It comes from another repository in the name of 
+```yml
+---
+parameters:
+  - name: build
+    type: boolean
+    default: false
+  - name: devDeploy
+    type: boolean
+    default: false
+  - name: qaDeploy
+    type: boolean
+    default: false
+  - name: uatDeploy
+    type: boolean
+    default: false
+  - name: demoDeploy
+    type: boolean
+    default: false
+
+stages:
+  - ${{ if eq(parameters['build'], 'true' ) }}:
+      - stage: build
+        pool:
+          vmImage: ubuntu-latest
+        variables:
+          environmet: build
+        jobs:
+          - job: build
+            steps:
+              - bash: |
+                  echo "demo deployment process" 
+                  echo $(environmet)
+                  echo $(imageName)
+                  echo $(DEMO_DATA)
+
+  - ${{ if eq(parameters['devDeploy'], 'true' ) }}:
+      - stage: development
+        pool:
+          vmImage: ubuntu-latest
+        variables:
+          environmet: dev
+        jobs:
+          - job: development
+            steps:
+              - bash: |
+                  echo "development deployment process" 
+                  echo $(imageName)
+                  echo $(DEV_DATA) 
+                  echo $(environmet)
+
+  - ${{ if eq(parameters['qaDeploy'], 'true' ) }}:
+      - stage: qa
+        pool:
+          vmImage: ubuntu-latest
+        variables:
+          environmet: qa
+        jobs:
+          - deployment: qa
+            displayName: qa
+            environment: "demo"
+            strategy:
+              runOnce:
+                deploy:
+                  steps:
+                    - bash: |
+                        echo "qa deployment process" 
+                        echo $(imageName)
+                        echo $(QA_DATA) 
+                        echo $(environmet)
+
+  - ${{ if eq(parameters['uatDeploy'], 'true' ) }}:
+      - stage: uat
+        pool:
+          vmImage: ubuntu-latest
+        variables:
+          environmet: uat
+        jobs:
+          - deployment: uat
+            displayName: uat
+            environment: "demo"
+            strategy:
+              runOnce:
+                deploy:
+                  steps:
+                    - bash: |
+                        echo "uat deployment process" 
+                        echo $(imageName)
+                        echo $(UAT_DATA) 
+                        echo $(environmet)
+
+  - ${{ if eq(parameters['demoDeploy'], 'true' ) }}:
+      - stage: demo
+        pool:
+          vmImage: ubuntu-latest
+        variables:
+          environmet: uat
+        jobs:
+          - deployment: demo
+            displayName: demo
+            environment: "demo"
+            strategy:
+              runOnce:
+                deploy:
+                  steps:
+                    - bash: |
+                        echo $(imageName)
+                        echo $(DEMO_DATA)
 ```
