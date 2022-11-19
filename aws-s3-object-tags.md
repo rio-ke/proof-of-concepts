@@ -16,3 +16,6 @@ fileName =
 bucketName = 
 print(getBucjetSpecificTag(bucketName, fileName, tagKeyName))
 ```
+
+
+<!-- https://docs.aws.amazon.com/lambda/latest/dg/with-s3-example.html -->
