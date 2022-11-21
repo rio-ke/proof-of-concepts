@@ -12,10 +12,10 @@ git lfs install
 _commands_
 
 ```bash
-sourceGitUsername="xxxx"
-sourceGitPassword="xxxx"
-targetGitUsername="zzzz"
-targetGitPassword="zzzz"
+sourceGitUsername="sourceGitUsername"
+sourceGitPassword="sourceGitPATToken"
+targetGitUsername="targetGitUsername"
+targetGitPassword="targetGitPATToken"
 
 git clone --bare "https://${sourceGitUsername}:${sourceGitPassword}@github.com/fourtimes/api-automation-testing.git"
 cd api-automation-testing.git
