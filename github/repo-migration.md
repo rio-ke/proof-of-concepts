@@ -1,8 +1,6 @@
 **repo-migration from one to another with all files**
 
-_dependencies_
-
-* [git lfs package needs to be installed](
+[_dependencies_](
 https://docs.github.com/en/repositories/working-with-files/managing-large-files/installing-git-large-file-storage)
 
 ```bash
