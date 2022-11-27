@@ -17,7 +17,8 @@ module "instanceCreation" {
       subnet_id              = "subnet-01ea1a2a4e35f21d9"
       vpc_security_group_ids = ["sg-0c99085f74912d1fe"]
       key_name               = "demo"
-    }
+    },
+    three = {}
   }
   alarm_actions    = ["arn:aws:sns:ap-southeast-1:676487226531:demo"]
   alarm_ok_actions = ["arn:aws:sns:ap-southeast-1:676487226531:demo"]
