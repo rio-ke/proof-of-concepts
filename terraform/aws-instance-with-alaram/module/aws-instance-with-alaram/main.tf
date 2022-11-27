@@ -7,16 +7,15 @@ data "template_file" "scriptData" {
 
 resource "aws_instance" "instance" {
   for_each               = var.instancesDetails
-  ami                    = lookup(each.value, "ami", "ami-0b0dcb5067f052a63")
+  ami                    = lookup(each.value, "ami", "ami-0af2f764c580cc1f9")
   instance_type          = lookup(each.value, "instance_type", "t2.micro")
-  subnet_id              = lookup(each.value, "subnet_id", "subnet-6c54b206")
-  vpc_security_group_ids = lookup(each.value, "vpc_security_group_ids", [])
+  subnet_id              = lookup(each.value, "subnet_id", "subnet-01ea1a2a4e35f21d9")
+  vpc_security_group_ids = lookup(each.value, "vpc_security_group_ids", ["sg-0c99085f74912d1fe"])
   key_name               = lookup(each.value, "key_name", "demo")
   iam_instance_profile   = lookup(each.value, "iam_instance_profile", local.iam_instance_profile)
   user_data              = data.template_file.scriptData.rendered
   tags                   = merge({ Name = each.key }, tomap(lookup(each.value, "tags", local.tags)))
 }
-
 
 resource "aws_cloudwatch_metric_alarm" "ec2Cpu" {
   for_each                  = var.instancesDetails
