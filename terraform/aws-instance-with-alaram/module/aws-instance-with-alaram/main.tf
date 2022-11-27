@@ -57,17 +57,17 @@ resource "aws_cloudwatch_metric_alarm" "ec2memory" {
 }
 
 resource "aws_cloudwatch_event_rule" "rule" {
-    for_each       = var.instancesDetails
-    event_bus_name = "default"
-    event_pattern  = jsonencode({
-        detail      = {
-            instance-id = [aws_instance.instance[each.key].id]
-            state       = ["terminated","stopped"]
-        }
-        detail-type = ["EC2 Instance State-change Notification"]
-        source      = ["aws.ec2",]
-    })
-    is_enabled     = true
-    name           = "${each.key}-event-rule-mon-status"
-    tags           = merge({ Name = each.key }, tomap(lookup(each.value, "tags", local.tags)))
+  for_each       = var.instancesDetails
+  event_bus_name = "default"
+  event_pattern  = jsonencode({
+      detail      = {
+          instance-id = [aws_instance.instance[each.key].id]
+          state       = ["terminated","stopped"]
+      }
+      detail-type = ["EC2 Instance State-change Notification"]
+      source      = ["aws.ec2",]
+  })
+  is_enabled     = true
+  name           = "${each.key}-event-rule-mon-status"
+  tags           = merge({ Name = each.key }, tomap(lookup(each.value, "tags", local.tags)))
 }
