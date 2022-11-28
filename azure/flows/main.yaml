@@ -48,7 +48,6 @@ stages:
           ENVIRONMENT_NAME: BUILD
           ENVIRONMENT_SHORT_NAME: build
           APPLICATION_INSIGHTS_JAR_DOWNLOAD_PIPELINE_ID: 6052
-          applicationInsightsConnectionString: "InstrumentationKey=6d911f90-4155-4986-9b27-1cfd5eacc47b;IngestionEndpoint=https://eastus-1.in.applicationinsights.azure.com/"
         jobs:
           - job: build
             steps:
