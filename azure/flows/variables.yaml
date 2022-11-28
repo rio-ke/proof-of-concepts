@@ -1,0 +1,73 @@
+---
+variables:
+  # COMMON APPS SPECIFIC VARIABLES
+  MODULE: "operation-unknown"
+  COMPONENT: "proof-of-concepts"
+  BUILD_ENVIRONMENT: "dev"
+  PROJECT_NAME: "$(MODULE)-$(COMPONENT)"
+  IMAGE_NAME: "$(PROJECT_NAME)/$(BUILD_ENVIRONMENT)"
+
+  # BUILD ENVIRONMENT VARIABLE
+  BUILD_AZURE_ACR_NAME: "buildacr"                                       # from BUILD_VARIABLE_GROUP variable group
+  BUILD_AZURE_ACR_URL: "buildacr.azurecr.io"                             # from BUILD_VARIABLE_GROUP variable group
+  BUILD_ADO_ACR_AQUASEC_SERVICE_CONNECTION_NAME: "Aquasec ACR"           # from BUILD_VARIABLE_GROUP variable group
+  BUILD_ADO_ACR_SERVICE_CONNECTION_NAME: "buildacr"                      # from BUILD_VARIABLE_GROUP variable group
+  BUILD_ADO_ARTIFACTS_FEED_NAME:                                         # from BUILD_VARIABLE_GROUP variable group
+  BUILD_ADO_ARTIFACTS_FEED_AUTH_USERNAME:                                # from BUILD_VARIABLE_GROUP variable group
+  BUILD_ADO_ARTIFACTS_FEED_AUTH_PAT_TOKEN:                               # from BUILD_VARIABLE_GROUP variable group
+  BUILD_CHECKMARX_REPO_NAME: "default"                                   # from BUILD_VARIABLE_GROUP variable group
+  BUILD_TOOL: mvn
+  # OPTIONAL => This is default value for optional variables
+  BUILD_MVN_POM_FILE_PATH: "$(COMPONENT)/pom.xml"
+  BUILD_JDK_VERSION: 11
+  BUILD_DOCKER_FILE_PATH: "$(COMPONENT)/Dockerfile"
+  BUILD_SONAR_COVERAGE_EXCLUSIONS: ""
+  BUILD_SONAR_EXCLUSIONS: ""
+
+  ## DEVELOPMENT ENVIRONMENT VARIABLE FOR RELEASE
+  DEV_AZURE_SUBSCRIPTION: 'dev-subscription'               # from RELEASE_VARIABLE_GROUP variable group
+  DEV_AZURE_RESOURCE_GROUP: "devrg"                        # from RELEASE_VARIABLE_GROUP variable group
+  DEV_AZURE_AKS_CLUSTER_NAME: "devaks"                     # from RELEASE_VARIABLE_GROUP variable group
+  DEV_AZURE_CONTAINER_REGISTRY: "devxxx"                   # from RELEASE_VARIABLE_GROUP variable group
+  DEV_AZURE_ACR_URL: "devxxx.azurecr.io"                   # from RELEASE_VARIABLE_GROUP variable group
+  DEV_AZURE_AKS_INGRESS_PATH: '/dev/address/validation/app'
+  DEV_AZURE_AKS_INGRESS_HOSTS: '{dev.google.com}'
+  DEV_AZURE_AKS_NAMESPACE: "dev"
+  DEV_AZURE_AKS_PORT: 8080
+  DEV_APPS_SPRING_PROFILE: "dev"
+
+# QA ENVIRONMENT VARIABLE FOR RELEASE
+  QA_AZURE_SUBSCRIPTION: "qa-subscription"
+  QA_AZURE_RESOURCE_GROUP: "qa-resource-group"
+  QA_AZURE_AKS_CLUSTER_NAME: "qa-aks-cluster"
+  QA_AZURE_CONTAINER_REGISTRY: "qa-acr"
+  QA_AZURE_AKS_INGRESS_PATH: "qa/path"
+  QA_AZURE_AKS_INGRESS_HOSTS: "{qa.google.com}"
+  QA_AZURE_AKS_NAMESPACE: "qa"
+  QA_AZURE_AKS_PORT: "8080"
+  QA_AZURE_ACR_URL: "qaxxx.azurecr.io"
+  QA_APPS_SPRING_PROFILE: "dev"
+
+# UAT ENVIRONMENT VARIABLE FOR RELEASE
+  UAT_AZURE_SUBSCRIPTION: "uat-subscription"
+  UAT_AZURE_RESOURCE_GROUP: "uat-resource-group"
+  UAT_AZURE_AKS_CLUSTER_NAME: "uat-aks-cluster"
+  UAT_AZURE_CONTAINER_REGISTRY: "uat-acr"
+  UAT_AZURE_AKS_INGRESS_PATH: "qa/path"
+  UAT_AZURE_AKS_INGRESS_HOSTS: "{uat.google.com.com}"
+  UAT_AZURE_AKS_NAMESPACE: "ncdev"
+  UAT_AZURE_AKS_PORT: "8080"
+  UAT_AZURE_ACR_URL: "uatxxx.azurecr.io"
+  UAT_APPS_SPRING_PROFILE: dev
+
+# DEMO ENVIRONMENT VARIABLE FOR RELEASE
+  DEMO_AZURE_SUBSCRIPTION: "demo-subscription"
+  DEMO_AZURE_RESOURCE_GROUP: "demo-resource-group"
+  DEMO_AZURE_AKS_CLUSTER_NAME: "demo-aks-cluster"
+  DEMO_AZURE_CONTAINER_REGISTRY: "demo-acr"
+  DEMO_AZURE_AKS_INGRESS_PATH: "demo/path"
+  DEMO_AZURE_AKS_INGRESS_HOSTS: "{demo.google.com}"
+  DEMO_AZURE_AKS_NAMESPACE: "dev"
+  DEMO_AZURE_AKS_PORT: "8080"
+  DEMO_AZURE_ACR_URL: "demoxxx.azurecr.io"
+  DEMO_APPS_SPRING_PROFILE: dev
