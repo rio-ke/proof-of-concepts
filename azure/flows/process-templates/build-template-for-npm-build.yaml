@@ -1,0 +1,10 @@
+---
+parameters:
+  PERFORM_CHECKMARX: false
+  PERFORM_UNIT_TEST_WITH_COVERAGE: false
+  PERFORM_BUILD_BREAKER: false
+  
+steps:
+  - script: |
+      ls -R $(System.DefaultWorkingDirectory)
+    displayName: "Delete Target Folder"

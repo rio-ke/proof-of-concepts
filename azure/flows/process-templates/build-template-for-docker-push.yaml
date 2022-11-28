@@ -1,0 +1,26 @@
+---
+steps:
+  - script: |
+      [ ! -z "$(BUILD_AZURE_ACR_URL)" ]                    && echo "BUILD_AZURE_ACR_URL                    variable is valid" || exit 1
+      [ ! -z "$(BUILD_ADO_ACR_SERVICE_CONNECTION_NAME)" ]  && echo "BUILD_ADO_ACR_SERVICE_CONNECTION_NAME  variable is valid" || exit 1
+      [ ! -z "$(BUILD_AZURE_ACR_NAME)" ]                   && echo "BUILD_AZURE_ACR_NAME                   variable is valid" || exit 1
+      [ ! -z "$(IMAGE_NAME)" ]                             && echo "IMAGE_NAME                             variable is valid" || exit 1
+      [ ! -z "$(IMAGE_TAG)" ]                              && echo "IMAGE_TAG                              variable is valid" || exit 1
+    displayName: CONDITION docker variable validation
+  - task: Docker@1
+    displayName: Container registry login
+    inputs:
+      command: login
+      containerregistrytype: Container Registry
+      dockerRegistryEndpoint: $(BUILD_ADO_ACR_SERVICE_CONNECTION_NAME)
+  - task: Docker@1
+    inputs:
+      command: push
+      imageName: "$(BUILD_AZURE_ACR_URL)/$(IMAGE_NAME):$(IMAGE_TAG)"
+    displayName: "Push container"
+  - task: Docker@1
+    displayName: Container registry logout
+    inputs:
+      command: logout
+      containerregistrytype: Container Registry
+      dockerRegistryEndpoint: $(BUILD_ADO_ACR_SERVICE_CONNECTION_NAME)

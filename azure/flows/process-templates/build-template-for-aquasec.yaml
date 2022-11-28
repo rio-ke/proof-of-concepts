@@ -1,0 +1,31 @@
+---
+steps:
+  - script: |
+      [[ ! -z "$(BUILD_AZURE_ACR_URL)" ]]                           && echo "BUILD_AZURE_ACR_URL                            variable is valid" || exit 1
+      [[ ! -z "$(BUILD_ADO_ACR_AQUASEC_SERVICE_CONNECTION_NAME)" ]] && echo "BUILD_ADO_ACR_AQUASEC_SERVICE_CONNECTION_NAME  variable is valid" || exit 1
+      [[ ! -z "$(BUILD_AZURE_ACR_NAME)" ]]                          && echo "BUILD_AZURE_ACR_NAME                           variable is valid" || exit 1
+      [[ ! -z "$(IMAGE_NAME)" ]]                                    && echo "IMAGE_NAME                                     variable is valid" || exit 1
+      [[ ! -z "$(IMAGE_TAG)" ]]                                     && echo "IMAGE_TAG                                      variable is valid" || exit 1
+    displayName: CONDITION aquasec variable validation
+  - task: Docker@2
+    displayName: AquaSec Login
+    inputs:
+      containerRegistry: $(BUILD_ADO_ACR_AQUASEC_SERVICE_CONNECTION_NAME)
+      command: login
+  - task: aquasec.aquasec.showCommits.aquasecScanner@4
+    displayName: "Image Scanning"
+    inputs:
+      image: "$(BUILD_AZURE_ACR_URL)/$(IMAGE_NAME):$(IMAGE_TAG)"
+      scanType: "local"
+      register: false
+      hideBase: false
+      showNegligible: false
+      windowsScannerVersion: "4.2.0"
+      scanner: "acemnldaquacr01.azurecr.io/aquasec/scanner:latest"
+      runOptions: "--privileged"
+      registry: $(BUILD_AZURE_ACR_NAME)
+      connection: "Aqua-Console"
+      customFlags: "--direct-cc"
+      caCertificates: true
+      scanMalware: true
+      registerCompliant: true

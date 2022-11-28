@@ -1,0 +1,4 @@
+---
+steps:
+  - template: process-templates/release-template-for-release-variable-validations.yaml
+  - template: process-templates/release-template-for-helm-deployment.yaml

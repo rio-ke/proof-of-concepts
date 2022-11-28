@@ -1,0 +1,18 @@
+---
+steps:
+  - script: |
+      [[ ! -z "$(COMPONENT)" ]]                                     && echo "$(COMPONENT) variable is valid"  || exit 1
+      [[ ! -z "$(BUILD_TOOL)" ]]                                    && echo "$(BUILD_TOOL) variable is valid" || exit 1
+      [[ ! -z "$(BUILD_ADO_ARTIFACTS_FEED_AUTH_PAT_TOKEN)" ]]       && echo "$(BUILD_ADO_ACR_AQUASEC_SERVICE_CONNECTION_NAME) variable is valid" || exit 1
+      [[ ! -z "$(BUILD_ADO_ARTIFACTS_FEED_NAME)" ]]                 && echo "$(BUILD_ADO_ARTIFACTS_FEED_NAME) variable is valid"                 || exit 1
+      [[ ! -z "$(BUILD_ADO_ARTIFACTS_FEED_AUTH_USERNAME)" ]]        && echo "$(BUILD_ADO_ARTIFACTS_FEED_AUTH_USERNAME) variable is valid"        || exit 1
+      [[ ! -z "$(APPLICATION_INSIGHTS_JAR_DOWNLOAD_PIPELINE_ID)" ]] && echo "$(APPLICATION_INSIGHTS_JAR_DOWNLOAD_PIPELINE_ID) variable is valid" || exit 1
+    displayName: CONDITION build variable validation
+  - script: |
+      echo "COMPONENT                                     value is $(COMPONENT)"
+      echo "BUILD_TOOL                                    value is $(BUILD_TOOL)"
+      echo "BUILD_ADO_ARTIFACTS_FEED_NAME                 value is $(BUILD_ADO_ARTIFACTS_FEED_NAME)"
+      echo "BUILD_ADO_ARTIFACTS_FEED_AUTH_USERNAME        value is $(BUILD_ADO_ARTIFACTS_FEED_AUTH_USERNAME)"
+      echo "BUILD_ADO_ARTIFACTS_FEED_AUTH_PAT_TOKEN       value is $(BUILD_ADO_ARTIFACTS_FEED_AUTH_PAT_TOKEN)"
+      echo "APPLICATION_INSIGHTS_JAR_DOWNLOAD_PIPELINE_ID value is $(APPLICATION_INSIGHTS_JAR_DOWNLOAD_PIPELINE_ID)"
+    displayName: DEBUG optional value

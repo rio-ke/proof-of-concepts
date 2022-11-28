@@ -1,0 +1,34 @@
+---
+steps:
+  - script: |
+      [[ ! -z "$(ENVIRONMENT_SHORT_NAME)" ]]        && echo "$(ENVIRONMENT_SHORT_NAME)                        variable is valid" || exit 1
+      [[ ! -z "$(ENVIRONMENT_NAME)" ]]              && echo "$(ENVIRONMENT_NAME)                              variable is valid" || exit 1
+      [[ ! -z "$(AZURE_SUBSCRIPTION)" ]]            && echo "$(ENVIRONMENT_NAME)_AZURE_SUBSCRIPTION           variable is valid" || exit 1
+      [[ ! -z "$(AZURE_RESOURCE_GROUP)" ]]          && echo "$(ENVIRONMENT_NAME)_AZURE_RESOURCE_GROUP         variable is valid" || exit 1
+      [[ ! -z "$(AZURE_AKS_CLUSTER_NAME)" ]]        && echo "$(ENVIRONMENT_NAME)_AZURE_AKS_CLUSTER_NAME       variable is valid" || exit 1
+      [[ ! -z "$(AZURE_CONTAINER_REGISTRY)" ]]      && echo "$(ENVIRONMENT_NAME)_AZURE_CONTAINER_REGISTRY     variable is valid" || exit 1
+      [[ ! -z "$(AZURE_AKS_INGRESS_PATH)" ]]        && echo "$(ENVIRONMENT_NAME)_AZURE_AKS_INGRESS_PATH       variable is valid" || exit 1
+      [[ ! -z "$(AZURE_AKS_INGRESS_HOSTS)" ]]       && echo "$(ENVIRONMENT_NAME)_AZURE_AKS_INGRESS_HOSTS      variable is valid" || exit 1
+      [[ ! -z "$(AZURE_AKS_NAMESPACE)" ]]           && echo "$(ENVIRONMENT_NAME)_AZURE_AKS_NAMESPACE          variable is valid" || exit 1
+      [[ ! -z "$(AZURE_AKS_PORT)" ]]                && echo "$(ENVIRONMENT_NAME)_AZURE_AKS_PORT               variable is valid" || exit 1
+      [[ ! -z "$(APPS_SPRING_PROFILE)" ]]           && echo "$(ENVIRONMENT_NAME)_APPS_SPRING_PROFILE          variable is valid" || exit 1
+      [[ ! -z "$(AZURE_ACR_URL)" ]]                 && echo "$(ENVIRONMENT_NAME)_AZURE_ACR_URL                variable is valid" || exit 1
+      [[ ! -z "$(IMAGE_NAME)" ]]                    && echo "IMAGE_NAME                                       variable is valid" || exit 1
+      [[ ! -z "$(IMAGE_TAG)" ]]                     && echo "IMAGE_TAG                                        variable is valid" || exit 1
+    displayName: CONDITION release pipeline variable validation
+  - script: |
+      echo "ENVIRONMENT_SHORT_NAME        value is $(ENVIRONMENT_SHORT_NAME)"
+      echo "ENVIRONMENT_NAME              value is $(ENVIRONMENT_NAME)"
+      echo "AZURE_SUBSCRIPTION            value is $(AZURE_SUBSCRIPTION)"
+      echo "AZURE_RESOURCE_GROUP          value is $(AZURE_RESOURCE_GROUP)"
+      echo "AZURE_AKS_CLUSTER_NAME        value is $(AZURE_AKS_CLUSTER_NAME)"
+      echo "AZURE_CONTAINER_REGISTRY      value is $(AZURE_CONTAINER_REGISTRY)"
+      echo "AZURE_AKS_INGRESS_PATH        value is $(AZURE_AKS_INGRESS_PATH)"
+      echo "AZURE_AKS_INGRESS_HOSTS       value is $(AZURE_AKS_INGRESS_HOSTS)"
+      echo "AZURE_AKS_NAMESPACE           value is $(AZURE_AKS_NAMESPACE)"
+      echo "AZURE_AKS_PORT                value is $(AZURE_AKS_PORT)"
+      echo "APPS_SPRING_PROFILE           value is $(APPS_SPRING_PROFILE)"
+      echo "AZURE_ACR_URL                 value is $(AZURE_ACR_URL)"
+      echo "IMAGE_NAME                    value is $(IMAGE_NAME)"
+      echo "IMAGE_TAG                     value is $(IMAGE_TAG)"
+    displayName: DEBUG build optional variable

@@ -1,0 +1,214 @@
+---
+parameters:
+  PERFORM_CHECKMARX: false
+  PERFORM_UNIT_TEST_WITH_COVERAGE: false
+  PERFORM_BUILD_BREAKER: false
+steps:
+  - script: |
+      ls -R $(System.DefaultWorkingDirectory)
+    displayName: "Delete Target Folder"
+  - task: DownloadSecureFile@1
+    inputs:
+      secureFile: xml-node-replace.xml
+    displayName: "Download secure files"
+  - task: DownloadSecureFile@1
+    inputs:
+      secureFile: replaceXMLNodes.py
+    displayName: "Download python script"
+  - task: DownloadBuildArtifacts@0
+    displayName: "Download Build Artifacts"
+    inputs:
+      buildType: specific
+      project: "80f31eb0-fecb-4190-bb63-d397a9bfee95"
+      pipeline: "$(APPLICATION_INSIGHTS_JAR_DOWNLOAD_PIPELINE_ID)"
+      buildVersionToDownload: "latest"
+      downloadType: specific
+      itemPattern: "**"
+      downloadPath: "$(System.DefaultWorkingDirectory)"
+  - task: CopyFiles@2
+    displayName: "Copy jar file to: applicationinsights folder"
+    inputs:
+      SourceFolder: "$(System.DefaultWorkingDirectory)/drop"
+      Contents: |
+        applicationinsights-agent-3.1.1.jar
+        applicationinsights.json
+      TargetFolder: "$(System.DefaultWorkingDirectory)/$(COMPONENT)/applicationinsights"
+      condition: succeededOrFailed()
+  - task: CopyFiles@2
+    displayName: "Copy AI-Agent.xml file to: src/main/resources"
+    inputs:
+      SourceFolder: "$(System.DefaultWorkingDirectory)/drop"
+      Contents: |
+        AI-Agent.xml
+      TargetFolder: "$(System.DefaultWorkingDirectory)/$(COMPONENT)/src/main/resources"
+      condition: succeededOrFailed()
+  - powershell: |
+      cd '$(System.DefaultWorkingDirectory)/$(COMPONENT)/src/main/resources'
+      dir
+      cd '$(System.DefaultWorkingDirectory)/$(COMPONENT)/applicationinsights'
+      dir 
+      Get-Content -Path '$(System.DefaultWorkingDirectory)/$(COMPONENT)/applicationinsights/applicationinsights.json'
+      Write-Host "Before transform"
+    displayName: "PowerShell Script for Before transform"
+    # Update appsettings.json via FileTransform task.
+  - task: FileTransform@1
+    displayName: "File transformation: applicationinsights.json"
+    inputs:
+      folderPath: "$(System.DefaultWorkingDirectory)/$(COMPONENT)/applicationinsights"
+      targetFiles: "applicationinsights.json"
+      fileType: json
+  - powershell: |
+      cd '$(System.DefaultWorkingDirectory)/$(COMPONENT)/applicationinsights'
+      dir 
+      Get-Content -Path '$(System.DefaultWorkingDirectory)/$(COMPONENT)/applicationinsights/applicationinsights.json'
+      Write-Host "After transform"
+    displayName: "PowerShell Script for After transform"
+  # - script: |
+  #     find $(System.DefaultWorkingDirectory)/$(COMPONENT) -type f -name pom.xml -exec python $(Agent.TempDirectory)/replaceXMLNodes.py $(Agent.TempDirectory)/xml-node-replace.xml {} {} true \;
+  #   displayName: 'Transform pom.xml recursively'
+  # - task: DownloadSecureFile@1
+  #   inputs:
+  #     secureFile: mvn-settings.xml
+  #   displayName: 'Download secure files'
+  - script: |
+      cat > "${component}/settings.xml" <<EOF
+      <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                                    https://maven.apache.org/xsd/settings-1.0.0.xsd">
+        <servers>
+          <server>
+            <id>${azureFeedName}</id>
+            <username>${azureFeedUsername}</username>
+            <password>${azureFeedPatToken}</password>
+          </server>
+        </servers>
+      </settings>
+      EOF
+      cat "${component}/settings.xml"
+    env:
+      azureFeedName: $(BUILD_ADO_ARTIFACTS_FEED_NAME)
+      azureFeedUsername: $(BUILD_ADO_ARTIFACTS_FEED_AUTH_USERNAME)
+      azureFeedPatToken: $(BUILD_ADO_ARTIFACTS_FEED_AUTH_PAT_TOKEN)
+      component: $(COMPONENT)
+    displayName: "Create Maven Authentication file"
+  - task: SonarSource.sonarqube.15B84CA1-B62F-4A2A-A403-89B77A063157.SonarQubePrepare@4
+    displayName: "Prepare analysis on SonarQube"
+    inputs:
+      SonarQube: sonarqube
+      scannerMode: Other
+      extraProperties: |
+        sonar.projectKey=$(COMPONENT)
+        sonar.exclusions=$(BUILD_SONAR_EXCLUSIONS)
+        sonar.coverage.exclusions=$(BUILD_SONAR_COVERAGE_EXCLUSIONS)
+        sonar.test.exclusions=**/*Tests/**/*
+    condition: and(succeeded(), eq('${{ parameters.PERFORM_UNIT_TEST_WITH_COVERAGE }}', 'true'))
+  - task: Maven@3
+    inputs:
+      mavenPomFile: $(BUILD_MVN_POM_FILE_PATH)
+      mavenOptions: "-Xmx3072m"
+      options: "-U -s $(COMPONENT)/settings.xml"
+      javaHomeOption: "JDKVersion"
+      jdkVersionOption: $(BUILD_JDK_VERSION)
+      jdkArchitectureOption: "x64"
+      goals: "clean -Dmaven.test.skip=true deploy"
+    displayName: "Build"
+    condition: and(succeeded(), ne('${{ parameters.PERFORM_UNIT_TEST_WITH_COVERAGE }}', 'true'))
+  - task: Maven@3
+    inputs:
+      mavenPomFile: $(BUILD_MVN_POM_FILE_PATH)
+      mavenOptions: "-Xmx3072m"
+      options: "-U -s $(COMPONENT)/settings.xml"
+      javaHomeOption: "JDKVersion"
+      jdkVersionOption: $(BUILD_JDK_VERSION)
+      jdkArchitectureOption: "x64"
+      # testResultsFiles: '$(System.DefaultWorkingDirectory)/target/surefire-reports/*.xml'
+      testResultsFiles: "**/TEST-*.xml"
+      publishJUnitResults: false
+      codeCoverageToolOption: JaCoCo
+      isJacocoCoverageReportXML: true
+      sonarQubeRunAnalysis: true
+      goals: "clean -Dmaven.test.skip=false deploy"
+    displayName: "Build with TestCoverage"
+    continueOnError: true
+    condition: and(succeeded(), eq('${{ parameters.PERFORM_UNIT_TEST_WITH_COVERAGE }}', 'true'))
+  - task: SonarSource.sonarqube.291ed61f-1ee4-45d3-b1b0-bf822d9095ef.SonarQubePublish@4
+    displayName: "Publish Quality Gate Result"
+    condition: and(succeeded(), eq('${{ parameters.PERFORM_UNIT_TEST_WITH_COVERAGE }}', 'true'))
+  - powershell: |
+      $SonarURL="https://sonarqube.ey.com"
+      $ProjectKey= '$(COMPONENT)'
+      $token = [System.Text.Encoding]::UTF8.GetBytes("467fa399dbc5638101545c454eea25f8f97c27ab" + ":")
+      $base64 = [System.Convert]::ToBase64String($token)
+      $basicAuth = [string]::Format("Basic {0}", $base64)
+      try
+      {  
+        $headers = @{ Authorization = $basicAuth }
+        $url = "$($SonarURL)/api/qualitygates/project_status?projectKey=$($ProjectKey)"
+        $responseData = Invoke-WebRequest -Uri $url -Method Get -Headers $headers -UseBasicParsing
+        # write-host $responseData.content
+        $x = $responseData.content | ConvertFrom-Json
+        $sonarQualityGateResult = $x.projectStatus.status
+        if($sonarQualityGateResult -eq "ERROR")
+        {
+            write-host "CI failed due to Sonarqube quality Gate"
+            exit 1
+        }
+      }
+      catch
+      {
+        Write-Error $_.Exception.Message
+      }
+    displayName: "Fail if coverage fails"
+    condition: and(succeeded(), eq('${{ parameters.PERFORM_BUILD_BREAKER }}', 'true'), eq('${{ parameters.PERFORM_UNIT_TEST_WITH_COVERAGE }}', 'true'))
+  - task: PublishTestResults@2
+    displayName: "Publish Test Results **/TEST-*.xml"
+    inputs:
+      searchFolder: "$(Build.SourcesDirectory)"
+      testRunTitle: "$(COMPONENT)"
+    condition: and(succeeded(), eq('${{ parameters.PERFORM_UNIT_TEST_WITH_COVERAGE }}', 'true'))
+  - task: PublishCodeCoverageResults@1
+    displayName: "Publish code coverage "
+    inputs:
+      codeCoverageTool: jacoco
+      summaryFileLocation: "$(System.DefaultWorkingDirectory)/CCReport43F6D5EF/jacoco.xml"
+      reportDirectory: "$(System.DefaultWorkingDirectory)/CCReport43F6D5EF/"
+      additionalCodeCoverageFiles: "$(System.DefaultWorkingDirectory)/CCReport43F6D5EF/jacoco.exec"
+    condition: and(succeeded(), eq('${{ parameters.PERFORM_UNIT_TEST_WITH_COVERAGE }}', 'true'))
+  - task: checkmarx.cxsast.cx-scan-task.Application security testing@2021
+    displayName: "Security static source code analysis"
+    inputs:
+      CheckmarxService: "CheckMarx-Nexus"
+      projectName: NFI-$(BUILD_CHECKMARX_REPO_NAME)
+      fullTeamName: 'CxServer\SP\EY\Service Lines\Advisory_TAS'
+      incScan: false
+      folderExclusion: "cvs, .svn, .hg , .git, .bzr, bin , obj,  backup, .idea, node_modules, test, tests, mock-app, mock-*"
+      fileExtension: "!**/*.DS_Store, !**/*.ipr, !**/*.iws, !**/*.bak, !**/*.tmp, !**/*.aac, !**/*.aif, !**/*.iff, !**/*.m3u, !**/*.mid, !**/*.mp3, !**/*.mpa, !**/*.ra, !**/*.wav, !**/*.wma, !**/*.3g2, !**/*.3gp, !**/*.asf, !**/*.asx, !**/*.avi,!**/*.flv, !**/*.mov, !**/*.mp4, !**/*.mpg,  !**/*.rm, !**/*.swf, !**/*.vob, !**/*.wmv, !**/*.bmp, !**/*.gif, !**/*.jpg, !**/*.png, !**/*.psd, !**/*.tif, !**/*.swf, !**/*.jar, !**/*.zip, !**/*.rar, !**/*.exe, !**/*.dll, !**/*.pdb, !**/*.7z, !**/*.gz, !**/*.tar.gz, !**/*.tar, !**/*.gz, !**/*.ahtm, !**/*.ahtml, !**/*.fhtml, !**/*.hdm, !**/*.hdml,   !**/*.hsql, !**/*.ht, !**/*.hta, !**/*.htc, !**/*.htd, !**/*.war, !**/*.ear, !**/*.htmls, !**/*.ihtml, !**/*.mht, !**/*.mhtm, !**/*.mhtml, !**/*.ssi, !**/*.stm, !**/*.stml, !**/*.ttml, !**/*.txn, !**/*.xhtm, !**/*.xhtml, !**/*.class, !**/*.iml, !**/*Test.jar, !**/*Test.java"
+      scanTimeout: 60
+      comment: "$(COMPONENT)"
+    condition: and(succeeded(), eq('${{ parameters.PERFORM_CHECKMARX }}', true))
+  - bash: |
+      mvn -DoutputDirectory=$(Build.ArtifactStagingDirectory)/dependencies dependency:copy-dependencies
+      cd $(Build.ArtifactStagingDirectory)/dependencies
+      ls -l
+    displayName: "Grouping dependnecies"
+  - task: CopyFiles@2
+    displayName: "Copy Files to: $(build.artifactstagingdirectory)"
+    inputs:
+      SourceFolder: "$(system.defaultworkingdirectory)"
+      Contents: |
+        **/*.jar 
+        **/dep.txt
+      TargetFolder: "$(build.artifactstagingdirectory)"
+      condition: succeededOrFailed()
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: "$(Build.ArtifactStagingDirectory)"
+      ArtifactName: "drop"
+      publishLocation: "Container"
+    displayName: "Publish build the artifacts"
+  - task: CopyFiles@2
+    inputs:
+      contents: $(System.DefaultWorkingDirectory)/target/$(COMPONENT)-*.jar
+      targetFolder: "$(build.artifactStagingDirectory)"
+    displayName: "Copying the artifacts"

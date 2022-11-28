@@ -1,0 +1,19 @@
+---
+parameters:
+  PERFORM_CHECKMARX: false
+  PERFORM_UNIT_TEST_WITH_COVERAGE: false
+  PERFORM_BUILD_BREAKER: false
+  PERFORM_AQUA: false
+  PERFORM_DOCKER_BUILD: false
+  PERFORM_DOCKER_PUSH: false
+  BUILD_TOOL: ''
+steps:
+  - template: process-templates/build-template-for-build-variable-validations.yaml
+  - template: process-templates/build-template-for-optional-variable-loader.yaml
+  - template: process-templates/build-template-for-${{parameters.BUILD_TOOL}}-build.yaml
+  - ${{ if eq(parameters.PERFORM_DOCKER_BUILD, true) }}:
+      - template: process-templates/build-template-for-docker-build.yaml
+  - ${{ if eq(parameters.PERFORM_AQUA, true) }}:
+      - template: process-templates/build-template-for-aquasec.yaml
+  - ${{ if eq(parameters.PERFORM_DOCKER_PUSH, true) }}:
+      - template: process-templates/build-template-for-docker-push.yaml

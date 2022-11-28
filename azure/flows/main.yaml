@@ -1,0 +1,177 @@
+---
+parameters:
+  - name: PERFORM_BUILD
+    type: boolean
+    default: false
+  - name: PERFORM_DEV_ENV_DEPLOY
+    type: boolean
+    default: false
+  - name: PERFORM_QA_ENV_DEPLOY
+    type: boolean
+    default: false
+  - name: PERFORM_UAT_ENV_DEPLOY
+    type: boolean
+    default: false
+  - name: PERFORM_DEMO_ENV_DEPLOY
+    type: boolean
+    default: false
+  - name: PERFORM_UNIT_TEST_WITH_COVERAGE
+    type: boolean
+    default: false
+  - name: PERFORM_BUILD_BREAKER
+    type: boolean
+    default: false
+  - name: PERFORM_CHECKMARX
+    type: boolean
+    default: false
+  - name: PERFORM_DOCKER_BUILD
+    type: boolean
+    default: false
+  - name: PERFORM_AQUA
+    type: boolean
+    default: false
+  - name: PERFORM_DOCKER_PUSH
+    type: boolean
+    default: false
+  - name: PERFORM_CERTIFY_IMAGE_CREATION
+    type: boolean
+    default: false
+  - name: BUILD_TOOL
+    type: string
+
+stages:
+  - ${{ if eq(parameters['PERFORM_BUILD'], 'true' ) }}:
+      - stage: build
+        pool:
+          vmImage: ubuntu-latest
+        variables:
+          ENVIRONMENT_NAME: BUILD
+          ENVIRONMENT_SHORT_NAME: build
+          APPLICATION_INSIGHTS_JAR_DOWNLOAD_PIPELINE_ID: 6052
+          applicationInsightsConnectionString: "InstrumentationKey=6d911f90-4155-4986-9b27-1cfd5eacc47b;IngestionEndpoint=https://eastus-1.in.applicationinsights.azure.com/"
+        jobs:
+          - job: build
+            steps:
+              - template: build-templates.yaml
+                parameters:
+                  BUILD_TOOL: ${{ parameters.BUILD_TOOL }}
+                  PERFORM_UNIT_TEST_WITH_COVERAGE: ${{ parameters.PERFORM_UNIT_TEST_WITH_COVERAGE }}
+                  PERFORM_BUILD_BREAKER: ${{ parameters.PERFORM_BUILD_BREAKER }}
+                  PERFORM_CHECKMARX: ${{ parameters.PERFORM_CHECKMARX }}
+                  PERFORM_DOCKER_BUILD: ${{ parameters.PERFORM_DOCKER_BUILD }}
+                  PERFORM_AQUA: ${{ parameters.PERFORM_AQUA }}
+                  PERFORM_DOCKER_PUSH: ${{ parameters.PERFORM_DOCKER_PUSH }}
+
+  - ${{ if eq(parameters['PERFORM_DEV_ENV_DEPLOY'], 'true' ) }}:
+      - stage: development
+        pool:
+          vmImage: ubuntu-latest
+        variables:
+          ENVIRONMENT_NAME: DEV
+          ENVIRONMENT_SHORT_NAME: dev
+          AZURE_SUBSCRIPTION: $(DEV_AZURE_SUBSCRIPTION)
+          AZURE_RESOURCE_GROUP: $(DEV_AZURE_RESOURCE_GROUP)
+          AZURE_AKS_CLUSTER_NAME: $(DEV_AZURE_AKS_CLUSTER_NAME)
+          AZURE_CONTAINER_REGISTRY: $(DEV_AZURE_CONTAINER_REGISTRY)
+          AZURE_AKS_INGRESS_PATH: $(DEV_AZURE_AKS_INGRESS_PATH)
+          AZURE_AKS_INGRESS_HOSTS: $(DEV_AZURE_AKS_INGRESS_HOSTS)
+          AZURE_AKS_NAMESPACE: $(DEV_AZURE_AKS_NAMESPACE)
+          AZURE_AKS_PORT: $(DEV_AZURE_AKS_PORT)
+          AZURE_ACR_URL: $(DEV_AZURE_ACR_URL)
+          APPS_SPRING_PROFILE: $(DEV_APPS_SPRING_PROFILE)
+          DOCKER_IMAGE_NAME: $(AZURE_ACR_URL)/$(IMAGE_NAME)
+        jobs:
+          - job: development
+            steps:
+              - template: release-templates.yaml
+
+  - ${{ if eq(parameters['PERFORM_QA_ENV_DEPLOY'], 'true' ) }}:
+      - stage: qa
+        pool:
+          vmImage: ubuntu-latest
+        variables:
+          ENVIRONMENT_NAME: QA
+          ENVIRONMENT_SHORT_NAME: qa
+          AZURE_SUBSCRIPTION: $(QA_AZURE_SUBSCRIPTION)
+          AZURE_RESOURCE_GROUP: $(QA_AZURE_RESOURCE_GROUP)
+          AZURE_AKS_CLUSTER_NAME: $(QA_AZURE_AKS_CLUSTER_NAME)
+          AZURE_CONTAINER_REGISTRY: $(QA_AZURE_CONTAINER_REGISTRY)
+          AZURE_AKS_INGRESS_PATH: $(QA_AZURE_AKS_INGRESS_PATH)
+          AZURE_AKS_INGRESS_HOSTS: $(QA_AZURE_AKS_INGRESS_HOSTS)
+          AZURE_AKS_NAMESPACE: $(QA_AZURE_AKS_NAMESPACE)
+          AZURE_AKS_PORT: $(QA_AZURE_AKS_PORT)
+          AZURE_ACR_URL: $(QA_AZURE_ACR_URL)
+          APPS_SPRING_PROFILE: $(QA_APPS_SPRING_PROFILE)
+          DOCKER_IMAGE_NAME: $(AZURE_ACR_URL)/$(IMAGE_NAME)
+        jobs:
+          - deployment: qa
+            environment: QA_ENV_APPROVAL
+            strategy:
+              runOnce:
+                deploy:
+                  steps:
+                    - template: release-templates.yaml
+
+  - ${{ if eq(parameters['PERFORM_UAT_ENV_DEPLOY'], 'true' ) }}:
+      - stage: uat
+        pool:
+          vmImage: ubuntu-latest
+        variables:
+          ENVIRONMENT_NAME: UAT
+          ENVIRONMENT_SHORT_NAME: uat
+          AZURE_SUBSCRIPTION: $(UAT_AZURE_SUBSCRIPTION)
+          AZURE_RESOURCE_GROUP: $(UAT_AZURE_RESOURCE_GROUP)
+          AZURE_AKS_CLUSTER_NAME: $(UAT_AZURE_AKS_CLUSTER_NAME)
+          AZURE_CONTAINER_REGISTRY: $(UAT_AZURE_CONTAINER_REGISTRY)
+          AZURE_AKS_INGRESS_PATH: $(UAT_AZURE_AKS_INGRESS_PATH)
+          AZURE_AKS_INGRESS_HOSTS: $(UAT_AZURE_AKS_INGRESS_HOSTS)
+          AZURE_AKS_NAMESPACE: $(UAT_AZURE_AKS_NAMESPACE)
+          AZURE_AKS_PORT: $(UAT_AZURE_AKS_PORT)
+          AZURE_ACR_URL: $(UAT_AZURE_ACR_URL)
+          APPS_SPRING_PROFILE: $(UAT_APPS_SPRING_PROFILE)
+          DOCKER_IMAGE_NAME: $(AZURE_ACR_URL)/$(IMAGE_NAME)
+        jobs:
+          - deployment: uat
+            environment: UAT_ENV_APPROVAL
+            strategy:
+              runOnce:
+                deploy:
+                  steps:
+                    - template: release-templates.yaml
+
+  - ${{ if eq(parameters['PERFORM_DEMO_ENV_DEPLOY'], 'true' ) }}:
+      - stage: DEMO
+        pool:
+          vmImage: ubuntu-latest
+        variables:
+          ENVIRONMENT_NAME: DEMO
+          ENVIRONMENT_SHORT_NAME: demo
+          AZURE_SUBSCRIPTION: $(DEMO_AZURE_SUBSCRIPTION)
+          AZURE_RESOURCE_GROUP: $(DEMO_AZURE_RESOURCE_GROUP)
+          AZURE_AKS_CLUSTER_NAME: $(DEMO_AZURE_AKS_CLUSTER_NAME)
+          AZURE_CONTAINER_REGISTRY: $(DEMO_AZURE_CONTAINER_REGISTRY)
+          AZURE_AKS_INGRESS_PATH: $(DEMO_AZURE_AKS_INGRESS_PATH)
+          AZURE_AKS_INGRESS_HOSTS: $(DEMO_AZURE_AKS_INGRESS_HOSTS)
+          AZURE_AKS_NAMESPACE: $(DEMO_AZURE_AKS_NAMESPACE)
+          AZURE_AKS_PORT: $(DEMO_AZURE_AKS_PORT)
+          AZURE_ACR_URL: $(DEMO_AZURE_ACR_URL)
+          aPPS_SPRING_PROFILE: $(DEMO_APPS_SPRING_PROFILE)
+          DOCKER_IMAGE_NAME: $(AZURE_ACR_URL)/$(IMAGE_NAME)
+        jobs:
+          - deployment: demo
+            environment: DEMO_ENV_APPROVAL
+            strategy:
+              runOnce:
+                deploy:
+                  steps:
+                    - template: release-templates.yaml
+
+
+  - ${{ if eq(parameters['PERFORM_CERTIFY_IMAGE_CREATION'], 'true' ) }}:
+      - stage: cerify
+        pool:
+          vmImage: ubuntu-latest
+        jobs:
+          - job: cerify
+            steps:
+              - template: process-templates/release-template-for-certify-image-process.yaml

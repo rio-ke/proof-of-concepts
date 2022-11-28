@@ -1,0 +1,57 @@
+---
+steps:
+  - task: DownloadPipelineArtifact@2
+    inputs:
+      source: "specific"
+      project: "Nexus for Insurance"
+      pipeline: 7044
+      runVersion: "latest"
+      targetPath: "$(System.DefaultWorkingDirectory)"
+
+  - bash: |
+      if [ -f $(System.DefaultWorkingDirectory)/drop/Values/$(PROJECT_NAME).yaml ]; then
+        echo "##vso[task.setVariable variable=fileExists]true"
+      fi
+    displayName: "Check helm values file exists"
+
+  - task: HelmDeploy@0
+    condition: ne(variables.fileExists, 'true')
+    displayName: "helm upgrade (with common-helm-file)"
+    inputs:
+      azureSubscriptionForACR: '$(DEV_AZURE_SUBSCRIPTION)'
+      azureResourceGroupForACR: $(AZURE_RESOURCE_GROUP)
+      azureContainerRegistry: $(AZURE_CONTAINER_REGISTRY)
+      azureSubscription: '$(DEV_AZURE_SUBSCRIPTION)'
+      azureResourceGroup: $(AZURE_RESOURCE_GROUP)
+      kubernetesCluster: $(AZURE_AKS_CLUSTER_NAME)
+      namespace: $(AZURE_AKS_NAMESPACE)
+      command: upgrade
+      chartType: FilePath
+      chartPath: "$(System.DefaultWorkingDirectory)/drop/microservices-chart"
+      releaseName: "$(PROJECT_NAME)-$(ENVIRONMENT_SHORT_NAME)"
+      overrideValues: nameOverride=$(PROJECT_NAME),deployment.image.repository=$(DOCKER_IMAGE_NAME),deployment.image.tag=$(IMAGE_TAG),ingress.hosts=$(AZURE_AKS_INGRESS_HOSTS),deployment.springProfile=$(APPS_SPRING_PROFILE),ingress.path=$(AZURE_AKS_INGRESS_PATH),service.targetPort=$(AZURE_AKS_PORT)
+      resetValues: true
+      waitForExecution: false
+      arguments: "--values $(System.DefaultWorkingDirectory)/drop/microservices-chart/values.yaml --values $(System.DefaultWorkingDirectory)/drop/Values/sonarBaseValues-$(AZURE_AKS_NAMESPACE).yaml --values $(System.DefaultWorkingDirectory)/drop/Values/common-helm-file.yaml  --debug"
+      failOnStderr: false
+
+  - task: HelmDeploy@0
+    condition: eq(variables.fileExists, 'true')
+    displayName: "helm upgrade (with app specific helm file)"
+    inputs:
+      azureSubscriptionForACR: '$(DEV_AZURE_SUBSCRIPTION)'
+      azureResourceGroupForACR: $(AZURE_RESOURCE_GROUP)
+      azureContainerRegistry: $(AZURE_CONTAINER_REGISTRY)
+      azureSubscription: '$(DEV_AZURE_SUBSCRIPTION)'
+      azureResourceGroup: $(AZURE_RESOURCE_GROUP)
+      kubernetesCluster: $(AZURE_AKS_CLUSTER_NAME)
+      namespace: $(AZURE_AKS_NAMESPACE)
+      command: upgrade
+      chartType: FilePath
+      chartPath: "$(System.DefaultWorkingDirectory)/drop/microservices-chart"
+      releaseName: "$(PROJECT_NAME)-$(ENVIRONMENT_NAME)"
+      overrideValues: nameOverride=$(PROJECT_NAME),deployment.image.repository=$(DOCKER_IMAGE_NAME),deployment.image.tag=$(IMAGE_TAG),ingress.hosts=$(AZURE_AKS_INGRESS_HOSTS),deployment.springProfile=$(APPS_SPRING_PROFILE),ingress.path=$(AZURE_AKS_INGRESS_PATH),service.targetPort=$(AZURE_AKS_PORT)
+      resetValues: true
+      waitForExecution: false
+      arguments: "--values $(System.DefaultWorkingDirectory)/drop/microservices-chart/values.yaml --values $(System.DefaultWorkingDirectory)/drop/Values/sonarBaseValues-$(AZURE_AKS_NAMESPACE).yaml --values $(System.DefaultWorkingDirectory)/drop/Values/$(PROJECT_NAME).yaml  --debug "
+      failOnStderr: false

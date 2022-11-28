@@ -1,0 +1,26 @@
+---
+steps:
+  - script: |
+      [ ! -z "$(BUILD_AZURE_ACR_URL)" ]     && echo "BUILD_AZURE_ACR_URL    variable is valid" || exit 1
+      [ ! -z "$(COMPONENT)" ]               && echo "COMPONENT              variable is valid" || exit 1
+      [ ! -z "$(IMAGE_NAME)" ]              && echo "IMAGE_NAME             variable is valid" || exit 1
+      [ ! -z "$(IMAGE_TAG)" ]               && echo "IMAGE_TAG              variable is valid" || exit 1
+      [ ! -z "$(BUILD_DOCKER_FILE_PATH)" ]  && echo "BUILD_DOCKER_FILE_PATH variable is valid" || exit 1
+    displayName: CONDITION docker variable validation
+  - script: |
+      echo "BUILD_AZURE_ACR_URL                   value is $(BUILD_AZURE_ACR_URL)"
+      echo "COMPONENT                             value is $(COMPONENT)"
+      echo "BUILD_DOCKER_FILE_PATH                value is $(BUILD_DOCKER_FILE_PATH)"
+      echo "IMAGE_NAME                            value is $(IMAGE_NAME)"
+      echo "IMAGE_TAG                             value is $(IMAGE_TAG)"
+    displayName: DEBUG docker variables
+  - task: Docker@1
+    inputs:
+      command: build
+      dockerFile: $(BUILD_DOCKER_FILE_PATH)
+      imageName: "$(BUILD_AZURE_ACR_URL)/$(IMAGE_NAME):$(IMAGE_TAG)"
+      includeSourceTags: true
+      includeLatestTag: false
+      addDefaultLabels: true
+      arguments: '--build-arg ARTIFACT_NAME=$(COMPONENT)'
+    displayName: 'Build container'

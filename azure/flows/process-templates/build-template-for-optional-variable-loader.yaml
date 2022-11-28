@@ -1,0 +1,18 @@
+---
+steps:
+  - script: |
+      [[ ! -z "$(BUILD_MVN_POM_FILE_PATH)" ]]         && echo "##vso[task.setvariable variable=BUILD_MVN_POM_FILE_PATH]$(BUILD_MVN_POM_FILE_PATH)"                  || echo "##vso[task.setvariable variable=BUILD_MVN_POM_FILE_PATH]pom.xml"
+      [[ ! -z "$(BUILD_JDK_VERSION)" ]]               && echo "##vso[task.setvariable variable=BUILD_JDK_VERSION]$(BUILD_JDK_VERSION)"                              || echo "##vso[task.setvariable variable=BUILD_JDK_VERSION]11"
+      [[ ! -z "$(BUILD_DOCKER_FILE_PATH)" ]]          && echo "##vso[task.setvariable variable=BUILD_DOCKER_FILE_PATH]$(BUILD_DOCKER_FILE_PATH)"                    || echo "##vso[task.setvariable variable=BUILD_DOCKER_FILE_PATH]Dockerfile"
+      [[ ! -z "$(BUILD_CHECKMARX_REPO_NAME)" ]]       && echo "##vso[task.setvariable variable=BUILD_CHECKMARX_REPO_NAME]$(BUILD_CHECKMARX_REPO_NAME)"              || echo "##vso[task.setvariable variable=BUILD_CHECKMARX_REPO_NAME]default"
+      [[ ! -z "$(BUILD_SONAR_COVERAGE_EXCLUSIONS)" ]] && echo "##vso[task.setvariable variable=BUILD_SONAR_COVERAGE_EXCLUSIONS]$(BUILD_SONAR_COVERAGE_EXCLUSIONS)"  || echo "##vso[task.setvariable variable=BUILD_SONAR_COVERAGE_EXCLUSIONS]''"
+      [[ ! -z "$(BUILD_SONAR_EXCLUSIONS)" ]]          && echo "##vso[task.setvariable variable=BUILD_SONAR_EXCLUSIONS]$(BUILD_SONAR_EXCLUSIONS)"                    || echo "##vso[task.setvariable variable=BUILD_SONAR_EXCLUSIONS]''"
+    displayName: CONDITION build optional variable
+  - script: |
+      echo "BUILD_MVN_POM_FILE_PATH         value is $(BUILD_MVN_POM_FILE_PATH)"
+      echo "BUILD_JDK_VERSION               value is $(BUILD_JDK_VERSION)"
+      echo "BUILD_DOCKER_FILE_PATH          value is $(BUILD_DOCKER_FILE_PATH)"
+      echo "BUILD_CHECKMARX_REPO_NAME       value is $(BUILD_CHECKMARX_REPO_NAME)"
+      echo "BUILD_SONAR_COVERAGE_EXCLUSIONS value is $(BUILD_SONAR_COVERAGE_EXCLUSIONS)"
+      echo "BUILD_SONAR_EXCLUSIONS          value is $(BUILD_SONAR_EXCLUSIONS)"
+    displayName: DEBUG build optional variable
