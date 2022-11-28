@@ -1,0 +1,68 @@
+---
+name: $(Build.SourceBranchName)
+resources:
+  repositories:
+    - repository: templates
+      name: github.com/proof-of-concepts
+      endpoint: githubEndpoint
+      type: github
+      ref: refs/heads/end-to-end-automation
+
+trigger:
+  branches:
+    include:
+      - main
+
+parameters:
+  - name: PERFORM_BUILD
+    default: true
+    type: boolean
+    displayName: build
+  - name: PERFORM_DEV_ENV_DEPLOY
+    default: false
+    type: boolean
+    displayName: devDeploy
+  - name: PERFORM_QA_ENV_DEPLOY
+    default: false
+    type: boolean
+    displayName: qaDeploy
+  - name: PERFORM_UAT_ENV_DEPLOY
+    default: false
+    type: boolean
+    displayName: uatDeploy
+  - name: PERFORM_DEMO_ENV_DEPLOY
+    default: false
+    type: boolean
+    displayName: demoDeploy
+  - name: PERFORM_CERTIFY_IMAGE_CREATION
+    default: false
+    type: boolean
+    displayName: certifyImage
+    
+variables:
+  - template: variables.yaml      # Mandatory* variable file from your repo
+  - group: BUILD_VARIABLE_GROUP   # Mandatory* variable group
+  - group: RELEASE_VARIABLE_GROUP # Mandatory* variable group
+  - name: IMAGE_TAG
+    ${{ if eq(variables['Build.SourceBranchName'], 'development') }}:
+      value: $(Build.SourceVersion)
+    ${{ else }}:
+      value: $(Build.SourceBranchName)-$(Build.SourceVersion)
+  - name: SOURCE_BRANCH_NAME
+    value: $(Build.SourceBranchName)
+extends:
+  template: main.yaml@templates
+  parameters:
+    BUILD_TOOL: "mvn"
+    PERFORM_BUILD: ${{ parameters.PERFORM_BUILD }}
+    PERFORM_DEV_ENV_DEPLOY: ${{ parameters.PERFORM_DEV_ENV_DEPLOY }}
+    PERFORM_QA_ENV_DEPLOY: ${{ parameters.PERFORM_QA_ENV_DEPLOY }}
+    PERFORM_UAT_ENV_DEPLOY: ${{ parameters.PERFORM_UAT_ENV_DEPLOY }}
+    PERFORM_DEMO_ENV_DEPLOY: ${{ parameters.PERFORM_DEMO_ENV_DEPLOY }}
+    PERFORM_UNIT_TEST_WITH_COVERAGE: false
+    PERFORM_BUILD_BREAKER: false
+    PERFORM_CHECKMARX: false
+    PERFORM_DOCKER_BUILD: true
+    PERFORM_AQUA: false
+    PERFORM_DOCKER_PUSH: true
+    PERFORM_CERTIFY_IMAGE_CREATION: ${{ parameters.PERFORM_CERTIFY_IMAGE_CREATION }}
