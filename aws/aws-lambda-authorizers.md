@@ -1,4 +1,30 @@
 
+sample policy docs
+
+```py
+import json
+
+def lambda_handler(event, context):
+	auth = "Allow"
+
+	if event['authorizationToken'] == "abc":
+		auth = "Allow"
+	else :
+		auth = "Deny"
+	authResponse = json.dumps({
+		"principalId": "abc123",
+		"policyDocument": {
+			"Version": "2012-10-17",
+			"Statement": [{
+				"Action": "execute-api:Invoke",
+				"Resource": ["arn:aws:execute-api:us-east-1:YOURACCOUNTNUMBER:2ogoj2ul12/test/GET/customers"],
+				"Effect": auth
+			}]
+		}
+	})
+	return authResponse
+```
+
 _create a authorizers lambda_
 
 ```py
