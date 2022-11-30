@@ -24,4 +24,11 @@ _invoke the lambda authorizer into a particular method_
 
 _postman_
 
+$$ Failure $$
+
 ![image](https://user-images.githubusercontent.com/57703276/204745909-531977b0-4fe4-43c9-a41d-62efcf556c93.png)
+
+
+$$ Success $$
+
+![image](https://user-images.githubusercontent.com/57703276/204746316-f5b9b4a3-56a4-4865-a0b5-4ca73bfc2f3e.png)
