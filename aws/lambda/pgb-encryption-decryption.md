@@ -95,3 +95,41 @@ for x in files_dir:
     os.rename(files_dir_clean[files_dir.index(x)],
               "decrypted/" + files_dir_clean[files_dir.index(x)])
 ```
+
+
+
+_base function_
+
+```py
+import gnupg
+
+Efile = "/home/dodo/Desktop/pgpg/sue.txt"
+Dfile = "/home/dodo/Desktop/pgpg/sue.txt.gpg"
+
+gpg = gnupg.GPG(gnupghome='/tmp', gpgbinary='/usr/bin/gpg',
+                options=['--trust-model', 'always'])
+priv_key = gpg.import_keys("/home/dodo/Desktop/pgpg/private.key")
+with open(Dfile, 'rb') as a_file:
+    status = gpg.decrypt_file(a_file, passphrase=None,
+                              output=Efile, always_trust=True)
+
+    print(status.ok)
+    print(status.status)
+    print(status.stderr)
+
+gpg = gnupg.GPG(gnupghome='')
+priv_key = gpg.import_keys("/home/dodo/Desktop/pgpg/private.key")
+with open('Efile', 'rb') as f:
+    status = gpg.encrypt_file(
+        f, recipients=['jinojoe@gmail.com'],
+        output='Dfile'
+    )
+    print(status.ok)
+    print(status.status)
+    print(status.stderr)
+
+# gpg --list-secret-keys user@some.com
+# gpg --export-secret-keys YOUR_ID_HERE > private.key
+# aws s3 mv private.key s3://your_s3_bucket/
+
+```
