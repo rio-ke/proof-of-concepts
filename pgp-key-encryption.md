@@ -41,3 +41,6 @@ gpg --armor --output key.txt --export admin@example.com
 ```
 
 Now you may send the key.txt to others.
+
+
+gpg --encrypt --recipient jinojoe main.py
