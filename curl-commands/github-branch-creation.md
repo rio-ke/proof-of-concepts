@@ -3,8 +3,11 @@ github-branch-creation.md
 ```bash
 #!/usr/bin/env bash
 
+APP_NAME=$(awk -F '<[^>]*>' '/<dependencies>/,/<\/dependencies>/{next} /artifactId/{$1=$1;print $0}' pom.xml)
+VERSION=$(awk -F '<[^>]*>' '/<dependencies>/,/<\/dependencies>/{next} /version/{$1=$1;print $0}' pom.xml)
+
 SOURCE_BRANCH_NAME="develop"
-NEW_BRANCH_NAME="Release/1.7.1"
+NEW_BRANCH_NAME="Release/${VERSION}"
 REPO_NAME="proof-of-concepts"
 OWNER_NAME="operation-unknown"
 GIT_BEARER_TOKEN="xxxxxx"
