@@ -4,11 +4,9 @@ github-branch-creation.md
 #!/usr/bin/env bash
 
 APP_NAME=$(awk -F '<[^>]*>' '/<dependencies>/,/<\/dependencies>/{next} /artifactId/{$1=$1;print $0}' pom.xml)
-echo "APP name is ${APP_NAME}"
+echo "Application name is ${APP_NAME}"
 VERSION=$(awk -F '<[^>]*>' '/<dependencies>/,/<\/dependencies>/{next} /version/{$1=$1;print$0}' pom.xml | xargs | awk -F - '{print $1}')
-echo "current version is ${VERSION}"
-
-
+echo "Current version is ${VERSION}"
 SOURCE_BRANCH_NAME="develop"
 NEW_BRANCH_NAME="${VERSION}"
 REPO_NAME="proof-of-concepts"
