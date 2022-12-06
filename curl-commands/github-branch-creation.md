@@ -4,17 +4,21 @@ github-branch-creation.md
 #!/usr/bin/env bash
 
 APP_NAME=$(awk -F '<[^>]*>' '/<dependencies>/,/<\/dependencies>/{next} /artifactId/{$1=$1;print $0}' pom.xml)
-VERSION=$(awk -F '<[^>]*>' '/<dependencies>/,/<\/dependencies>/{next} /version/{$1=$1;print $0}' pom.xml)
+echo "APP name is ${APP_NAME}"
+VERSION=$(awk -F '<[^>]*>' '/<dependencies>/,/<\/dependencies>/{next} /version/{$1=$1;print$0}' pom.xml | xargs | awk -F - '{print $1}')
+echo "current version is ${VERSION}"
+
 
 SOURCE_BRANCH_NAME="develop"
-NEW_BRANCH_NAME="Release/${VERSION}"
+NEW_BRANCH_NAME="${VERSION}"
 REPO_NAME="proof-of-concepts"
 OWNER_NAME="operation-unknown"
 GIT_BEARER_TOKEN="xxxxxx"
 SHA=$(curl -s -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${GIT_BEARER_TOKEN}" "https://api.github.com/repos/${OWNER_NAME}/${REPO_NAME}/branches/${SOURCE_BRANCH_NAME}" | jq .commit.sha)
+
 cat >data.json <<EOF
 {
-  "ref": "refs/heads/${NEW_BRANCH_NAME}",
+  "ref": "refs/heads/Release/${NEW_BRANCH_NAME}",
   "sha": ${SHA}
 }
 EOF
