@@ -11,3 +11,17 @@ EOF
 cat data.json 
 
 ```
+
+
+```py
+
+
+import pathlib
+
+data = "sftp/IN/001/111/AG1/demo.txt"
+
+filename = pathlib.PurePath(data).parent
+agentName = pathlib.PurePath(filename).name
+print(agentName)
+
+```
