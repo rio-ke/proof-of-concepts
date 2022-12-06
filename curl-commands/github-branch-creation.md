@@ -5,7 +5,10 @@ github-branch-creation.md
 
 APP_NAME=$(awk -F '<[^>]*>' '/<dependencies>/,/<\/dependencies>/{next} /artifactId/{$1=$1;print $0}' pom.xml)
 echo "Application name is ${APP_NAME}"
-VERSION=$(awk -F '<[^>]*>' '/<dependencies>/,/<\/dependencies>/{next} /version/{$1=$1;print$0}' pom.xml | xargs | awk -F - '{print $1}')
+# VERSION=$(awk -F '<[^>]*>' '/<dependencies>/,/<\/dependencies>/{next} /version/{$1=$1;print$0}' pom.xml | xargs | awk -F - '{print $1}')
+
+
+VERSION=$(grep version pom.xml | grep -v -e '<?xml|~'| grep -i snapshot | sed 's/[[:space:]]//g' | sed -E 's/<.{0,1}version>//g' | awk '{print $1}' | xargs | awk -F - '{print $1}')
 echo "Current version is ${VERSION}"
 SOURCE_BRANCH_NAME="develop"
 NEW_BRANCH_NAME="${VERSION}"
