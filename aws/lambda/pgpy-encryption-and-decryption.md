@@ -35,5 +35,5 @@ def decryptFile(fileName, keyPathLocation):
         f.write(data)
         f.close()
 
-decryptFile("sue.txt", "key.key")
+decryptFile("sue.txt.gpg", "key.key")
 ```
