@@ -28,7 +28,7 @@ print(agentName)
 
 
 ```py
-key = '/one/two/three/four/jino.py'
+key = 'one/two/three/four/jino.py'
 import re
 def filerTheAgentName(keyName):
     return re.split(r'/|:', keyName)
