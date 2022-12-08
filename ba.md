@@ -25,3 +25,14 @@ agentName = pathlib.PurePath(filename).name
 print(agentName)
 
 ```
+
+
+```py
+key = '/one/two/three/four/jino.py'
+import re
+def filerTheAgentName(keyName):
+    return re.split(r'/|:', keyName)
+
+print(filerTheAgentName(key))
+# ['one', 'two', 'three', 'four']
+```
