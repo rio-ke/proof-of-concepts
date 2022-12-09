@@ -25,6 +25,9 @@ rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
 rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-3.el7.elrepo.noarch.rpm
 yum install -y kmod-drbd84 drbd84-utils -y
 yum install pacemaker pcs psmisc policycoreutils-python httpd -y vim
+rpm -Uvh https://mirror.webtatic.com/yum/el7/epel-release.rpm
+rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
+yum install mod_ssl openssl php55w php55w-common php55w-mbstring php55w-xml  php55w-mysqlnd php55w-gd php55w-mcrypt php55w-pdo php55w-curl php55w-cli php55w-opcache -y
 # disble the selinux
 setenforce 0
 # disable the firewalld
