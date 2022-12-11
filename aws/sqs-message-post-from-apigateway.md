@@ -1,13 +1,13 @@
 **_sqs-message-post-from-apigateway.md_**
 
-_publisher_
+_publisher POST_ 
 
-_send an body as a message_
+_send body as a message_
 
 ```js
 Action=SendMessage&MessageBody=$input.body
 ```
-_detailed message_
+_detailed message send as a body_
 
 ```js
 Action=SendMessage&MessageBody={
@@ -37,7 +37,7 @@ Action=SendMessage&MessageBody={
 }
 ```
 
-_subscriber_
+_subscriber GET_
 
 ```params
 method.request.querystring.WaitTimeSeconds
