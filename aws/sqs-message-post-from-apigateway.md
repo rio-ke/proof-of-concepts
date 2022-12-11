@@ -1,4 +1,11 @@
-sqs-message-post-from-apigateway.md
+**_sqs-message-post-from-apigateway.md_**
+
+_send an body as a message_
+
+```js
+Action=SendMessage&MessageBody=$input.body
+```
+_detailed message_
 
 ```js
 Action=SendMessage&MessageBody={
