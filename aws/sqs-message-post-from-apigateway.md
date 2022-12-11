@@ -1,5 +1,7 @@
 **_sqs-message-post-from-apigateway.md_**
 
+_publisher_
+
 _send an body as a message_
 
 ```js
@@ -33,4 +35,16 @@ Action=SendMessage&MessageBody={
     #end
   }
 }
+```
+
+_subscriber_
+
+```params
+method.request.querystring.WaitTimeSeconds
+method.request.querystring.MaxNumberOfMessages
+method.request.querystring.VisibilityTimeout
+method.request.querystring.AttributeName
+```
+```query
+WaitTimeSeconds=10&MaxNumberOfMessages=5&VisibilityTimeout=15&AttributeName=All
 ```
