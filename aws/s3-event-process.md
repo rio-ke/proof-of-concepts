@@ -6,6 +6,7 @@ import urllib
 import boto3
 import logging
 import re
+
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
@@ -202,7 +203,7 @@ def postSqsMessage(QueueName, MessageGroupId, sourceBucketName, Event, Key, vers
     return sqsClientInit().send_message(
         QueueUrl=sqsUrl,
         MessageGroupId=MessageGroupId,
-        MessageBody=json.loads(json.dumps(
+        MessageBody=json.dumps(
             {
                 "Source": sourceBucketName,
                 "Event": Event,
@@ -215,7 +216,7 @@ def postSqsMessage(QueueName, MessageGroupId, sourceBucketName, Event, Key, vers
                 },
             }
         ),
-    ))
+    )
 
 def combineSQSName(agentName):
     return "sqs-xxx-xxx-uatizcomm-pubsub-" + agentName +".fifo"
