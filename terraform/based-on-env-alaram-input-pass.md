@@ -14,7 +14,7 @@ module "instanceCreation" {
   roleName                     = data.aws_iam_instance_profile.profile.role_name
   ssmParameterName             = "Amazoncloudwatch-linux"
   instancesDetails = {
-    one = {
+    tcc-tisexport-1 = {
       ami                    = data.aws_ami.ami.id
       instance_type          = "t2.medium"
       subnet_id              = "subnet-01ea1a2a4e35f21d9"
