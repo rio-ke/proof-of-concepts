@@ -128,6 +128,7 @@ download Name: GET: https://<api-endpoint>/api/common/PresignedUrl/<app-id>?expi
 """
 ```
 
+proxy integration with lambda
 
 ```js
 {
@@ -183,4 +184,9 @@ download Name: GET: https://<api-endpoint>/api/common/PresignedUrl/<app-id>?expi
 	'body': None,
 	'isBase64Encoded': False
 }
+```
+
+
+```bash
+key="tmp/demo.txt"&expire=20&bucket="secret-jn"
 ```
