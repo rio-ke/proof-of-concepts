@@ -129,7 +129,7 @@ download Name: GET: https://<api-endpoint>/api/common/PresignedUrl/<app-id>?expi
 ```
 
 
-```json
+```js
 {
 	'resource': '/api/common/presignedurl/cp',
 	'path': '/api/common/presignedurl/cp',
