@@ -127,3 +127,60 @@ upload Name: POST https://<api-endpoint>/api/common/PresignedUrl/<app-id
 download Name: GET: https://<api-endpoint>/api/common/PresignedUrl/<app-id>?expire=<expire in secs>&key=<full path of the file>
 """
 ```
+
+
+```json
+{
+	'resource': '/api/common/presignedurl/cp',
+	'path': '/api/common/presignedurl/cp',
+	'httpMethod': 'GET',
+	'headers': None,
+	'multiValueHeaders': None,
+	'queryStringParameters': {
+		'bucket': 'secret-jn',
+		'expire': '20',
+		'key': 'tmp/demo.txt'
+	},
+	'multiValueQueryStringParameters': {
+		'bucket': ['secret-jn'],
+		'expire': ['20'],
+		'key': ['tmp/demo.txt']
+	},
+	'pathParameters': None,
+	'stageVariables': None,
+	'requestContext': {
+		'resourceId': 'yx90ni',
+		'resourcePath': '/api/common/presignedurl/cp',
+		'httpMethod': 'GET',
+		'extendedRequestId': 'dFSs6FfbSQ0Fjng=',
+		'requestTime': '13/Dec/2022:11:40:40 +0000',
+		'path': '/api/common/presignedurl/cp',
+		'accountId': '676487226531',
+		'protocol': 'HTTP/1.1',
+		'stage': 'test-invoke-stage',
+		'domainPrefix': 'testPrefix',
+		'requestTimeEpoch': 1670931640808,
+		'requestId': '904d08b7-16de-4621-8f93-b11920e277a5',
+		'identity': {
+			'cognitoIdentityPoolId': None,
+			'cognitoIdentityId': None,
+			'apiKey': 'test-invoke-api-key',
+			'principalOrgId': None,
+			'cognitoAuthenticationType': None,
+			'userArn': 'arn:aws:iam::676487226531:root',
+			'apiKeyId': 'test-invoke-api-key-id',
+			'userAgent': 'aws-internal/3 aws-sdk-java/1.12.353 Linux/5.4.214-134.408.amzn2int.x86_64 OpenJDK_64-Bit_Server_VM/25.352-b09 java/1.8.0_352 vendor/Oracle_Corporation cfg/retry-mode/standard',
+			'accountId': '676487226531',
+			'caller': '676487226531',
+			'sourceIp': 'test-invoke-source-ip',
+			'accessKey': 'ASIAZ3AOH4SR7TSA3UFD',
+			'cognitoAuthenticationProvider': None,
+			'user': '676487226531'
+		},
+		'domainName': 'testPrefix.testDomainName',
+		'apiId': 'i7swht3dt8'
+	},
+	'body': None,
+	'isBase64Encoded': False
+}
+```
