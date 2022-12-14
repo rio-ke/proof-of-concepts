@@ -57,6 +57,4 @@ stages:
               sshEndpoint: 'ssh-connection'  # service connection
               runOptions: script
               scriptPath: 'command.sh'
-
-
 ```
