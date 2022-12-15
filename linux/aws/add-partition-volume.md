@@ -17,7 +17,7 @@
 
 * click `Modify volume`info 
 
-![Volumes EC2 Management Console](https://user-images.githubusercontent.com/88568938/207834108-1936dba8-20d9-4f0b-aaf0-c98bbf7f0cae.png)
+![Volumes EC2 Management Console](https://user-images.githubusercontent.com/88568938/207848410-6447b3f2-2ea2-462c-9338-2e9d0b7cede5.png)
 
 **_MODIFY-VOLUME_**
 
