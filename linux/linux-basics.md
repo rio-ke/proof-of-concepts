@@ -145,6 +145,8 @@ _linux-basics.md_
  
  **Note**: tee Cannot be used for file creation as it eliminates duplication.
  
+ **Day 4: 15-12.2022**
+ 
  **DIRECTORY STRUCTURE:**
  
       Linux directory structure
@@ -164,9 +166,17 @@ _linux-basics.md_
       /opt – Optional software (Optional location)
       /root – The home directory of the root
       /media – Mount point for removable media
-      /mnt – Mount directory eg: Hard disk
+      /mnt – Mount directory (eg: Hard disk)
       /srv – Service data
       /swapfile - allocates the memory for the app in use by swapping with the not used app
+      
+ **USER CREATION:**
+ 
+      To create a new user: adduser username
+      
+      to see the list of users and their informations: cat /etc/passwd
+      
+      To see their groups: cat /etc/group
 
  
  
