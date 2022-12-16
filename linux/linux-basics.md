@@ -135,7 +135,7 @@ _linux-basics.md_
  
  **File Handling**
  
-      To create a file with content: **echo "hi welcome" > main.txt** (If the file is there with the name it will override the content with the new data, else it         will create a new file with the data given in the command.)
+      To create a file with content: **echo "hi welcome" > main.txt** (If the file is there with the name it will override the content with the new data, else it will create a new file with the data given in the command.)
  
       To read the content: **cat main.txt**
  
