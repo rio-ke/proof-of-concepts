@@ -77,10 +77,21 @@ def checkDecryptionStatus(nameOfFile):
 _execution_
 
 ```py
+# Generate the keys for GPG
 print(generteGpgkey("jinojoe@gmail.com", "jinojoe"))
+
+# Encrypt the file use existing GPG keys
 print(gpgEncryption("jinojoe.asc", "demo.txt", "jinojoe@gmail.com"))
+
+# remove the GPG Extension
 print(removeGpgExtension("demo.txt.gpg"))
+
+# Validate Decryption status
 print(checkDecryptionStatus("demo.txt.gpg"))
+
+# Decrypt the file
 print(gpgDecryption("jinojoe.asc", "jinojoe", "demo.txt.gpg"))
+
+# find the file name
 print(determineOfKeyname("/tmp/demo.txt"))
 ```
