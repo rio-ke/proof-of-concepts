@@ -21,7 +21,7 @@ _linux-basics.md_
 
     It is basically a GUI - Graphical use interface concept
     
-    N'number of 'software'
+    N'number of 'software' can be utilised
     
     Great chance of Virus attack
     
@@ -67,7 +67,7 @@ _linux-basics.md_
    
       LTS - Long Term Support
    
-      For Windows - we have a administrator has a Head role.
+      For Windows - we have administrator has a Head role.
    
       For Linux - we have root user has a head role administrating all the system programs.
    
