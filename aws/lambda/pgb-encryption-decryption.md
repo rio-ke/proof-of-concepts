@@ -1,5 +1,13 @@
 _pgb-encryption-decryption.md_
 
+linux installation
+
+```bash
+pip3 install python-gnupg
+apt install gpg
+export GPG_TTY=$(tty)
+```
+_python script_
 
 ```py
 import gnupg
