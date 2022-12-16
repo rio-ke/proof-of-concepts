@@ -1,135 +1,82 @@
-**main.py**
+_pgb-encryption-decryption.md_
+
+
 ```py
-# main.py
-
-import os
 import gnupg
-
-gpg = gnupg.GPG('/usr/bin/gpg')
-
-gpg.encoding = 'utf-8'
-
-key_input_data = gpg.gen_key_input(
-    name_email="jinojoe@gmail.com",
-    passpharse="jinojoe",
-    key_type="RSA",
-    key_length=4096
-)
-key = gpg.gen_key(key_input_data)
-print(key)
-# https://www.digitalocean.com/community/tutorials/how-to-verify-code-and-encrypt-data-with-python-gnupg-and-python-3#step-3-encrypting-files
-```
-**ecrypt.py**
-```py
-#!/usr/bin/env python3
-
+import json
+import re
 import os
-import fs
-from fs import open_fs
-import gnupg
-
-gpg = gnupg.GPG(gnupghome="/home/dodo/.gnupg")
-home_fs = open_fs(".")
-
-if os.path.exists("encrypted/"):
-    print("Encrypt directory exists")
-else:
-    home_fs.makedir(u"encrypted")
-    print("Created encrypted directory")
-
-files_dir = []
-
-files = [f for f in os.listdir(".") if os.path.isfile(f)]
-for f in files:
-    files_dir.append(f)
-
-for x in files_dir:
-    with open(x, "rb") as f:
-        status = gpg.encrypt_file(f,recipients=["jinojoe@gmail.com"],output= files_dir[files_dir.index(x)]+".gpg")
-        print("ok: ", status.ok)
-        print("status: ", status.status)
-        print("stderr: ", status.stderr)
-        os.rename(files_dir[files_dir.index(x)] + ".gpg", "encrypted/" +files_dir[files_dir.index(x)] + ".gpg")
-```
-**decrypt.py**
-```py
-#!/usr/bin/env python3
-
-import gnupg
-from fs import open_fs
-import fs
-import os
+import pathlib
 
 
-gpg = gnupg.GPG(gnupghome="/home/dodo/.gnupg")
-home_fs = open_fs(".")
+def determineNameOfEmail(nameOfEmail):
+    result = re.split(r'@', nameOfEmail)
+    return result[0]
 
-files_dir = []
-files_dir_clean = []
+def removeGpgExtension(nameOfFile):
+    return os.path.splitext(nameOfFile)[0]
 
-if os.path.exists("decrypted/"):
-    print("Decrypted directory already exists")
-else:
-    home_fs.makedir(u"decrypted/")
-    print("Created decrypted directory")
+def generteGpgkey(nameOfEmail, password):
+    gpg = gnupg.GPG()
 
-files = [f for f in os.listdir(".") if os.path.isfile(f)]
-for f in files:
-    files_dir.append(f)
+    # generate key
+    input_data = gpg.gen_key_input(name_email=nameOfEmail, passphrase=password)
+    key = gpg.gen_key(input_data)
 
-for x in files_dir:
-    length = len(x)
-    endLoc = length - 4
-    clean_file = x[0:endLoc]
-    files_dir_clean.append(clean_file)
+    # create ascii-readable versions of pub / private keys
+    ascii_armored_public_keys = gpg.export_keys(key.fingerprint)
+    ascii_armored_private_keys = gpg.export_keys(keyids=key.fingerprint, secret=True, passphrase=password)
+    nameOfExportFile = determineNameOfEmail(nameOfEmail) + ".asc"
 
-for x in files_dir:
-    print(x)
-    with open(x, "rb") as f:
-        status = gpg.decrypt_file(
-            f, passphrase="jinojoe", output=files_dir_clean[files_dir.index(x)])
-    print(status)
-    print("ok: ", status.ok)
-    print("status: ", status.status)
-    print("stderr: ", status.stderr)
-    os.rename(files_dir_clean[files_dir.index(x)],
-              "decrypted/" + files_dir_clean[files_dir.index(x)])
+    # export the keys into files
+    with open(nameOfExportFile, 'w') as f:
+        f.write(ascii_armored_public_keys)
+        f.write(ascii_armored_private_keys)
+
+    return json.dumps({
+        "keyname": nameOfExportFile,
+        "state": "created"
+    })
+
+
+def gpgEncryption(combineOfKeyFile, nameOfEncryoptionFile, recipients):
+    gpg = gnupg.GPG()
+    with open(combineOfKeyFile) as f:
+        keyLoader = f.read()
+    gpg.import_keys(keyLoader)
+    status = gpg.encrypt_file(nameOfEncryoptionFile, recipients=[recipients], output=nameOfEncryoptionFile + ".gpg")
+    return json.dumps({
+        "encrytionState": status.ok,
+        "status": status.status
+    })
+
+
+def gpgDecryption(combineOfKeyFile, passphrase, nameOfDecryoptionFile):
+    gpg = gnupg.GPG()
+    with open(combineOfKeyFile) as f:
+        keyLoader = f.read()
+    gpg.import_keys(keyLoader)
+    status = gpg.decrypt_file(nameOfDecryoptionFile, passphrase=passphrase,output=removeGpgExtension(nameOfDecryoptionFile))
+    return json.dumps({
+        "decrytionState": status.ok,
+        "status": status.status
+    })
+
+
+def checkDecryptionStatus(nameOfFile):
+    extensionOfFile = pathlib.Path(nameOfFile).suffix
+    if (extensionOfFile == '.asc' or extensionOfFile == '.gpg' or extensionOfFile == '.pgp'):
+        return True
+    else:
+        return False
 ```
 
-
-
-_base function_
+_execution_
 
 ```py
-import gnupg
-
-Efile = "/home/dodo/Desktop/pgpg/sue.txt"
-Dfile = "/home/dodo/Desktop/pgpg/sue.txt.gpg"
-
-gpg = gnupg.GPG(gnupghome='/tmp', gpgbinary='/usr/bin/gpg',
-                options=['--trust-model', 'always'])
-priv_key = gpg.import_keys("/home/dodo/Desktop/pgpg/private.key")
-with open(Dfile, 'rb') as a_file:
-    status = gpg.decrypt_file(a_file, passphrase=None,
-                              output=Efile, always_trust=True)
-
-    print(status.ok)
-    print(status.status)
-    print(status.stderr)
-
-gpg = gnupg.GPG(gnupghome='')
-priv_key = gpg.import_keys("/home/dodo/Desktop/pgpg/private.key")
-with open('Efile', 'rb') as f:
-    status = gpg.encrypt_file(
-        f, recipients=['jinojoe@gmail.com'],
-        output='Dfile'
-    )
-    print(status.ok)
-    print(status.status)
-    print(status.stderr)
-
-# gpg --list-secret-keys user@some.com
-# gpg --export-secret-keys YOUR_ID_HERE > private.key
-# aws s3 mv private.key s3://your_s3_bucket/
-
+print(generteGpgkey("jinojoe@gmail.com", "jinojoe"))
+print(gpgEncryption("jinojoe.asc", "demo.txt", "jinojoe@gmail.com"))
+print(removeGpgExtension("demo.txt.gpg"))
+print(checkDecryptionStatus("demo.txt.gpg"))
+print(gpgDecryption("jinojoe.asc", "jinojoe", "demo.txt.gpg"))
 ```
