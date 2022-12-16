@@ -60,88 +60,88 @@ _linux-basics.md_
 **Day 2 and 3 - 13.12.2022 - 14.12.2022** 
     
 **Version Details:**
+
+      Even version (22, 20, 18, 16, 14...) Gives a total of 5 years support
    
-   Even version (22, 20, 18, 16, 14...) Gives a total of 5 years support
+      Odd Version (19, 17, 15..) Gives only one year of support
    
-   Odd Version (19, 17, 15..) Gives only one year of support
+      LTS - Long Term Support
    
-   LTS - Long Term Support
+      For Windows - we have a administrator has a Head role.
    
-   For Windows - we have a administrator has a Head role.
+      For Linux - we have root user has a head role administrating all the system programs.
    
-   For Linux - we have root user has a head role administrating all the system programs.
+      Short cut Key for terminal (in Ubuntu Desktop) - Ctrl+Alt+T 
    
-   Short cut Key for terminal (in Ubuntu Desktop) - Ctrl+Alt+T 
-   
-   To kill a process running - Ctrl+C
+      To kill a process running - Ctrl+C
       
 **Linux Basic Commands**
  
- Use the command **"whoami"** to know as which user we are logged in.
+      Use the command **"whoami"** to know as which user we are logged in.
  
- Use the command **"top"** to check the processes running, usage of RAM, hard disk, CPU consumption.
+      Use the command **"top"** to check the processes running, usage of RAM, hard disk, CPU consumption.
  
- Use command **"echo"** to print the given content as ouput 
+      Use command **"echo"** to print the given content as ouput 
  
- Command - **echo "Hi Welcome World"**  Output = **Hi Welcome World**
+      Command - **echo "Hi Welcome World"**  Output = **Hi Welcome World**
  
- To check the RAM usage and availablity: Command : **free -mh**
+      To check the RAM usage and availablity: Command : **free -mh**
  
- To check how many CPU :
+      To check how many CPU :
  
- To check the storage/disk space:
+      To check the storage/disk space:
  
- To list the files in directory: **ls**
+      To list the files in directory: **ls**
  
- To list all files/directory (including hidden files) Hidden files starts with (.): **ls -a**
+      To list all files/directory (including hidden files) Hidden files starts with (.): **ls -a**
   
- To list all files/directory with detailed/additional information: **ls -l**
+      To list all files/directory with detailed/additional information: **ls -l**
  
- To list files and directories in human readable format: **ls -lh**
+      To list files and directories in human readable format: **ls -lh**
  
- To reverse the order in which your files and Directories are listed: **ls -r**
+      To reverse the order in which your files and Directories are listed: **ls -r**
  
- To get the list files together with the contents of directories present in the path: **ls -R**
+      To get the list files together with the contents of directories present in the path: **ls -R**
  
- To see the last modified file and the Directories: **ls -lt**
+      To see the last modified file and the Directories: **ls -lt**
  
- To Sort the files and Directories by their sizes from greater to smaller: **ls -lS**
+      To Sort the files and Directories by their sizes from greater to smaller: **ls -lS**
   
 **FILE CREATION**
  
- To create a file: **touch bea.txt**  Touch calls the path **usr/bin/touch**
+      To create a file: **touch bea.txt**  Touch calls the path **usr/bin/touch**
  
- To read a file: **cat bea.txt**
+      To read a file: **cat bea.txt**
   
- To rename a file: **mv currentfilename newfilename**
+      To rename a file: **mv currentfilename newfilename**
  
- To copy a fiele: **cp existingfilename copyfilename**
+      To copy a fiele: **cp existingfilename copyfilename**
  
- To remove/delete a fiele: **rm existingfilename**
+      To remove/delete a fiele: **rm existingfilename**
  
- To read the date: **date**
+      To read the date: **date**
  
 **DIRECTORY**
  
- To create a directory: **mkdir 'directoryname'**
+      To create a directory: **mkdir 'directoryname'**
  
- To change the directory: **cd directoryname**
+      To change the directory: **cd directoryname**
  
- To make n number if directories: **mkdir name1, name2, name3**
+      To make n number if directories: **mkdir name1, name2, name3**
  
- To create recursice directories: **mkdir -p dirname/dirname/dirname**
+      To create recursice directories: **mkdir -p dirname/dirname/dirname**
  
- To remove a directory: **rm -rfdirecname**
+      To remove a directory: **rm -rfdirecname**
  
  **File Handling**
  
- To create a file with content: **echo "hi welcome" > main.txt** (If the file is there with the name it will override the content with the new data, else it will     create a new file with the data given in the command.)
+      To create a file with content: **echo "hi welcome" > main.txt** (If the file is there with the name it will override the content with the new data, else it         will create a new file with the data given in the command.)
  
- To read the content: **cat main.txt**
+      To read the content: **cat main.txt**
  
- To replace a file with new content: **echo "hi world" >> main.txt**
+      To replace a file with new content: **echo "hi world" >> main.txt**
  
- > =| tee and >> = |tee -a
+      > =| tee and >> = |tee -a
  
  **Note**: tee Cannot be used for file creation as it eliminates duplication.
  
