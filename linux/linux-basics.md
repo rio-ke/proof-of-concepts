@@ -57,7 +57,6 @@ _linux-basics.md_
     
     apt upgrade
 
- 
  **Day 2 - 13.12.2022** 
  
    
@@ -94,9 +93,44 @@ _linux-basics.md_
  
  To check the storage/disk space:
  
- To list the files: **ls -l**
+ To list the files in directory: **ls**
  
- To create a file: **touch bea.txt**  Touch calls the path usr/bin/touch
+ To list all files/directory (including hidden files) Hidden files starts with (.): **ls -a**
+  
+ To list all files/directory with detailed/additional information: **ls -l**
+ 
+ To list files and directories in human readable format: **ls -lh**
+ 
+ To reverse the order in which your files and Directories are listed: **ls -r**
+ 
+ To get the list files together with the contents of directories present in the path: **ls -R**
+ 
+ To see the last modified file and the Directories: **ls -lt**
+ 
+ To Sort the files and Directories by their sizes from greater to smaller: **ls -lS**
+ 
+ 
+ **FILE CREATION**
+ 
+ To create a file: **touch bea.txt**  Touch calls the path **usr/bin/touch**
+ 
+ To read a file: **cat bea.txt**
+ 
+ To read the date: **date**
+ 
+ 
+ **DIRECTORY**
+ 
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
  
  
  
