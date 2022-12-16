@@ -59,6 +59,7 @@ _linux-basics.md_
 
  
  **Day 2 - 13.12.2022** 
+ 
    
  **Version Details:**
    
@@ -75,6 +76,7 @@ _linux-basics.md_
    Short cut Key for terminal (in Ubuntu Desktop) - Ctrl+Alt+T 
    
    To kill a process running - Ctrl+C
+   
    
  **Linux Basic Commands**
  
