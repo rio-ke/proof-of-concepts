@@ -130,15 +130,15 @@ To make n number if directories: **mkdir name1, name2, name3**
 
 To create recursice directories: **mkdir -p dirname/dirname/dirname**
 
-To remove a directory: **rm -rfdirecname**
+To remove a directory: `rm -rfdirecname`
  
  **File Handling**
  
 To create a file with content: **echo "hi welcome" > main.txt** (If the file is there with the name it will override the content with the new data, else it will create a new file with the data given in the command.)
 
-To read the content: **cat main.txt**
+To read the content: `cat main.txt`
 
-To replace a file with new content: **echo "hi world" >> `main.txt`
+To replace a file with new content: `echo "hi world" >> main.txt`
 
 > =| tee and >> = |tee -a
 
