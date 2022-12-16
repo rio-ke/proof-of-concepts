@@ -57,10 +57,9 @@ _linux-basics.md_
     
     apt upgrade
 
- **Day 2 - 13.12.2022** 
- 
-   
- **Version Details:**
+**Day 2 and 3 - 13.12.2022 - 14.12.2022** 
+    
+**Version Details:**
    
    Even version (22, 20, 18, 16, 14...) Gives a total of 5 years support
    
@@ -75,9 +74,8 @@ _linux-basics.md_
    Short cut Key for terminal (in Ubuntu Desktop) - Ctrl+Alt+T 
    
    To kill a process running - Ctrl+C
-   
-   
- **Linux Basic Commands**
+      
+**Linux Basic Commands**
  
  Use the command **"whoami"** to know as which user we are logged in.
  
@@ -108,9 +106,8 @@ _linux-basics.md_
  To see the last modified file and the Directories: **ls -lt**
  
  To Sort the files and Directories by their sizes from greater to smaller: **ls -lS**
- 
- 
- **FILE CREATION**
+  
+**FILE CREATION**
  
  To create a file: **touch bea.txt**  Touch calls the path **usr/bin/touch**
  
@@ -124,8 +121,7 @@ _linux-basics.md_
  
  To read the date: **date**
  
- 
- **DIRECTORY**
+**DIRECTORY**
  
  To create a directory: **mkdir 'directoryname'**
  
