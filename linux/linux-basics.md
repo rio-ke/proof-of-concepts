@@ -137,6 +137,17 @@ _linux-basics.md_
  
  To remove a directory: **rm -rfdirecname**
  
+ **File Handling**
+ 
+ To create a file with content: **echo "hi welcome" > main.txt**
+ 
+ To read the content: **cat main.txt**
+ 
+ To replace a file with new content: **echo "hi world" >> main.txt**
+ 
+ > =| tee and >> = |tee -a
+ 
+ Note: tee Cannot be used for file creation as it eliminates duplication.
  
  
  
