@@ -145,6 +145,32 @@ _linux-basics.md_
  
  **Note**: tee Cannot be used for file creation as it eliminates duplication.
  
+ **DIRECTORY STRUCTURE:**
+ 
+      Linux directory structure
+      
+      / – The root directory
+      /bin – Binaries
+      /dev – Device files (usb/CD)
+      /etc – Configuration files (application configuration files)
+      /usr – User binaries and program data (user accessible information)
+      /home – User personal data (/home/beau)
+      /lib – Shared libraries
+      /sbin – System binaries (super binary - can be accessed only by root user)
+      /tmp – Temporary files (data loss while shutdown)
+      /var – Variable data files (Storage location of any particular application)
+      /boot – Boot files (WHile loading the OS - Kernel)
+      /proc – Process and kernel files (root user home directory)
+      /opt – Optional software (Optional location)
+      /root – The home directory of the root
+      /media – Mount point for removable media
+      /mnt – Mount directory eg: Hard disk
+      /srv – Service data
+      /swapfile - allocates the memory for the app in use by swapping with the not used app
+
+ 
+ 
+ 
  
  
  
