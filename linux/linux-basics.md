@@ -115,11 +115,28 @@ _linux-basics.md_
  To create a file: **touch bea.txt**  Touch calls the path **usr/bin/touch**
  
  To read a file: **cat bea.txt**
+  
+ To rename a file: **mv currentfilename newfilename**
+ 
+ To copy a fiele: **cp existingfilename copyfilename**
+ 
+ To remove/delete a fiele: **rm existingfilename**
  
  To read the date: **date**
  
  
  **DIRECTORY**
+ 
+ To create a directory: **mkdir 'directoryname'**
+ 
+ To change the directory: **cd directoryname**
+ 
+ To make n number if directories: **mkdir name1, name2, name3**
+ 
+ To create recursice directories: **mkdir -p dirname/dirname/dirname**
+ 
+ To remove a directory: **rm -rfdirecname**
+ 
  
  
  
