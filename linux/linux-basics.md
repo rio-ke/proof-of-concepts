@@ -172,11 +172,15 @@ _linux-basics.md_
       
  **USER CREATION:**
  
-      To create a new user: adduser username
+      To create a new user: **adduser username**
       
-      to see the list of users and their informations: cat /etc/passwd
+      to see the list of users and their informations: **cat /etc/passwd**
       
-      To see their groups: cat /etc/group
+      To see their groups: **cat /etc/group**
+      
+      To switch user: su username
+      
+      
 
  
  
