@@ -12,6 +12,9 @@ import pathlib
 def determineNameOfEmail(nameOfEmail):
     result = re.split(r'@', nameOfEmail)
     return result[0]
+    
+def determineOfKeyname(nameOfFile):
+    return os.path.basename(nameOfFile)
 
 def removeGpgExtension(nameOfFile):
     return os.path.splitext(nameOfFile)[0]
@@ -79,4 +82,5 @@ print(gpgEncryption("jinojoe.asc", "demo.txt", "jinojoe@gmail.com"))
 print(removeGpgExtension("demo.txt.gpg"))
 print(checkDecryptionStatus("demo.txt.gpg"))
 print(gpgDecryption("jinojoe.asc", "jinojoe", "demo.txt.gpg"))
+print(determineOfKeyname("/tmp/demo.txt"))
 ```
