@@ -1,5 +1,9 @@
 ## docs.md
 
+* https://www.server-world.info/en/
+* https://books.goalkicker.com/
+
+
 _create a shell script_
 
 
