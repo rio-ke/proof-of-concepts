@@ -103,3 +103,9 @@ print(gpgDecryption("jinojoe.asc", "jinojoe", "demo.txt.gpg"))
 # find the file name
 print(determineOfKeyname("/tmp/demo.txt"))
 ```
+
+_reference_
+
+```bash
+https://www.saltycrane.com/blog/2011/10/python-gnupg-gpg-example/
+```
