@@ -10,7 +10,7 @@ client = boto3.client('securityhub')
 filter = Filters = {
     'AwsAccountId': [
         {
-            'Value': '412725174439',
+            'Value': 'xxxx',
             'Comparison': 'EQUALS'
         },
     ],
