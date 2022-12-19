@@ -125,6 +125,38 @@ _DIRECTORY STRUCTURE:_
  * To see the list of users and their informations: `cat /etc/passwd`
  * To see their groups: `cat /etc/group`
  * To switch user: `su username`
+
+_PERMISSION:_
+
+* Read - 4, Write -2, Execute - 1 = Total Value = 7
+* For a directory - Default access given while creation of directory = 755
+* For a File - Default access given while creation of file = 644
+* To modify the existing permission `chmod 700 demo.txt`
+* To modify the existing ownership `chown mike: root demo.txt`
+* Umask for the root user is 022
+
+_Octal value : Permission_
+
+* 0 : read, write and execute
+* 1 : read and write
+* 2 : read and execute
+* 3 : read only
+* 4 : write and execute
+* 5 : write only
+* 6 : execute only
+* 7 : no permissions
+
+_UMASK_
+
+
+Bit	Targeted at	            File permission
+0	Owner	                  read, write and execute
+7	Group	                  No permissions
+7	Others	            No permissions
+
+_HOST CREATION_
+
+* 
       
       
 
