@@ -120,3 +120,10 @@ with open('reports.csv', 'w', newline='') as file:
     writer.writerows(row_list)
 
 ```
+
+```bash
+sudo apt install awscli
+sudo apt install python3-pip
+pip3 install csv boto3
+python3 filename.py
+```
