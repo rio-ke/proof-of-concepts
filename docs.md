@@ -4,6 +4,11 @@
 * https://books.goalkicker.com/
 
 
+```bash
+sudo vim /etc/gdm3/custom.conf
+sudo systemctl restart gdm3
+```
+
 _create a shell script_
 
 
