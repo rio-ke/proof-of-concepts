@@ -64,6 +64,6 @@ _execution steps_
 sudo apt install awscli
 sudo apt install python3-pip
 pip3 install csv boto3
-#export credentials
+# export credentials
 python3 filename.py
 ```
