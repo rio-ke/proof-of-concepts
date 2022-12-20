@@ -56,7 +56,7 @@ with open('reports.csv', 'w', newline='') as file:
     writer.writerows(row_list)
 
 ```
-_execution id_
+_execution steps_
 
 ```bash
 sudo apt install awscli
