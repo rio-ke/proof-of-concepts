@@ -36,5 +36,6 @@ curl -XGET https://reqbin.com/echo/post/json \
 _sqs message reader_
 
 ```bash
-curl -s -XGET -H "Content-Type: application/json" -H "x-apigw-api-id: xxxx" -k "https://xxx.com/uat/sub/common/sub/ip?Action=ReceiveMessage&WaitTimeSeconds=10&MaxNumberOfMessages=5&VisibilityTimeout=15&AttributeName=All"
+curl -s -XGET -H "Content-Type: application/json" -H "x-apigw-api-id: xxxx" \
+-k "https://xxx.com/uat/sub/common/sub/ip?Action=ReceiveMessage&WaitTimeSeconds=10&MaxNumberOfMessages=5&VisibilityTimeout=15&AttributeName=All"
 ```
