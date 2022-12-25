@@ -32,3 +32,9 @@ curl -XGET https://reqbin.com/echo/post/json \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer ${BearerToken}"
 ```
+
+_sqs message reader_
+
+```bash
+curl XGET -H "Content-Type: application/json" -H "x-apigw-api-id: xxxx" -k "https://xxx.com/uat/sub/common/sub/ip?Action=ReceiveMessage&WaitTimeSeconds=10&MaxNumberOfMessages=5&VisibilityTimeout=15&AttributeName=All"
+```
