@@ -97,3 +97,29 @@ SELECT 1
 ```
 
 ## docs.md
+
+
+_sqs_
+
+`DeleteMessage`
+
+```
+Action=DeleteMessage&ReceiptHandle=xxx
+```
+
+`ChangeMessageVisibility`
+
+```
+Action=ChangeMessageVisibility&VisibilityTimeout=60&ReceiptHandle=xxx
+```
+
+
+`ReceiveMessage`
+
+```
+?Action=ReceiveMessage
+&WaitTimeSeconds=10
+&MaxNumberOfMessages=5
+&VisibilityTimeout=15
+&AttributeName=All
+```
