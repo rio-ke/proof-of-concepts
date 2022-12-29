@@ -31,6 +31,11 @@ ansible_ssh_user=ec2-user
 ansible_ssh_private_key_file=~/.ssh/prom.pem
 ansible_ssh_pass=vagrant
 ```
+_adhoc command_
+
+```bash
+ansible all -m shell -a "hostname"
+```
 
 `palybooks/package.yaml`
 
