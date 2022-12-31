@@ -75,7 +75,202 @@ quarantined - dodo-quarantined-internet
 
 
 ```py
-print("lambda")
+import json
+import re
+import os
+import pathlib
+import boto3
+import urllib
+import logging
+import datetime
+
+class s3Process():
+    tempdir = "/tmp/"
+    ChecksumAlgorithm = 'SHA256'
+
+    def __init__(self, bucket, key):
+        self.bucket = bucket
+        self.key = key
+        self.s3 = boto3.resource('s3')
+        self.s3Client = boto3.client('s3')
+        self.parentPath = pathlib.PurePath(self.key).parent
+        self.childName = pathlib.PurePath(self.key).name
+
+    def download(self):
+        downloadLocation = self.tempdir + self.childName
+        self.s3.meta.client.download_file(
+            self.bucket, self.key, downloadLocation)
+        return downloadLocation
+
+    def delete(self, destinationBucket=None):
+        targetBucket = destinationBucket if destinationBucket != None else self.bucket
+        return self.s3Client.delete_object(Bucket=targetBucket, Key=self.key)
+
+    def upload(self, uploadKey):
+        return self.s3.meta.client.upload_file(uploadKey, self.bucket, uploadKey)
+
+    def bucketToBucket(self, destinationBucket, customLocation=None):
+        targetPath = customLocation + self.childName if customLocation != None else self.key
+        source = {'Bucket': self.bucket, 'Key': self.key}
+        return self.s3Client.copy_object(CopySource=source, Bucket=destinationBucket, Key=targetPath, TaggingDirective='COPY', ChecksumAlgorithm=self.ChecksumAlgorithm)
+
+    def createNewTag(self, t_name, t_value):
+        tagging = {'TagSet': [{'Key': t_name, 'Value': t_value}]}
+        return self.s3Client.put_object_tagging(Bucket=self.bucket, Key=self.key, Tagging=tagging)
+
+    def objectState(self):
+        return 'Contents' in self.s3Client.list_objects(Bucket=self.bucket, Prefix=self.key)
+
+    def getTags(self):
+        tag = self.s3Client.get_object_tagging(
+            Bucket=self.bucket, Key=self.key)
+        return tag['TagSet']
+
+    def getSpecificTagDetails(self, t_name):
+        tags = self.s3Client.get_object_tagging(
+            Bucket=self.bucket, Key=self.key)
+        data = tags['TagSet']
+        if data == []:
+            return False
+        else:
+            for element in data:
+                if element['Key'] == t_name:
+                    return element['Value']
+            return False
+
+    def updateTags(self, destinationBucket=None, updationTags=None):
+        targetBucket = destinationBucket if destinationBucket != None else self.bucket
+        updationTagLists = updationTags if updationTags != None else self.getTags()
+        return self.s3Client.put_object_tagging(Bucket=targetBucket, Key=self.key, Tagging={'TagSet': updationTagLists})
+
+    def logPoster(self, state):
+        return json.dumps({'Bucket': self.bucket, 'fileName': self.key, 'processState': state})
+
+    def ignorePathPosition(self, pathPosition):
+        data = re.split(r'/', self.key)
+        return ("/".join(data[pathPosition:]))
+
+class eventsCreation():
+    def __init__(self, Source, EventBusName,  verbose=False):
+        self.events = boto3.client('events')
+        self.Source = Source
+        self.EventBusName = EventBusName
+        self.verbose = verbose
+        if self.verbose:
+            boto3.set_stream_logger(name="botocore")
+
+    def postEvent(self, bucket, key, action, status):
+        return self.events.put_events(
+            Entries=[
+                {
+                    "Source": self.Source,
+                    "EventBusName": self.EventBusName,
+                    "DetailType": "notification",
+                    "Time": datetime.datetime.now(),
+                    "Detail": json.dumps({"bucket": bucket,"key": key,"action": action,"status": status})
+                }
+            ]
+        )
+
+def lambda_handler(event, context):
+    """ Event Capture process"""
+
+    eventName = event['detail']['eventName']
+    eventBucket = urllib.parse.unquote_plus(
+        event['detail']['requestParameters']['bucketName'])
+    key = urllib.parse.unquote_plus(
+        event['detail']['requestParameters']['key'])
+
+    """ Logger initiate process"""
+
+    logger = logging.getLogger()
+    logger.setLevel(logging.INFO)
+
+    """ Class initiate process"""
+    _s3 = s3Process(eventBucket, key)
+    _event = eventsCreation("custom.consumer","dodo-pub-sub-event-bus")
+
+    """ If an object exists in the event bucket, it will execute based on conditions."""
+    if (_s3.objectState()):
+
+        """ A_B and default process validated"""
+
+        if (eventName == "PutObject" or eventName == "CompleteMultipartUpload") and (eventBucket == "dodo-upload-internet"):
+            safeBucket = "dodo-safe-internet"
+            scanBucket = "dodo-scan-internet"
+            _s3.createNewTag("zone", "internet")
+            _s3.bucketToBucket(safeBucket)
+            _event.postEvent(safeBucket, key, "copied", "OK")
+            _s3.bucketToBucket(scanBucket)
+            _event.postEvent(scanBucket, key, "copied", "OK")
+            _s3.delete()
+            _event.postEvent(eventBucket, key, "deleted", "OK")
+
+        # elif (eventName == "PutObject" or eventName == "CompleteMultipartUpload") and (eventBucket == "sftp-a1-bucket"):
+        #     metadataBucket = "a1-s3-bucket-jn"
+        #     _s3.createNewTag("zone", "sftp")
+        #     _s3.bucketToBucket(metadataBucket, _s3.ignorePathPosition(1))
+        #     _s3.delete()
+
+        elif (eventName == "PutObjectTagging" and eventBucket == "dodo-scan-internet"):
+            zoneTag = _s3.getSpecificTagDetails("zone")
+            if (zoneTag == "Intranet" or zoneTag == "intranet"):
+                taggingSafeIntranetBucket = "dodo-safe-intranet"
+                _s3.updateTags(taggingSafeIntranetBucket, _s3.getTags())
+                _event.postEvent(taggingSafeIntranetBucket, key, "tagging", "OK")
+                _s3.delete()
+                _event.postEvent(eventBucket, key, "deleted", "OK")
+            else:
+                taggingSafeInternetBucket = "dodo-safe-internet"
+                _s3.updateTags(taggingSafeInternetBucket, _s3.getTags())
+                _event.postEvent(taggingSafeInternetBucket, key, "tagging", "OK")
+                _s3.delete()
+                _event.postEvent(eventBucket, key, "deleted", "OK")
+
+        elif (eventName == "PutObjectTagging" and eventBucket == "dodo-safe-internet"): 
+            safeIntranetBucket = "dodo-safe-intranet"
+            quarantineInternetBucket = "dodo-quarantined-internet"
+            get_tag_value = _s3.getSpecificTagDetails("fss-scan-result")
+
+            if "A_C" in key:
+                if 'no issues found' == get_tag_value:
+                    _s3.bucketToBucket(safeIntranetBucket)
+                    _event.postEvent(safeIntranetBucket, key, "copied", "OK")
+                    _s3.delete()
+                    _event.postEvent(eventBucket, key, "deleted", "OK")
+                else:
+                    _s3.bucketToBucket(quarantineInternetBucket)
+                    _event.postEvent(quarantineInternetBucket, key, "copied", "OK")
+
+            elif "A_B" in key:
+                if 'no issues found' == get_tag_value:
+                    _s3.bucketToBucket(safeIntranetBucket)
+                    _event.postEvent(safeIntranetBucket, key, "copied", "OK")
+                else:
+                    _s3.bucketToBucket(quarantineInternetBucket)
+                    _event.postEvent(quarantineInternetBucket, key, "copied", "OK")
+
+            else:
+                if 'no issues found' == get_tag_value:
+                    _s3.bucketToBucket(safeIntranetBucket)
+                    _event.postEvent(safeIntranetBucket, key, "copied", "OK")
+                else:
+                    _s3.bucketToBucket(quarantineInternetBucket)
+                    _event.postEvent(quarantineInternetBucket, key, "copied", "OK")
+
+            """ B_C and default process """
+        elif (eventName == "PutObject" or eventName == "CompleteMultipartUpload") and (eventBucket == "dodo-safe-internet"):
+            safeIntranetBucket = "dodo-safe-intranet"
+            _s3.bucketToBucket(safeIntranetBucket)
+            _event.postEvent(safeIntranetBucket, key, "copied", "OK")
+            updationTags = [{'Key': 'fss-scan-result',
+                             'Value': 'no issues found'}, {'Key': 'zone', 'Value': 'internet'}]
+            _s3.updateTags(safeIntranetBucket, updationTags)
+            _event.postEvent(safeIntranetBucket, key, "tagging", "OK")
+        else:
+            logger.error(_s3.logPoster("condition mismatch for processing"))
+    else:
+        logger.error(_s3.logPoster("unknown events"))
 ```
 
 _event rule_
@@ -196,7 +391,165 @@ quarantined - dodo-quarantined-intranet
 `lambda - dodo-lambda-intranet`
 
 ```py
-print("lambda")
+import json
+import re
+import pathlib
+import boto3
+import urllib
+import logging
+import datetime
+
+
+class s3Process():
+    tempdir = "/tmp/"
+    ChecksumAlgorithm = 'SHA256'
+
+    def __init__(self, bucket, key):
+        self.bucket = bucket
+        self.key = key
+        self.s3 = boto3.resource('s3')
+        self.s3Client = boto3.client('s3')
+        self.parentPath = pathlib.PurePath(self.key).parent
+        self.childName = pathlib.PurePath(self.key).name
+
+    def download(self):
+        downloadLocation = self.tempdir + self.childName
+        self.s3.meta.client.download_file(self.bucket, self.key, downloadLocation)
+        return downloadLocation
+
+    def delete(self, destinationBucket=None):
+        targetBucket = destinationBucket if destinationBucket != None else self.bucket
+        return self.s3Client.delete_object(Bucket=targetBucket, Key=self.key)
+
+    def upload(self, uploadKey):
+        return self.s3.meta.client.upload_file(uploadKey, self.bucket, uploadKey)
+
+    def bucketToBucket(self, destinationBucket, customLocation=None):
+        targetPath = customLocation + self.childName if customLocation != None else self.key
+        source = {'Bucket': self.bucket, 'Key': self.key}
+        return self.s3Client.copy_object(CopySource=source, Bucket=destinationBucket, Key=targetPath, TaggingDirective='COPY', ChecksumAlgorithm=self.ChecksumAlgorithm)
+
+    def createNewTag(self, t_name, t_value):
+        tagging = {'TagSet': [{'Key': t_name, 'Value': t_value}]}
+        return self.s3Client.put_object_tagging(Bucket=self.bucket, Key=self.key, Tagging=tagging)
+
+    def objectState(self):
+        return 'Contents' in self.s3Client.list_objects(Bucket=self.bucket, Prefix=self.key)
+
+    def getTags(self):
+        tag = self.s3Client.get_object_tagging(Bucket=self.bucket, Key=self.key)
+        return tag['TagSet']
+
+    def getSpecificTagDetails(self, t_name):
+        tags = self.s3Client.get_object_tagging(Bucket=self.bucket, Key=self.key)
+        data = tags['TagSet']
+        print(data)
+        if data == []:
+            return False
+        else:
+            for element in data:
+                if element['Key'] == t_name:
+                    return element['Value']
+            return False
+
+    def updateTags(self, destinationBucket=None,updationTags=None):
+        targetBucket = destinationBucket if destinationBucket != None else self.bucket
+        updationTagLists = updationTags if updationTags != None else self.getTags()
+        return self.s3Client.put_object_tagging(Bucket=targetBucket, Key=self.key, Tagging={'TagSet': updationTagLists})
+
+    def logPoster(self, state):
+        return json.dumps({'Bucket': self.bucket, 'fileName': self.key, 'processState': state})
+
+    def ignorePathPosition(self, pathPosition):
+        data = re.split(r'/', self.key)
+        return ("/".join(data[pathPosition:]))
+
+class eventsCreation():
+    def __init__(self, Source, EventBusName,  verbose=False):
+        self.events = boto3.client('events')
+        self.Source = Source
+        self.EventBusName = EventBusName
+        self.verbose = verbose
+        if self.verbose:
+            boto3.set_stream_logger(name="botocore")
+
+    def postEvent(self, bucket, key, action, status):
+        return self.events.put_events(
+            Entries=[
+                {
+                    "Source": self.Source,
+                    "EventBusName": self.EventBusName,
+                    "DetailType": "notification",
+                    "Time": datetime.datetime.now(),
+                    "Detail": json.dumps({"bucket": bucket,"key": key,"action": action,"status": status})
+                }
+            ]
+        )
+        
+def lambda_handler(event, context):
+    
+    """ Event Capture process"""
+    
+    eventName = event['detail']['eventName']
+    eventBucket = urllib.parse.unquote_plus(event['detail']['requestParameters']['bucketName'])
+    key = urllib.parse.unquote_plus(event['detail']['requestParameters']['key'])
+
+    """ Logger initiate process"""
+    
+    logger = logging.getLogger()
+    logger.setLevel(logging.INFO)
+
+    """ Class initiate process"""
+    _s3 = s3Process(eventBucket, key)
+    _event = eventsCreation("custom.consumer","dodo-pub-sub-event-bus")
+    
+    """ If an object exists in the event bucket, it will execute based on conditions."""
+    if (_s3.objectState()):
+
+        """ C_BA process validated"""
+        if (eventName == "PutObject" or eventName == "CompleteMultipartUpload") and (eventBucket == "dodo-safe-intranet"):
+            safeBucket = "dodo-safe-internet"
+            uploadBucket = "dodo-upload-internet"
+            _s3.createNewTag("zone", "intranet")
+            _s3.bucketToBucket(safeBucket)
+            _event.postEvent(safeBucket, key, "copied", "OK")
+            _s3.bucketToBucket(uploadBucket)
+            _event.postEvent(uploadBucket, key, "copied", "OK")
+
+
+            """ t2 process validated"""
+        elif (eventName == "PutObject" or eventName == "CompleteMultipartUpload") and (eventBucket == "dodo-upload-intranet"):
+            scanBucket = "dodo-scan-internet"
+            safeBucket = "dodo-safe-intranet"
+            _s3.createNewTag("zone", "intranet")
+            _s3.bucketToBucket(scanBucket)
+            _event.postEvent(scanBucket, key, "copied", "OK")
+            _s3.bucketToBucket(safeBucket)
+            _event.postEvent(safeBucket, key, "copied", "OK")
+            _s3.delete()
+            _event.postEvent(eventBucket, key, "deleted", "OK")
+
+            """ SFTP(D_C) process validated"""
+        elif (eventName == "PutObject" or eventName == "CompleteMultipartUpload") and (eventBucket == "dodo-sftp-intranet"):
+            scanBucket = "dodo-scan-internet"
+            safeBucket = "dodo-safe-intranet"
+            _s3.createNewTag("zone", "intranet")
+            _s3.bucketToBucket(scanBucket)
+            _event.postEvent(scanBucket, key, "copied", "OK")
+            _s3.bucketToBucket(safeBucket)
+            _event.postEvent(safeBucket, key, "copied", "OK")
+            _s3.delete()
+            _event.postEvent(eventBucket, key, "deleted", "OK")
+
+        # elif (eventName == "PutObjectTagging" and eventBucket == "dodo-safe-intranet"):
+        #     destinationBucket = "a3-s3-bucket-success"
+        #     _s3.updateTags(destinationBucket, _s3.getTags())
+        #     _s3.delete()
+
+        else:
+            logger.error(_s3.logPoster("condition mismatch for processing"))
+    else:
+        logger.error(_s3.logPoster("unknown events"))
 ```
 
 _intranet event rule_
