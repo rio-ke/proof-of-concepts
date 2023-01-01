@@ -32,3 +32,7 @@ zip -r lambdaLayer.zip python/
 aws lambda publish-layer-version --layer-name gnupg-python-1-4-23-1 --description "Python-GNUPG Module and GPG Binary" --zip-file fileb://gnupg-python-1-4-23v1.zip --compatible-runtimes python3.9
 echo Lambda layer created successfully.
 ```
+
+_docs_
+
+https://www.gnupg.org/ftp/gcrypt/gnupg/
