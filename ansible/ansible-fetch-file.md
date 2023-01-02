@@ -19,5 +19,6 @@
 
 _excecution_
 
-```
+```yml
 ansible-playbook fetch.yml
+```
