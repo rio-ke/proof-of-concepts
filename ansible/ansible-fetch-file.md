@@ -4,15 +4,15 @@
 ---
 
 - name: fetch files from remote nodes
-  hosts: v
+  hosts: virtual #inventory-host
   become: yes
-  # ignore_errors: true
+  ignore_errors: true
 
   tasks:
     - name: cpoy file to remote host to ansible local host machine
       fetch:
         src: /home/server/ftp/index.yml
-        dest: /home/rcms-lap-173/Public/
+        dest: /home/user/Public/
         validate_checksum: yes
         flat: yes
 ```
