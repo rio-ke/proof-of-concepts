@@ -8,7 +8,7 @@ mkdir ansible
 
 **Generating a sample `ansible.cfg` file**
 
-_**ad-hoc command**_
+_ad-hoc command_
 
 * You can create a fully commented-out example ansible.cfg file by doing the following:
 
