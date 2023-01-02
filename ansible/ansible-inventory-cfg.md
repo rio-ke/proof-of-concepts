@@ -8,15 +8,15 @@ mkdir ansible
 
 **Generating a sample `ansible.cfg` file**
 
-* You can generate a fully commented-out example ansible.cfg file, for example:
+_**ad-hoc command**_
+
+* You can create a fully commented-out example ansible.cfg file by doing the following:
 
 ```cmd
 ansible-config init --disabled > ansible.cfg
 ```
 
-* You can also have a more complete file that includes existing plugins:
-
-_**ad-hoc command**_
+* You can also have a more complete conf file that includes existing plugins:
 
 ```cmd
 ansible-config init --disabled -t all > ansible.cfg
@@ -64,8 +64,4 @@ ansible -m ping all
 ![error-find](https://user-images.githubusercontent.com/88568938/209984748-8a6ca70e-ee82-4bba-acfb-7128a75e2d01.png)
 
 * need to add `192.168.0.104 ansible_connection=ssh ansible_ssh_user=server ansible_ssh_pass=.  #username #password` in hosts
-
-
-
-
 
