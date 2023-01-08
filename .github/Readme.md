@@ -67,7 +67,7 @@
 * kubernetes
 * basic networks
     * networks 
-    * subnet call culations
+    * subnet calculations
     * firewalls
 
 * shell script
