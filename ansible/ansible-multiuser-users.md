@@ -22,6 +22,6 @@
       register: created
       loop: "{{ ans_er }}"
     - debug:
-        msg: "{{ created }}"
+        msg: "{{ created | json_query('results[*].shell') }}"
   ```     
    
