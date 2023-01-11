@@ -1,0 +1,8 @@
+---
+- hosts: node
+  tasks:
+  roles:
+    - { role: epel  }
+    - { role: nginx  }
+    - { role: firewall, firewall_service_name: [ http ] } #[ntp, http]} }
+

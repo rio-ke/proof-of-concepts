@@ -1,0 +1,30 @@
+---
+- hosts: localhost
+  gather_facts: no
+  vars_prompt:
+  - name: host_list
+    prompt: Please Enter ip or name (ansible host file single_host= localhost multiple_host= node1,node2)
+    private: no
+  tasks:
+    - name:  add the group of host
+      add_host:
+        name: "{{ item }}"
+        groups: grouped_hosts
+      with_items: "{{ host_list.split(',') }}"
+
+- hosts: grouped_hosts
+  tasks:
+  - name: pam_tally2 module is used to lock user accounts after certain number of failed ssh login attempts made to the system
+    shell: pam_tally2
+    register: pam_tally_result
+    ignore_errors: true
+    failed_when: false
+  - name: display the locked user list
+    debug:
+      msg: "{{pam_tally_result.stdout_lines}}"
+    when: pam_tally_result.stdout != ""
+
+  - name:
+    shell: pam_tally2 --reset
+    when: pam_tally_result.stdout != ""
+

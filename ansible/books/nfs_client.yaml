@@ -1,0 +1,6 @@
+---
+- hosts: node
+  tasks:
+  roles:
+  - { role: epel  }
+  - { role: nfs_client, mount_path: /jinoj, nfs_server_ip: 192.168.5.161, nfs_mount_path: /jino  }

@@ -1,0 +1,7 @@
+---
+- name: play for ntp
+  hosts: node
+  tasks:
+  roles:
+    - { role: firewall, firewall_service_name: [ http ]}
+    - { role: firewall, firewall_service_port: [ 80/tcp, 443/tcp ]}

@@ -1,0 +1,6 @@
+---
+- name: install Haproxy
+  hosts: master
+  tasks:
+  roles:
+  - role: docker

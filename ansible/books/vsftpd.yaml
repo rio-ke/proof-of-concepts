@@ -1,0 +1,8 @@
+---
+- name: install vsftpd
+  hosts: master
+  tasks:
+  roles:
+    - { role: user_group, user_name: jake, user_password: jake, shell_name: /sbin/nologin, }
+    - { role: vsftpd, Document_path: /var/www/html, user_name: jake }
+

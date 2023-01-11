@@ -1,0 +1,7 @@
+---
+- name: install for kubernetes
+  hosts: vag
+  tasks:
+  roles:
+    #- { role: docker }
+  - { role: kubernetes }

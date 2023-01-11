@@ -1,0 +1,8 @@
+---
+- name: install nagios_client
+  hosts: node
+  tasks:
+  roles:
+  - { role: epel }
+  - { role: nagios_client, nagios_server_ip: 192.168.5.170 }
+  - { role: firewall, firewall_port_name: 5666/tcp }

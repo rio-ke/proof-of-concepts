@@ -1,0 +1,5 @@
+---
+- hosts: node master
+  tasks:
+  roles:
+    - { role: jino_patch }

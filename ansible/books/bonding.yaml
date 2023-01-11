@@ -1,0 +1,6 @@
+---
+- name: create bonding
+  hosts: master
+  tasks:
+  roles:
+  - { role: bonding }

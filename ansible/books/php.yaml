@@ -1,0 +1,7 @@
+---
+- name: install php
+  hosts: master
+  tasks:
+  roles:
+    - { role: epel }
+    - { role: php }

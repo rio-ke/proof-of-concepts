@@ -1,0 +1,9 @@
+---
+- name:
+  hosts: node
+  tasks:
+  roles:
+    - { role: epel }
+    - { role: httpd }
+    - { role: firewall, service_name: http }
+    - { role: nagios }

@@ -1,0 +1,7 @@
+---
+- name: install ssh server
+  hosts: vag
+  tasks:
+  roles:
+    - { role: sshd, service_name: sshd}
+    - { role: firewall, firewall_service: ssh}

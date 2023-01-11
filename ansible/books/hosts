@@ -1,0 +1,17 @@
+[local]
+localhost ansible_connection=local ansible_user=mike
+
+master ansible_host=192.168.5.161 ansible_user=vagrant ansible_private_key_file=/home/mike/Study/vagrant/.vagrant/machines/jino/virtualbox/private_key
+node ansible_host=192.168.5.174 ansible_user=vagrant ansible_private_key_file=/home/mike/Study/vagrant/node2/.vagrant/machines/jino1/virtualbox/private_key
+node1 ansible_host=192.168.5.174 ansible_user=vagrant ansible_private_key_file=/home/mike/Study/vagrant/node2/.vagrant/machines/jino1/virtualbox/private_key
+
+[all:vars]
+ansible_connection  = ssh
+sec_date            = "{{ lookup('pipe','date +%Y-%m-%d') }}"
+rad_date            = "{{ lookup('pipe','date +%Y%b%d\(%a\) --date="1 day ago" ') }}"
+post_rad_date       = "{{ lookup('pipe','date +%Y-%m-%d --date="3 day ago"') }}"
+pre_rad_date        = "{{ lookup('pipe','date +%Y-%m-%d --date="1 day ago"') }}"
+log_date            = "{{ lookup('pipe','date +%d/%b/%Y --date="1 day ago"') }}"
+dbs_log             = root
+name_of_month       = {{ lookup('pipe','date +%b')}}
+date_of_month       = {{ lookup('pipe','date +%d')}}

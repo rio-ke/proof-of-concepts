@@ -1,0 +1,8 @@
+---
+- hosts: master
+  tasks:
+  roles:
+    - { role: epel  }
+    - { role: httpd  }
+    - { role: firewall, firewall_service_name: [ http ] } #[ntp, http]} }
+

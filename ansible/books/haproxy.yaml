@@ -1,0 +1,7 @@
+---
+- name: install Haproxy
+  hosts: master
+  tasks:
+  roles:
+  - role: epel
+  - role: haproxy

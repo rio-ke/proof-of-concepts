@@ -1,0 +1,9 @@
+---
+- name: update configuration
+  hosts: master
+  tasks:
+  roles:
+  - role: sysctl
+    # sysctl_settings:
+    #- name: net.ipv4.tcp_syncookies
+    #  value: 1

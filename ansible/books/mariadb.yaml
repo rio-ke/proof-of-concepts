@@ -1,0 +1,6 @@
+---
+- name: install mariadb
+  hosts: master
+  tasks:
+  roles:
+  - role: mariadb_server

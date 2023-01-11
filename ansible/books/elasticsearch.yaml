@@ -1,0 +1,6 @@
+---
+- name: install elasticsearch
+  hosts: master
+  tasks:
+  roles:
+  - role: elasticsearch

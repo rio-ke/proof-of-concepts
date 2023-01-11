@@ -1,0 +1,6 @@
+---
+- hosts: master
+  tasks:
+  roles:
+  - { role: httpd_vhost, domain_name: ja.com }
+  - { role: firewall, firewall_service_name: [ http ] } #[ntp, http]} }

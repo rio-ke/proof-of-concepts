@@ -1,0 +1,5 @@
+---
+- name: play for wazuh installtion
+  hosts: node1
+  roles:
+    - role: wazuh 

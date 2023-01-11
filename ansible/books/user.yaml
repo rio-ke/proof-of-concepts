@@ -1,0 +1,14 @@
+---
+- name: Create madhead user
+  hosts: master
+  vars:
+    - passjino: jino
+  tasks:
+    - shell: "openssl passwd -1 -salt Etg2ExUZ {{ passjino }}"
+      register: jino
+    - debug:
+        msg: "{{jino.stdout_lines}}"
+    - user:
+        name: qw
+        password: "{{jino.stdout_lines}}"
+        state: present
