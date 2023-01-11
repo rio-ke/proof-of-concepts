@@ -10,7 +10,7 @@
     backup: yes
     regexp: "{{item.ex}}"
     line: "{{item.lin}}"
-  with_items:
+  loop:
     - { ex: 'anonymous_enable=YES', lin: 'anonymous_enable=NO' }
     - { ex: '#ascii_upload_enable=YES', lin: 'ascii_upload_enable=YES' }
     - { ex: '#ascii_download_enable=YES', lin: 'ascii_download_enable=YES' }
