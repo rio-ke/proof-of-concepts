@@ -1,0 +1,23 @@
+---
+- name: install packages
+  yum:
+    name: ntp
+    state: present
+- name: restart service
+  service:
+    name: ntpd
+    state: started
+    enabled: yes
+- name: Configure NTP
+  template:
+    src: templates/ntp.conf.j2
+    dest: /etc/ntp.conf
+    backup: yes
+  notify:
+    - restart ntpd
+- name: sync date and time
+  shell: ntpq -p
+  register: status
+- debug:
+    msg: "{{status.stdout_lines}}"
+

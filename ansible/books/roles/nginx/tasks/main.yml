@@ -1,0 +1,59 @@
+---
+- name: check whether httpd install or not
+  shell: rpm -qa {{ package_name }}
+  register: installed
+- name: Install nginx
+  yum:
+    name: "{{ package_name }}"
+    state: present
+  when: installed.stdout_lines == []
+
+- name: start the {{ package_name}}
+  service:
+    name: "{{ item }}"
+    enabled: yes
+    state: started
+  with_items:
+    - "{{ package_name }}"
+  when: installed.stdout_lines == []
+
+- name: add security content
+  template:
+    src: templates/nginx_securith.conf.j2
+    dest: /etc/nginx/default.d/security.conf
+    owner: root
+    group: root
+    mode: 0755
+  notify:
+    - restart {{ package_name }}
+- name: create the file directory
+  file:
+    path: "{{ Document_root}}"
+    state: directory
+    owner: "{{ nginx_user }}"
+    group: "{{ nginx_group }}"
+    mode: 775
+- name: replace in rsyslog and audit file if already existing replaced
+  replace:
+    path: "{{item.path}}"
+    regexp: "{{item.exp}}"
+    replace: "{{item.rep}}"
+    backup: yes
+  run_once: true
+  with_items:
+    - { path: '/etc/nginx/nginx.conf', exp: 'root         /usr/share/nginx/html;', rep: 'root         {{ Document_root }};' }
+- name: insert the index line
+  lineinfile:
+    path: /etc/nginx/nginx.conf
+    line: '       index  index.html index.htm index.php;'
+    insertafter: server_name  _;
+
+- name: add the html content
+  template:
+    src: templates/index.html.j2
+    dest: /var/www/html/index.html
+    owner: root
+    group: root
+    mode: 0755
+  notify:
+    - restart {{ package_name }}

@@ -1,0 +1,24 @@
+---
+- name: check whether ntpdate install or not
+  shell: rpm -qa ntpdate
+  register: installed
+- name: install ntpdate
+  yum:
+    name: ntpdate
+    state: present
+  when: installed.stdout_lines == []
+- name: enable ntpdate service
+  service:
+    name: ntpdate
+    enabled: yes
+  when: installed.stdout_lines == []
+- name: update the time in clent use ntpdate
+  shell: " ntpdate {{item}}"
+  with_items:
+    - "{{ ntp_server_ip }}"
+  when:
+    - ntp_server_ip is defined
+  register: ntp_result
+- debug:
+    msg: "{{ ntp_result.results | json_query('[].stdout_lines[]') }}"
+    # msg: "{{ntp_result.stdout_lines}}"

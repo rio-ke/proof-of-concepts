@@ -1,0 +1,5 @@
+---
+package_name: nginx
+Document_root: /var/www/html
+nginx_user: nginx
+nginx_group: nginx

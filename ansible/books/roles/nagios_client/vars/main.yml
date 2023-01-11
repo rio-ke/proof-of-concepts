@@ -1,0 +1,6 @@
+---
+nagios_nrpe:
+  - nrpe
+  - nagios-plugins-all
+  - nagios-plugins-nrpe
+nagios_server_ip: 192.168.5.170

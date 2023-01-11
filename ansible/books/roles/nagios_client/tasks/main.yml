@@ -1,0 +1,25 @@
+---
+- name: install pacakges
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - "{{ nagios_nrpe }}"
+- name: replace in rsyslog and audit file if already existing replaced
+  replace:
+    path: "{{item.path}}"
+    regexp: "{{item.exp}}"
+    replace: "{{item.rep}}"
+    backup: yes
+  run_once: true
+  with_items:
+    - { path: '/etc/nagios/nrpe.cfg', exp: 'allowed_hosts=127.0.0.1,::1', rep: 'allowed_hosts=127.0.0.1,{{ nagios_server_ip }}' }
+    - { path: '/etc/nagios/nrpe.cfg', exp: 'dont_blame_nrpe=0', rep: 'dont_blame_nrpe=1' }
+- name: template move to nagios server host
+  template:
+    src: templates/template.cfg.j2
+    dest: 
+- name: restart the service
+  service:
+    name: nrpe
+    state: restarted

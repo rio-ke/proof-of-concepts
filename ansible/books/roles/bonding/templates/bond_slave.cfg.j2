@@ -1,0 +1,6 @@
+TYPE=Ethernet
+NAME={{ item }}
+DEVICE={{ item }}
+ONBOOT=yes
+MASTER={{ linux_bonding.interface_name }}
+SLAVE=yes

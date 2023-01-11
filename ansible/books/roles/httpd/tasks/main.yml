@@ -1,0 +1,34 @@
+---
+- name: check whether httpd install or not
+  shell: rpm -qa httpd
+  register: installed
+- name: Install httpd
+  yum:
+    name: httpd
+    state: present
+  when: installed.stdout_lines == []
+- name: start the httpd
+  service:
+    name: "{{item}}"
+    enabled: yes
+    state: started
+  with_items:
+    - httpd
+  when: installed.stdout_lines == []
+- name: add security content
+  template:
+    src: templates/http_securith.conf.j2
+    dest: /etc/httpd/conf.d/http_security.conf
+    owner: root
+    group: root
+    mode: 0755
+  notify:
+    - restart httpd
+- name: add the html content
+  template:
+    src: templates/index.html.j2
+    dest: /var/www/html/index.html
+    owner: root
+    group: root
+    mode: 0755
+

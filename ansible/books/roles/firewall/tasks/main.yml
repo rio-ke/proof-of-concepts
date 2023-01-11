@@ -1,0 +1,33 @@
+---
+- name: check whether firewall install or not
+  shell: rpm -qa firewalld
+  register: installed
+- name: install firewalld
+  yum:
+    name: firewalld
+    state: present
+  when: installed.stdout_lines == []
+- name: start the firewalld
+  service:
+    name: firewalld
+    enabled: yes
+    state: started
+  when: installed.stdout_lines == []
+- name: enable service name firewalld service
+  firewalld:
+    service: "{{item}}"
+    permanent: true
+    state: enabled
+    immediate: yes
+  with_items:
+    - "{{firewall_service_name}}"
+  when: firewall_service_name is defined
+- name: enable port to firewalld service
+  firewalld:
+    port: "{{item}}"
+    permanent: true
+    state: enabled
+    immediate: yes
+  with_items:
+    - "{{firewall_service_port}}"
+  when: firewall_service_port is defined

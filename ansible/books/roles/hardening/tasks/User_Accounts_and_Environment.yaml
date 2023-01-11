@@ -1,0 +1,6 @@
+---
+- name: login defs changes for security
+  template:
+    src: templates/login.defs.j2
+    dest: /etc/login.defs
+    backup: yes

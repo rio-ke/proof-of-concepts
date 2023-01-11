@@ -1,0 +1,67 @@
+---
+- name: check whether httpd install or not
+  shell: rpm -qa httpd
+  register: installed
+- name: Install httpd
+  yum:
+    name: httpd
+    state: present
+  when: installed.stdout_lines == []
+- name: start the httpd
+  service:
+    name: "{{item}}"
+    enabled: yes
+    state: started
+  with_items:
+    - httpd
+  when: installed.stdout_lines == []
+- name: create directory
+  file:
+    path: /var/www/{{ domain_name }}/public_html
+    state: directory
+    owner: root
+    group: root
+    mode: 755
+- name: add security content
+  template:
+    src: templates/domain_name.conf.j2
+    dest: /etc/httpd/conf.d/{{ domain_name }}.conf
+    owner: apache
+    group: apache
+    mode: 0755
+  notify:
+    - restart httpd
+- name: add the html content
+  template:
+    src: templates/index.html.j2
+    dest: /var/www/{{ domain_name }}/public_html/index.html
+    owner: root
+    group: root
+    mode: 0755
+    #- name: make /etc/hosts entry
+    #blockinfile:
+      #path: /etc/hosts
+      #block: |
+        # {{ item }} {{ domain_name }}
+        #with_items:
+          # - "{{ ansible_all_ipv4_addresses }}"
+- name: make /etc/hosts entry
+  lineinfile:
+    path: /etc/hosts
+    line: "{{ item }} {{ domain_name }}"
+  with_items:
+    - "{{ ansible_all_ipv4_addresses }}"
+- name: restart the httpd
+  service:
+    name: "{{item}}"
+    enabled: yes
+    state: restarted
+  with_items:
+    - httpd
+- name: check weather domain name works or not
+  uri:
+    url: http://{{domain_name}}
+  register: result
+- debug:
+    msg: "{{ result }}"
+

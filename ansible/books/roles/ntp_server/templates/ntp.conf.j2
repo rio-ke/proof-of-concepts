@@ -1,0 +1,24 @@
+driftfile /var/lib/ntp/drift
+
+{% for server in ntp_servers %}
+server {{ server }} iburst
+{% endfor %}
+
+#restrict default nomodify notrap nopeer noquery
+
+restrict 127.0.0.1
+restrict ::1
+
+#by default ignore all ntp packets
+#restrict 0.0.0.0 mask 0.0.0.0 ignore
+
+# by allowed network
+restrict {{ansible_default_ipv4.network}} mask {{ansible_default_ipv4.netmask}} nomodify notrap
+
+includefile /etc/ntp/crypto/pw
+keys /etc/ntp/keys
+
+#log file location
+logfile /var/log/ntpd.log
+
+disable monitor

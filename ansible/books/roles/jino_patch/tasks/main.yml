@@ -1,0 +1,49 @@
+---
+- name: "Ensure yum-utils is installed"
+  yum:
+    name: yum-utils
+    state: latest
+- name: Update the packages
+  yum:
+    name: "{{ patch_packages | default('*') }}"
+    state: latest
+    update_cache: yes
+- name: Check if services need restarting
+  command: needs-restarting -s
+  register: needs_service_restart
+  changed_when: "needs_service_restart.stdout_lines | length > 0 "
+  notify:
+    - Restart required services
+- debug:
+    msg: "{{ needs_service_restart }}"
+- name: Check if reboot is required
+  shell:  needs-restarting -r
+  register: needs_reboot
+  changed_when: "needs_reboot.rc == 1"
+  failed_when: "needs_reboot.rc > 1"
+- name: Reboot host
+  shell: sleep 1 && shutdown -r now {{ patch_reboot_message | default('Rebooting due to patching.') }} && sleep 1
+  async: 1
+  poll: 0
+  ignore_errors: True
+  register: reboot_result
+  when:
+    -  "needs_reboot.rc != 0"
+- name: check the system status
+  local_action: shell ansible -u ansible -m ping {{ inventory_hostname }}
+  until: result.rc == 0
+  retries: 30
+  delay: 10
+  register: result
+  when:
+    - reboot_result is succeeded
+- name: check system status
+  debug:
+    msg: "Server is  running {{ ansible_hostname }} and uptime is {{ ansible_uptime_seconds }}s"
+  when:
+    - "result.changed ==  true"
+- name: check system status
+  debug:
+    msg: "Server is not running {{ ansible_hostname }}"
+  when:
+    - "result.failed ==  true"

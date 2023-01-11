@@ -1,0 +1,51 @@
+global
+  log /dev/log  local0
+  log /dev/log  local1 notice
+{% if haproxy_socket != '' %}
+  stats socket {{ haproxy_socket }} level admin
+{% endif %}
+{% if haproxy_chroot != '' %}
+  chroot {{ haproxy_chroot }}
+{% endif %}
+  user {{ haproxy_user }}
+  group {{ haproxy_group }}
+  daemon
+{% for global_var in haproxy_global_vars %}
+  {{ global_var }}
+{% endfor %}
+
+defaults
+  log global
+  mode  http
+  option  httplog
+  option  dontlognull
+{% if haproxy_version == '1.4' %}
+    contimeout 5000
+    clitimeout 50000
+    srvtimeout 50000
+{% else %}
+    timeout connect 5000
+    timeout client 50000
+    timeout server 50000
+{% endif %}
+
+frontend {{ haproxy_frontend_name }}
+    bind {{ haproxy_frontend_bind_address }}:{{ haproxy_frontend_port }}
+    mode {{ haproxy_frontend_mode }}
+    default_backend {{ haproxy_backend_name }}
+
+backend {{ haproxy_backend_name }}
+    mode {{ haproxy_backend_mode }}
+    balance {{ haproxy_backend_balance_method }}
+    option forwardfor
+    cookie SERVERID insert indirect
+{% for backend in haproxy_backend_servers %}
+    server {{ backend.name }} {{ backend.address }} cookie {{ backend.name }} check
+{% endfor %}
+
+listen stats
+    bind :{{ haproxy_stats_port }}
+    stats enable
+    stats uri /{{ stats_url_name }}
+    stats hide-version
+    stats auth {{ haproxy_stats_user }}:{{ haproxy_stats_password }}

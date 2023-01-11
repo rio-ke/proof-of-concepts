@@ -1,0 +1,14 @@
+---
+- name: check it if package installed or not
+  yum:
+    name: "{{item}}"
+    state: absent
+  ignore_errors: true
+  with_items: "{{os_services}}"
+- name: Disable services for automatic start
+  service:
+    name: "{{ item }}"
+    enabled: no
+  with_items: "{{disable_services}}"
+  ignore_errors: true
+

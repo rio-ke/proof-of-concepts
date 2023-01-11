@@ -1,0 +1,24 @@
+---
+- name: Create the repo for wazuh
+  template:
+    src: templates/wazuh.repo.j2
+    dest: /etc/yum.repos.d/wazuh.repo
+- name: install  wazuh-manager
+  package:
+    name:  wazuh-manager
+    state: present
+- name: start the service
+  service:
+    name:  wazuh-manager
+    state: started
+    enabled: yes
+- name: configuration file assign
+  template:
+    src: templates/ossec.conf.j2
+    dest: /var/ossec/etc/ossec.conf
+  notify:
+    - restart wazuh-manager
+- name: restart the wazuh_manager
+  service:
+    name: wazuh-manager
+    state: restarted

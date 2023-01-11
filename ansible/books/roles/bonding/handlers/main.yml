@@ -1,0 +1,4 @@
+- name: restart network service in RedHat family
+  service:
+    name: network.service
+    state: restarted

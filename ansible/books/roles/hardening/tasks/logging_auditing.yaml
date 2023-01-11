@@ -1,0 +1,63 @@
+---
+- name: Logging and Auditing
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - "{{ rsyslog_package }}"
+- name: start the service
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  with_items: "{{ rsyslog_service }}"
+- name: Add the line into /etc/syslog
+  lineinfile:
+    path: /etc/rsyslog.conf
+    line: "{{ item }}"
+  with_items:
+    - '$ModLoad imtcp.so'
+    - '$InputTCPServerRun 514'
+  notify:
+    - restart rsyslog
+- name: copy the template
+  template:
+    src: templates/auditd.conf.j2
+    dest: /etc/audit/auditd.conf
+    backup: yes
+- name:
+  raw:  grep "audit" /boot/grub2/grub.cfg
+  ignore_errors: true
+  register: grub_audit
+- name: add include audit in GRUB
+  replace:
+    path: /etc/default/grub
+    regexp: GRUB_CMDLINE_LINUX="no_timer_check console=tty0 console=ttyS0,115200n8 net.ifnames=0 biosdevname=0 elevator=noop crashkernel=auto"
+    replace: GRUB_CMDLINE_LINUX="no_timer_check console=tty0 console=ttyS0,115200n8 net.ifnames=0 biosdevname=0 elevator=noop crashkernel=auto,audit=1"
+    backup: yes
+  register: include_audit
+  when: grub_audit is failed
+- name: update the GRUB
+  raw: grub2-mkconfig -o /boot/grub2/grub.cfg
+  when: grub_audit is failed
+- name: copy template into alert rules
+  template:
+    src: templates/auditd.rules_64.j2
+    dest: /etc/audit/audit.rules
+    backup: yes
+  when: ansible_architecture == "x86_64"
+- name: copy template into alert rules
+  template:
+    src: templates/auditd.rules_32.j2
+    dest: /etc/audit/audit.rules
+    backup: yes
+  when: ansible_architecture == "32"
+- name: syslog logrotate
+  lineinfile:
+    path: /etc/logrotate.d/syslog
+    firstmatch: yes
+    insertafter: \/var\/log\/spooler
+    line: /var/log/boot.log
+  notify:
+    - restart auditd
+

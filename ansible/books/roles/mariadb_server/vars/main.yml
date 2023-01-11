@@ -1,0 +1,7 @@
+---
+# vars file for mariadb_server
+mariadb_package:
+  - mariadb-server
+  - MySQL-python
+mariadb_root_password: root
+mysql_user: root

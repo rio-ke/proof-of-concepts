@@ -1,0 +1,71 @@
+---
+- name: install packages for nagios server
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - "{{ nagios_server_packages }}"
+- name: start the service
+  service:
+    name: "{{ nagios_service_name }}"
+    state: started
+    enabled: yes
+- name: replace in rsyslog and audit file if already existing replaced
+  replace:
+    path: "{{item.path}}"
+    regexp: "{{item.exp}}"
+    replace: "{{item.rep}}"
+    backup: yes
+  run_once: true
+  with_items:
+    - { path: '/etc/httpd/conf.d/nagios.conf', exp: 'Alias /nagios "/usr/share/nagios/html"', rep: 'Alias /{{ nagios_url }} "/usr/share/nagios/html"' }
+- shell: "openssl passwd -1 -salt Etg2ExUZ {{ nagios_pass }}"
+  register: jino
+- htpasswd:
+    path: "{{ htpassword_path }}"
+    name: nagiosadmin
+    password: "{{ jino.stdout_lines }}"
+    owner: root
+    group: apache
+    mode: 0640
+- name: replace in rsyslog and audit file if already existing replaced
+  replace:
+    path: "{{item.path}}"
+    regexp: "{{item.exp}}"
+    replace: "{{item.rep}}"
+    backup: yes
+  run_once: true
+  with_items:
+    - { path: '/etc/nagios/objects/contacts.cfg', exp: 'email                           nagios@localhost', rep: 'email                           {{ nagios_email_alert }}' }
+- name: add to template
+  template:
+    src: templates/localhost.cfg.j2
+    dest: /etc/nagios/objects/localhost.cfg
+    owner: root
+    group: root
+    mode: 0664
+- name: add client configuration file
+  blockinfile:
+    path:
+    block: |
+      define command{
+      command_name        check_nrpe
+      command_line        $USER1$/check_nrpe -H $HOSTADDRESS$ -c $ARG1$
+      }
+- name: replace in rsyslog and audit file if already existing replaced
+  replace:
+    path: "{{item.path}}"
+    regexp: "{{item.exp}}"
+    replace: "{{item.rep}}"
+    backup: yes
+  run_once: true
+  with_items:
+    - { path: '/etc/nagios/nagios.cfg', exp: '#cfg_dir=/etc/nagios/servers', rep: 'cfg_dir=/etc/nagios/servers' }
+- name: create the directory
+  file:
+    path: /etc/nagios/servers
+    owner: root
+    group: nagios
+    state: directory
+    mode: 775
+

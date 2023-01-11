@@ -1,0 +1,24 @@
+<VirtualHost *:80>
+    ServerName {{domain_name}}
+    ServerAlias www.{{domain_name}}
+    ServerAdmin webmaster@{{domain_name}}
+    DocumentRoot /var/www/{{domain_name}}/public_html
+
+    <Directory /var/www/{{domain_name}}/public_html>
+        Options -Indexes +FollowSymLinks
+        AllowOverride All
+    </Directory>
+
+    ErrorLog /var/log/httpd/{{domain_name}}-error.log
+    CustomLog /var/log/httpd/{{domain_name}}-access.log combined
+</VirtualHost>
+
+   	HostnameLookups Off
+	ServerSignature Off
+    ServerTokens Prod
+    TraceEnable off
+    KeepAlive On
+	Header set X-XSS-Protection "1; mode=block"
+	Header always append X-Frame-Options SAMEORIGIN
+
+

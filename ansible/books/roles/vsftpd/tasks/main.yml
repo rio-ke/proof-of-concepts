@@ -1,0 +1,75 @@
+---
+- name: install vsftpd packages
+  yum:
+    name: "{{vsftpd_service_name}}"
+    state: present
+
+- name: file changes in vsftpd conf file
+  lineinfile:
+    path: /etc/vsftpd/vsftpd.conf
+    backup: yes
+    regexp: "{{item.ex}}"
+    line: "{{item.lin}}"
+  with_items:
+    - { ex: 'anonymous_enable=YES', lin: 'anonymous_enable=NO' }
+    - { ex: '#ascii_upload_enable=YES', lin: 'ascii_upload_enable=YES' }
+    - { ex: '#ascii_download_enable=YES', lin: 'ascii_download_enable=YES' }
+    - { ex: '#ftpd_banner=Welcome to blah FTP service.', lin: 'ftpd_banner=Welcome to FTP service.' }
+    - { ex: 'listen=NO', lin: 'listen=YES' }
+    - { ex: 'listen_ipv6=YES', lin: 'listen_ipv6=NO' }
+    - { ex: 'xferlog_std_format=YES', lin: 'xferlog_std_format=NO' }
+    - { ex: '#chroot_local_user=YES', lin: 'chroot_local_user=YES' }
+  when: ansible_distribution_major_version == "7" or ansible_distribution == "CentOS"
+
+- name: add the file in vsftpd location
+  blockinfile:
+    path: /etc/vsftpd/vsftpd.conf
+    block: |
+      use_localtime=YES
+      user_config_dir=/etc/vsftpd/users
+      allow_writeable_chroot=YES
+      vsftpd_log_file=/var/log/vsftpd.log
+      log_ftp_protocol=YES
+      userlist_deny=NO
+      userlist_file=/etc/vsftpd/chroot_list
+- name: cretae directory
+  file:
+    path: /etc/vsftpd/users
+    state: directory
+    mode: 0600
+- name: directory assign file permission
+  file:
+    path: "{{Document_path}}"
+    owner: "{{user_name}}"
+    group: "{{user_name}}"
+    mode: 0754
+    recurse: yes
+- name: touch file create depends on user
+  file:
+    path: "/etc/vsftpd/users/{{user_name}}"
+    state: touch
+- name: touch file create depends on user
+  file:
+    path: /etc/vsftpd/chroot_list
+    state: touch
+- name: Add some condent in vsftpd
+  lineinfile:
+    path: /etc/vsftpd/chroot_list
+    line: "{{ user_name}}"
+- name: create log file
+  file:
+    path: /var/log/vsftpd.log
+    state: touch
+    owner: "{{user_name}}"
+    group: "{{user_name}}"
+- name: add the file in vsftpd user location
+  blockinfile:
+    path: /etc/vsftpd/users/{{user_name}}
+    block: |
+      local_root={{Document_path}}
+- name: restart the service
+  service:
+    name: "{{item}}"
+    state: restarted
+  with_items:
+    - "{{vsftpd_service_name}}"

@@ -1,0 +1,16 @@
+---
+- name: check file permission
+  file:
+    path: "{{item}}"
+    mode: 0644
+    owner: root
+    group: root
+  with_items: "{{banner_file_path}}"
+- name: to set banner message
+  lineinfile:
+    path: "{{item}}"
+    line: "{{ banner_message }}"
+    backup: yes
+  with_items:
+    - /etc/issue
+    - /etc/issue.net

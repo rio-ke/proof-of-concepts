@@ -1,0 +1,25 @@
+---
+wazuh_version: '3.x'
+email_notification: yes
+smtp_server: 127.0.0.1
+email_from: root@localhost
+slack_channel_id: https://hooks.slack.com/services/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
+#policy Monitering status
+Policy_monitoring: no #no means enable yes means disable
+System_inventory: no #no means enable yes means disable
+wodle_cis_cat: no
+vulnerability: no
+monitring_directory:
+  - /etc
+  - /usr/bin
+  - /usr/sbin
+  - /bin
+  - /sbin
+  - /boot
+open_scap:
+alert_email_user:
+  - jinoj@xxx.com
+  - jino@xxx.com
+active_response: yes
+  # https://ossec-docs.readthedocs.io/en/latest/manual/ar/ar-custom.html#creating-the-command
+  #https://www.ossec.net/docs/syntax/head_ossec_config.active-response.html

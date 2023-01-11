@@ -1,0 +1,22 @@
+---
+- name: check whether firewall install or not
+  shell: rpm -qa nfs-utils
+  register: installed
+- name: install nfs-utils
+  yum:
+    name: nfs-utils
+    state: present
+  when: installed.stdout_lines == []
+- name: create the mount directory
+  file:
+    path: "{{ mount_path }}"
+    state: directory
+  register: dir_create
+  when:
+    - mount_path is defined
+- name: mount the nfs server point to client host
+  mount:
+    path: "{{ mount_path }}"
+    src: "{{ nfs_server_ip }}:{{nfs_mount_path}}"
+    fstype: nfs
+    state: mounted

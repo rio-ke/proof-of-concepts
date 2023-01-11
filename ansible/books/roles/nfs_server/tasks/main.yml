@@ -1,0 +1,38 @@
+---
+- name: check whether firewall install or not
+  shell: rpm -qa nfs-utils
+  register: installed
+- name: install nfs-utils
+  yum:
+    name: nfs-utils
+    state: present
+  when: installed.stdout_lines == []
+- name: start the nfs-utils
+  service:
+    name: "{{item}}"
+    enabled: yes
+    state: started
+  with_items:
+    - rpcbind
+    - nfs-server
+  when: installed.stdout_lines == []
+  #- name:
+  # replace:
+    #  path: "{{item.path}}"
+    # regexp: "{{item.exp}}"
+    # replace: "{{item.rep}}"
+    # backup: yes
+    # with_items:
+      # - { path: '/etc/idmapd.conf', exp: '#Domain = local.domain.edu', rep: 'Domain = {{ansible_hostname}}' }
+- name: Copy using the 'content' for inline data
+  copy:
+    content: '{{ mount_point }} {{ansible_default_ipv4.network}}/24(rw,no_root_squash)'
+    dest: /etc/exports
+- name: start the nfs-utils
+  service:
+    name: "{{item}}"
+    enabled: yes
+    state: restarted
+  with_items:
+    - rpcbind
+    - nfs-server

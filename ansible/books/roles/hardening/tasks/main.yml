@@ -1,0 +1,7 @@
+---
+- include_tasks: network_hardening.yaml
+- include_tasks: logging_auditing.yaml
+- include_tasks: System_Access_Authentication_Authorization.yaml
+- include_tasks: User_Accounts_and_Environment.yaml
+- include_tasks: Warning_Banners.yaml
+- include_tasks: os_services.yaml

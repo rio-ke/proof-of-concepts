@@ -1,0 +1,102 @@
+---
+- name: install docker
+  yum:
+    name: docker
+    state: present
+    update_cache: true
+- name: start the docker service
+  service:
+    name: docker
+    state: started
+    enabled: yes
+- name: disable SELinux
+  command: setenforce 0
+- name: disable selinux
+  selinux:
+    state: disabled
+- name: ensure net.bridge.bridge-nf-call-ip6tables is set to 1
+  sysctl:
+    name: net.bridge.bridge-nf-call-ip6tables
+    value: 1
+    state: present
+- name: ensure net.bridge.bridge-nf-call-iptables is set to 1
+  sysctl:
+    name: net.bridge.bridge-nf-call-iptables
+    value: 1
+    state: present
+- name: remove swapfile from /etc/fstab
+  mount:
+    name: swap
+    fstype: swap
+    state: absent
+
+- name: disable swap
+  command: swapoff -a
+  when: ansible_swaptotal_mb > 0
+
+- name: add Kubernetes' YUM repository
+  yum_repository:
+    name: Kubernetes
+    description: Kubernetes YUM repository
+    baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+    gpgkey: https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+    gpgcheck: yes
+- name: install kubelet
+  yum:
+    name: kubelet
+    state: present
+    update_cache: true
+- name: install kubeadm
+  yum:
+    name: kubeadm
+    state: present
+- name: start kubelet
+  service:
+    name: kubelet
+    enabled: yes
+    state: started
+- name: install kubectl
+  yum:
+    name: kubectl
+    state: present
+    when: inventory_hostname == "master"
+- name: initialize the cluster
+  shell: kubeadm init --pod-network-cidr=172.17.0.0/16 >> token.txt
+  args:
+    chdir: $HOME
+    creates: token.txt
+  when: inventory_hostname == "master"
+
+- name: create .kube directory
+  file:
+    path: $HOME/.kube
+    state: directory
+    mode: 0755
+  when: inventory_hostname == "master"
+
+- name: copy admin.conf to user's kube config
+  copy:
+    src: /etc/kubernetes/admin.conf
+    dest: /home/centos/.kube/config
+    remote_src: yes
+    owner: root
+  when: inventory_hostname == "master"
+- name: create the pod network
+  shell: "{{item}}"
+  with_items:
+    - kubectl apply -f https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/hosted/rbac-kdd.yaml
+    - kubectl apply -f https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/hosted/kubernetes-datastore/calico-networking/1.7/calico.yaml
+  when: inventory_hostname == "master"
+- name: debug the token number
+  shell: cat $HOME/token.txt | grep discovery-token-ca-cert
+  register: token_id
+  when: inventory_hostname == "master"
+- debug:
+    msg: "{{token_id}}"
+  when: inventory_hostname == "master"
+- name: to join nodes into cluster
+  shell: "{{ item }}"
+  when: inventory_hostname == "node"
+  with_items:
+    - "{{token_id.stdout_lines}}"
+

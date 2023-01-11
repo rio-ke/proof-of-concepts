@@ -1,0 +1,66 @@
+input {
+  udp {
+    host => "127.0.0.1"
+    port => 9000
+    type => "syslog"
+  }
+}
+
+filter {
+  if [type] == "syslog" {
+    # Match les champs sur le message syslog original
+    grok {
+      match => { "message" => "%{SYSLOGTIMESTAMP:syslog_timestamp} %{SYSLOGHOST:syslog_host} %{DATA:syslog_program}: Alert Level: %{BASE10NUM:Alert_Level}; Rule: %{BASE10NUM:Rule} - %{GREEDYDATA:Description}; Location: (?<agent>\(%{HOSTNAME}\) %{IP})->%{GREEDYDATA:Details}" }
+      add_field => [ "ossec_server", "%{host}" ]
+    }
+    # On drop les infos qu'on ne veut pas
+    mutate {
+      remove_field => [ "syslog_hostname", "syslog_message", "syslog_pid", "message", "@version", "type", "host" ]
+    }
+    # On converti le niveau d'alerte en entier pour pouvoir faire des tests dans la partie output
+    mutate {
+      convert => { "Alert_Level" => "integer" }
+    }
+  }
+}
+
+
+output {
+  # Ici, j'envoie vers Slack seulement si je ne rencontre pas ces règles (ces messages arrivent régulièrement et provoquent beaucoup de bruit dans mon cas) ET que le niveau d'alerte dépasse 7.
+  if [Rule] not in ["5710", "5712","5503","2502", "5720"] and [Alert_Level] >= 7 {
+    file {
+      path => "/var/log/logstash/ossec.log"
+    }
+    slack {
+      url => "https://hooks.slack.com/services/XXXXX/XXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXXXX"
+      channel => "XXXXXXX"
+      username => "OSSEC-HIDS"
+      format => ""
+      # La, je joue avec le format pour afficher des jolies alertes et pas un message texte moche.
+      attachments => [{
+        "fallback" => "OSSEC-HIDS"
+        "color" => "#FF0000"
+        "title" => "%{Description}"
+        "text" => "%{Details}" 
+        "fields" => [{
+          "title" => "Agent" 
+          "value" => "%{agent}"
+          "short" => true
+          },{
+          "title" => "Alert level"
+          "value" => "%{Alert_Level}"
+          "short" => true
+          },{
+          "title" => "Rule"
+          "value" => "%{Rule}"
+          "short" => true
+          },{
+          "title" => "Timestamp"
+          "value" => "%{@timestamp}"
+          "short" => true
+          }]
+      }]
+    }
+  }
+}
+

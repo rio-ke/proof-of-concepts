@@ -1,0 +1,111 @@
+---
+- name: Install anacron_Deamon
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - "{{ anacron_package }}"
+- name: anacron_Deamon Enable
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  with_items:
+    - "{{anacron_service}}"
+- name: Assign permission
+  file:
+    path: "{{ item.path }}"
+    owner: root
+    group: root
+    mode: "{{item.mode}}"
+  ignore_errors: true
+  with_items:
+    - { path: '/etc/anacrontab', mode: '0600'}
+    - { path: '/etc/crontab', mode: '0700'}
+    - { path: '/etc/cron.daily', mode: '0700'}
+    - { path: '/etc/cron.weekly', mode: '0700'}
+    - { path: '/etc/cron.monthly', mode: '0700'}
+    - { path: '/etc/cron.d', mode: '0700'}
+    #  - { path: '/etc/cron.allow', mode: '0700'}
+    # - { path: '/etc/at.allow', mode: '0700'}
+- name: delete at.deny entry
+  file:
+    path: "{{item}}"
+    backup: yes
+    state: absent
+  ignore_errors: true
+  with_items:
+    - /etc/at.deny
+    - /etc/cron.deny
+- name: to determine if the password-hashing algorithm is set to SHA-512
+  raw: authconfig --test | grep hashing | grep sha512
+  ignore_errors: true
+  register: algorithm_set
+
+- name: SHA-512 algorithm provides
+  raw: authconfig --passalgo=sha512 --update
+  when: algorithm_set is failed
+
+- name: password So
+  raw: grep pam_pwquality.so /etc/pam.d/system-auth
+  ignore_errors: true
+  register: pam_quality
+
+- name: replace in pam_quality if already existing replaced
+  replace:
+    path: "{{item.path}}"
+    regexp: "{{item.exp}}"
+    replace: "{{item.rep}}"
+    backup: yes
+  with_items:
+    - { path: '/etc/security/pwquality.conf', exp: '# minlen = 9', rep: 'minlen = 14' }
+    - { path: '/etc/security/pwquality.conf', exp: '# dcredit = 1', rep: '# dcredit = -1' }
+    - { path: '/etc/security/pwquality.conf', exp: '# ucredit = 1', rep: '# ucredit = -1' }
+    - { path: '/etc/security/pwquality.conf', exp: '# ocredit = 1', rep: '# ocredit = -1' }
+    - { path: '/etc/security/pwquality.conf', exp: '# lcredit = 1', rep: '# lcredit = -1' }
+  when: pam_quality is succeeded
+  ignore_errors: true
+- name: search password-auth entry
+  raw: grep "pam_faillock" /etc/pam.d/password-auth
+  ignore_errors: true
+  register: pam_faillock
+- name: add entry
+  lineinfile:
+    path: /etc/pam.d/password-auth
+    line: "{{item }}"
+  with_items:
+      - auth required pam_env.so
+      - auth required pam_faillock.so preauth audit silent deny=5 unlock_time=900
+      - auth [success=1 default=bad] pam_unix.so
+      - auth [default=die] pam_faillock.so authfail audit deny=5 unlock_time=900
+      - auth sufficient pam_faillock.so authsucc audit deny=5 unlock_time=900
+      - auth required pam_deny.so
+  when: pam_faillock is failed
+- name: search system-auth entry
+  raw: grep "pam_faillock" /etc/pam.d/system-auth
+  ignore_errors: true
+  register: system_auth
+
+- name: add entry system-auth
+  lineinfile:
+    path: /etc/pam.d/system-auth
+    line: "{{ item }}"
+  with_items:
+    - auth required pam_env.so
+    - auth required pam_faillock.so preauth audit silent deny=5 unlock_time=900
+    - auth [success=1 default=bad] pam_unix.so
+    - auth [default=die] pam_faillock.so authfail audit deny=5 unlock_time=900
+    - auth sufficient pam_faillock.so authsucc audit deny=5 unlock_time=900
+    - auth required pam_deny.so
+  when: system_auth is failed
+
+- name: Limit Password Reuse
+  raw: grep "remember" /etc/pam.d/system-auth
+  ignore_errors: true
+  register: system_auth1
+
+- name: add entry Limit Password Reuse system_auth
+  lineinfile:
+    path: /etc/pam.d/system-auth
+    line: password sufficient pam_unix.so remember=5
+  when: system_auth1 is failed

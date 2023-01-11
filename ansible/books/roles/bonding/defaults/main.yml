@@ -1,0 +1,11 @@
+---
+linux_bonding:
+  interface_name: 'bond0'
+  slave_nics:
+    - 'nic1'
+    - 'nic2'
+    #    - 'nic3'
+    #- 'nic4'
+bonding_ip_address: 192.168.24.122
+bonding_gateway_address: 192.168.24.1
+bonding_mode: 1

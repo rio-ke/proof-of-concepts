@@ -1,0 +1,16 @@
+---
+- name: Verify Permissions on /etc/passwd
+  file:
+    path: "{{ item }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items: "{{ passwd_file }}"
+- name: Verify Permissions on /etc/shadow
+  file:
+    path: "{{item}}"
+    owner: root
+    group: root
+    mode: 0000
+  with_items: "{{shadow_file}}"
+

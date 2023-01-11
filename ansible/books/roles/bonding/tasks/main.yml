@@ -1,0 +1,22 @@
+---
+- name: automatically load bonding kernel modules (1/2)
+  file:
+    path: "/etc/modules-load.d/bonding.conf"
+    mode: 0644
+    state: touch
+  when: ansible_virtualization_type != 'docker'
+
+- name: automatically load bonding kernel modules (2/2)
+  lineinfile:
+    dest: "/etc/modules-load.d/bonding.conf"
+    line: 'bonding'
+  when: ansible_virtualization_type != 'docker'
+
+- name: reload kernel modules
+  service:
+    name: systemd-modules-load.service
+    state: restarted
+  when: ansible_virtualization_type != 'docker'
+
+- include: '{{ ansible_distribution | lower }}.yml'
+  when: ansible_virtualization_type != 'docker'

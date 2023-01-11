@@ -1,0 +1,5 @@
+---
+# vars file for vsftpd
+vsftpd_service_name: vsftpd
+user_name: jino
+Document_path: /var/www/html

@@ -1,0 +1,9 @@
+---
+- name: "Restart required services"
+  service:
+    name: "{{ item }}"
+    state: restarted
+  ignore_errors: True
+  when:
+    - "needs_service_restart.rc != []"
+  with_items: "{{ needs_service_restart.stdout_lines }}"

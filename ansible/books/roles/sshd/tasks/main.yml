@@ -1,0 +1,63 @@
+---
+- name: install sshd
+  shell: rpm -qa openssh-server
+  register: installed
+- name: install openssh server
+  yum:
+    name: openssh-server
+    state: present
+  when: installed.stdout_lines == []
+- name: start the service
+  service:
+    name: "{{service_name}}"
+    state: started
+    enabled: yes
+  when: installed.stdout_lines == []
+- name: set banner
+  template:
+    src: templates/issue.net.j2
+    dest: /etc/issue.net
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+- name: add protocol 2 in to ssh config file
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    line: "{{item}}"
+  with_items:
+    - Protocol 2
+    - AllowUsers
+    - AllowGroups
+    - DenyUsers
+    - DenyGroups
+- name: replace in rsyslog and audit file if already existing replaced
+  replace:
+    path: "{{item.path}}"
+    regexp: "{{item.exp}}"
+    replace: "{{item.rep}}"
+    backup: yes
+  run_once: true
+  with_items:
+    - { path: '/etc/ssh/sshd_config', exp: '#PermitRootLogin yes', rep: 'PermitRootLogin no' }
+    - { path: '/etc/ssh/sshd_config', exp: '#LogLevel INFO', rep: 'LogLevel INFO' }
+    - { path: '/etc/ssh/sshd_config', exp: 'X11Forwarding yes', rep: 'X11Forwarding no' }
+    - { path: '/etc/ssh/sshd_config', exp: '#MaxAuthTries 6', rep: 'MaxAuthTries 4' }
+    - { path: '/etc/ssh/sshd_config', exp: '#IgnoreRhosts yes', rep: 'IgnoreRhosts yes' }
+    - { path: '/etc/ssh/sshd_config', exp: '#HostbasedAuthentication no', rep: 'HostbasedAuthentication no' }
+    - { path: '/etc/ssh/sshd_config', exp: '#PermitEmptyPasswords no', rep: 'PermitEmptyPasswords no' }
+    - { path: '/etc/ssh/sshd_config', exp: '#PermitUserEnvironment no', rep: 'PermitUserEnvironment no' }
+    - { path: '/etc/ssh/sshd_config', exp: '# Ciphers and keying', rep: 'Ciphers aes128-ctr,aes192-ctr,aes256-ctr' }
+    - { path: '/etc/ssh/sshd_config', exp: '#ClientAliveInterval 0', rep: 'ClientAliveInterval 300' }
+    - { path: '/etc/ssh/sshd_config', exp: '#ClientAliveCountMax 3', rep: 'ClientAliveCountMax 0' }
+    - { path: '/etc/ssh/sshd_config', exp: '#Banner none', rep: 'Banner /etc/issue.net' }
+- name: assign {{service_name}} file permission
+  file:
+    path: /etc/ssh/sshd_config
+    mode: 600
+    owner: root
+    group: root
+- name: sestart the service
+  service:
+    name: "{{service_name}}"
+    state: restarted

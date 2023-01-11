@@ -1,0 +1,20 @@
+- name: stop NetworkManager.service
+  service:
+    name: NetworkManager.service
+    state: stopped
+
+- name: Configure Linux bonding master interface (mode {{ bonding_mode }})
+  template:
+    src: "templates/bond.cfg.j2"
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{ linux_bonding.interface_name }}.cfg
+    backup: yes
+  notify: "restart network service in {{ ansible_os_family }} family"
+
+
+- name: Configure Linux bonding slave interfaces
+  template:
+    src: "templates/bond_slave.cfg.j2"
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{ item }}.cfg
+    backup: yes
+  with_items: '{{ linux_bonding.slave_nics }}'
+  notify: "restart network service in {{ ansible_os_family }} family"

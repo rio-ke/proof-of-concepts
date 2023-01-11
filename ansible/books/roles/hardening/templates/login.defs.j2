@@ -1,0 +1,33 @@
+MAIL_DIR	/var/spool/mail
+
+{%if PASS_MAX_DAYS != '' %}
+PASS_MAX_DAYS {{ PASS_MAX_DAYS }}
+{% else %}
+PASS_MAX_DAYS	99999
+{% endif %}
+
+{%if PASS_MAX_DAYS != '' %}
+PASS_MIN_DAYS {{ PASS_MIN_DAYS }}
+{% else %}
+PASS_MIN_DAYS	0
+{% endif %}
+
+{% if ansible_distribution == "CentOS" %}
+PASS_MIN_LEN    15
+{% endif %}
+PASS_WARN_AGE	7
+UID_MIN                  1000
+UID_MAX                 60000
+SYS_UID_MIN               201
+SYS_UID_MAX               999
+GID_MIN                  1000
+GID_MAX                 60000
+SYS_GID_MIN               201
+SYS_GID_MAX               999
+#USERDEL_CMD	/usr/sbin/userdel_local
+CREATE_HOME	yes
+UMASK           077
+USERGROUPS_ENAB yes
+ENCRYPT_METHOD SHA512
+MD5_CRYPT_ENAB no
+

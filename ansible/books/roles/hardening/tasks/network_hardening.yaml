@@ -1,0 +1,32 @@
+- name: set sysctl settings
+  sysctl:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    reload: true
+    state: "{{ item.state | default('present') }}"
+  with_items: "{{ sysctl_settings }}"
+
+- name: Install TCP Wrappers
+  file:
+    path: "{{ item }}"
+    mode: 0644
+    state: touch
+    owner: root
+    group: root
+  with_items: "{{ tcp_wrappers_profile }}"
+- name: lineinfile in /etc/modprobe.d/CIS.conf
+  lineinfile:
+    path: "{{ item.dest}}"
+    line: "{{ item.content }}"
+  with_items:
+    - { content: 'install dccp /bin/true', dest: '/etc/modprobe.d/CIS.conf' }
+    - { content: 'install sctp /bin/true', dest: '/etc/modprobe.d/CIS.conf' }
+    - { content: 'install rds /bin/true', dest: '/etc/modprobe.d/CIS.conf' }
+    - { content: 'install tipc /bin/true', dest: '/etc/modprobe.d/CIS.conf' }
+    - { content: 'sshd : ALL : ALLOW', dest: '/etc/hosts.allow'}
+    - { content: 'ALL: ALL', dest: '/etc/hosts.deny' }
+    - { content: 'ALL: LOCAL, 127.0.0.1, {{ host_allow_network }}', dest: '/etc/hosts.allow'}
+- name: enable firewalld service
+  systemd:
+    name: firewalld
+    enabled: yes

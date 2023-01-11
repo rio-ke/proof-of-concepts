@@ -1,0 +1,59 @@
+---
+rsyslog_package:
+  - rsyslog
+  - audit
+rsyslog_service:
+  - rsyslog
+  - auditd
+space_left_action: email
+admin_space_left_action: halt
+max_log_file: 20MB
+max_log_file_action: keep_logs
+
+
+anacron_package:
+  - cronie-anacron
+anacron_service:
+  - crond
+
+PASS_MAX_DAYS: 90
+PASS_MIN_DAYS: 1
+banner_file_path:
+  - /etc/motd
+  - /etc/issue
+  - /etc/issue.net
+banner_message: Authorized uses only. All activity may be monitored and reported.
+passwd_file:
+  - /etc/passwd
+  - /etc/group
+shadow_file:
+  - /etc/shadow
+  - /etc/gshadow
+deamon_umask: /etc/sysconfig/init
+unwant_package:
+  - xorg-x11-server-common
+  - dhcp
+unwant_pkg:
+  - avahi-daemon
+  - cups
+
+os_services:
+  - telnet-server
+  - telnet
+  - rsh-server
+  - rsh
+  - ypbind
+  - ypserv
+  - tftp
+  - tftp-server
+  - talk
+  - talk-server
+  - xinetd
+disable_services:
+  - chargen-stream
+  - chargen-dgram
+  - daytime-dgram
+  - daytime-stream
+  - echo-dgram
+  - echo-stream
+  - tcpmux-server

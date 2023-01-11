@@ -1,0 +1,16 @@
+---
+- name: create the user
+  user:
+    name: "{{item}}"
+    shell: "{{shell_name}}"
+    state: present
+  with_items:
+    - "{{user_name}}"
+  when:
+    - user_name is defined
+    - shell_name is defined
+- name: assign password for the user
+  shell: echo "{{user_name}}:{{user_password}}" | chpasswd
+  when:
+    - user_name is defined
+    - username_password is defined
