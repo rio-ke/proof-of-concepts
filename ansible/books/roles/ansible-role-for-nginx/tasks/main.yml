@@ -1,5 +1,5 @@
 ---
-- name: check whether httpd install or not
+- name: check whether nginx install or not
   shell: rpm -qa {{ package_name }}
   register: installed
 - name: Install nginx
