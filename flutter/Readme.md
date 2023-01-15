@@ -40,3 +40,9 @@ void main() => runApp(
     );
 
 ```
+
+https://api.flutter.dev/flutter/widgets/Image-class.html
+
+https://www.appicon.co/
+
+
