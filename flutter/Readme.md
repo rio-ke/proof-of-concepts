@@ -16,3 +16,27 @@ sudo apt install default-jdk -y
 _download the android sdk from official site_
 
 https://docs.flutter.dev/get-started/install/linux#install-android-studio
+
+
+```dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(
+      MaterialApp(
+        home: Scaffold(
+          backgroundColor: Colors.white70,
+          appBar: AppBar(
+            title: const Center(child: Text("I am Rich")),
+            backgroundColor: Colors.blueGrey[900],
+          ),
+          body: const Center(
+            child: Image(
+              image: NetworkImage(
+                  'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'),
+            ),
+          ),
+        ),
+      ),
+    );
+
+```
