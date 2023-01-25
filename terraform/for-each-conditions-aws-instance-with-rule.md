@@ -6,6 +6,33 @@ provider "aws" {
 }
 ```
 
+_instance creation variable_
+
+```tf
+
+variable "traneconnect_remove_service" {
+  default = ""
+}
+
+variable "traneconnect_service_list" {
+  default = {
+    "gateway" = {
+      instance_type = "t2.small"
+      ip_start      = 51
+      segments      = [1, 2]
+      aws_credentials = false
+    }
+
+    "gridflex-apollo" = {
+      instance_type = "t2.small"
+      ip_start      = 61
+      segments      = [1, 2]
+      aws_credentials = false
+    }
+  }
+}
+```
+
 _instance creation_
 
 ```tf
@@ -64,25 +91,4 @@ resource "aws_cloudwatch_event_rule" "rule" {
   name           = "-traneconnect-1--event-rule-mon-status"
 }
 
-variable "traneconnect_remove_service" {
-  default = ""
-}
-
-variable "traneconnect_service_list" {
-  default = {
-    "gateway" = {
-      instance_type = "t2.small"
-      ip_start      = 51
-      segments      = [1, 2]
-      aws_credentials = false
-    }
-
-    "gridflex-apollo" = {
-      instance_type = "t2.small"
-      ip_start      = 61
-      segments      = [1, 2]
-      aws_credentials = false
-    }
-}
-}
 ```
