@@ -52,7 +52,7 @@ resource "aws_instance" "traneconnect-service-1" {
 }
 ```
 
-_alaram creation_
+_alaram creation for each instance_
 
 ```tf
 resource "aws_cloudwatch_metric_alarm" "ec2Cpu" {
@@ -74,7 +74,7 @@ resource "aws_cloudwatch_metric_alarm" "ec2Cpu" {
 }
 ```
 
-_rule creation_
+_rule creation for all instance_
 
 ```tf
 resource "aws_cloudwatch_event_rule" "rule" {
