@@ -13,8 +13,9 @@ resource "aws_lambda_permission" "logging" {
   action        = "lambda:InvokeFunction"
   function_name = "datadog-forwarder"
   principal     = "logs.${var.region}.amazonaws.com"
-  source_arn    = "arn:aws:logs:${var.region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/vendedlogs/states/${each.key}-sde-file_protection-step:*"
+  source_arn    = "arn:aws:logs:${var.region}:${data.aws_caller_identity.current.account_id}:log-group:${lookup((each.value), "logGroupName")}:*"
 }
+
 ```
 
 _cloudwatch log subscription filter_
