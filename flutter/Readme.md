@@ -41,6 +41,31 @@ void main() => runApp(
 
 ```
 
+_stateless widget creation_
+
+```dart
+void main() => runApp(const MyApp());
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        backgroundColor: Colors.teal,
+        appBar: AppBar(
+          title: const Center(child: Text("Welcome")),
+          backgroundColor: Colors.blue,
+        ),
+        body: const Center(child: Image(image: AssetImage("images/1.jpeg"))),
+      ),
+    );
+  }
+}
+
+```
+
+
 https://api.flutter.dev/flutter/widgets/Image-class.html
 
 https://www.appicon.co/
