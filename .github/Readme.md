@@ -41,7 +41,7 @@
     * installation and configuration
 
 
-* elk
+* elasticsearch
 
 * python
     * conditions
