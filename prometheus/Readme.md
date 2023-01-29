@@ -141,7 +141,7 @@ sudo chown -R node_exporter:node_exporter  /usr/local/bin/node_exporter
 ```
 
 
-_create the custom systemd service for node exportor _
+_create the custom systemd service for node exportor_
 
 create the file under this location `/etc/systemd/system` with the name of `node_exporter.service` include the below content
 
