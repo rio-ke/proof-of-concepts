@@ -150,11 +150,11 @@ scrape_configs:
     - targets: ['10.0.1.4:9100']     # server address 
       labels: 
         instance: web-server         # server name
-    - job_name: 'mysql'
-      static_configs: 
-      - targets: ['10.0.1.5:9104']   # server IP address
-        labels: 
-          instance: db-server        # server name
+  - job_name: 'mysql'
+    static_configs: 
+    - targets: ['10.0.1.5:9104']   # server IP address
+      labels: 
+        instance: db-server        # server name
 ```
 
 _restart the prometheus service_
