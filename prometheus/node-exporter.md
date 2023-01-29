@@ -23,7 +23,7 @@ _create the custom systemd service for node exportor_
 create the file under this location `/etc/systemd/system` with the name of `node_exporter.service` include the below content
 
 ```bash
-# /etc/systemd/system/node_exporter.service
+# vim /etc/systemd/system/node_exporter.service
 [Unit]
 Description=Prometheus node exporter
 After=network.target auditd.service
