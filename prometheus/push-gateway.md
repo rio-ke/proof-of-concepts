@@ -41,7 +41,7 @@ ExecStart=/usr/local/bin/pushgateway \
 
 [Install]
 WantedBy=multi-user.target
-
+```
 _service management_
 
 ```bash
