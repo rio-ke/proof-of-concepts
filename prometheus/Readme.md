@@ -1,4 +1,4 @@
-_prometheus installation_
+**_prometheus installation_**
 
 create the user and folder's to handle the prometheus process itself. So we are aware of user-based processes and permissions.
 
@@ -121,7 +121,7 @@ sudo systemctl status prometheus
 sudo netstat -tulpn | grep 9090
 ```
 
-_node exporter installation_
+**_node exporter installation_**
 
 In order to monitor the linux server performance and process based activity via prometheus each instance should have run to the node exporter as a service. the prometheus pull the metric from node exporter via api and store it self to maintain the upon to max duration time.
 
