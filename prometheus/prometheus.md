@@ -97,8 +97,8 @@ ExecStart=/usr/local/bin/prometheus \
  --web.console.libraries=/etc/prometheus/console_libraries \
  --storage.tsdb.retention=30d \
  --web.enable-admin-api \
- --web.external-url=http://localhost:10000 \
- --web.listen-address="0.0.0.0:10000" \
+ --web.external-url=http://localhost:9090 \
+ --web.listen-address="0.0.0.0:9090" \
  --log.level=info \
  --web.enable-lifecycle \
  --web.page-title="Prometheus Time Series Collection and Processing Server" \
