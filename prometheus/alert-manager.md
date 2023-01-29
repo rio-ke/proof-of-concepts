@@ -373,7 +373,7 @@ _custom systemd servixce_
 
 create the file under this location `/etc/systemd/system` with the name of `alertmanager.service` include the below content
 
-```bash
+```service
 # /etc/systemd/system/alertmanager.service
 [Unit]
 Description=Prometheus AlertManager
