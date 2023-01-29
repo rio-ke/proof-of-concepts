@@ -22,25 +22,25 @@ to supervise the pushgateway service We can easily create the systemd service in
 
 
 ```bash
-    sudo vim /etc/systemd/system/pushgateway.service
-    [Unit]
-    Description=Pushgateway
-    Wants=network-online.target
-    After=network-online.target
+sudo vim /etc/systemd/system/pushgateway.service
+[Unit]
+Description=Pushgateway
+Wants=network-online.target
+After=network-online.target
 
-    [Service]
-    User=pushgateway
-    Group=pushgateway
-    Type=simple
-    ExecStart=/usr/local/bin/pushgateway \
-        --web.listen-address=":9091" \
-        --web.telemetry-path="/metrics" \
-        --persistence.file="/tmp/metric.store" \
-        --persistence.interval=5m \
-        --log.level="info" 
+[Service]
+User=pushgateway
+Group=pushgateway
+Type=simple
+ExecStart=/usr/local/bin/pushgateway \
+    --web.listen-address=":9091" \
+    --web.telemetry-path="/metrics" \
+    --persistence.file="/tmp/metric.store" \
+    --persistence.interval=5m \
+    --log.level="info" 
 
-    [Install]
-    WantedBy=multi-user.target
+[Install]
+WantedBy=multi-user.target
 
 _service management_
 
