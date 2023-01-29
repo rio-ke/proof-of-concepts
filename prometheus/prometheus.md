@@ -72,7 +72,7 @@ scrape_configs:
     static_configs:
     - targets: ['localhost:9090']
       labels: 
-        instance: Prometheus
+        instance: prometheus
 ```
 
 _custom systemd service_
