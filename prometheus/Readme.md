@@ -140,7 +140,6 @@ sudo mv node_exporter-1.5.0.linux-amd64/node_exporter /usr/local/bin/
 sudo chown -R node_exporter:node_exporter  /usr/local/bin/node_exporter
 ```
 
-
 _create the custom systemd service for node exportor_
 
 create the file under this location `/etc/systemd/system` with the name of `node_exporter.service` include the below content
@@ -252,8 +251,6 @@ _restart the prometheus service_
 ```bash
 sudo systemctl restart prometheus
 ``` 
-        
-        
 
 _mysql exporter installtion_
 
