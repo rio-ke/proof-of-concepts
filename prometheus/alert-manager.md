@@ -62,7 +62,7 @@ global:
   resolve_timeout: 30s
 
 templates:
-- /etc/alertmanager/notifications.tmpl
+  - /etc/alertmanager/notifications.tmpl
 
 route:
   # fallback receiver
@@ -71,177 +71,331 @@ route:
   group_interval: 10s
   repeat_interval: 1m
   routes:
-  - match_re:
-      app_type: (linux|windows)
-    # fallback receiver 
-    receiver: ss-admin
-    # group_by: [severity]
-    routes:
-    # Linux team
-    - match:
-        app_type: linux
+    - match_re:
+        app_type: (linux|windows)
       # fallback receiver
-      receiver: linux-teamlead
-      routes:
-      - match:
-          severity: critical
-        receiver: delivery-manager
-      - match:
-          severity: warning
-        receiver: linux-teamlead
-
-    # Windows team
-    - match:
-        app_type: windows
+      receiver: ss-admin
       # group_by: [severity]
-      # fallback receiver
-      receiver: windows-teamlead
       routes:
-      - match:
-          severity: critical
-        receiver: delivery-manager
-      - match:
-          severity: warning
-        receiver: windows-teamlead
+        # Linux team
+        - match:
+            app_type: linux
+          # fallback receiver
+          receiver: linux-team-admin
+          routes:
+            - match:
+                severity: critical
+              receiver: linux-team-manager
+            - match:
+                severity: warning
+              receiver: linux-team-lead
 
-    # test Technologies.
-  - match_re:
-      app_type: (python|go)
-    # fallback receiver 
-    receiver: pec-admin
-    routes:
-    # Python team
-    - match:
-        app_type: python
-      # fallback receiver
-      receiver: python-team-admin
-      routes:
-      - match:
-          severity: critical
-        receiver: python-team-manager
-      - match:
-          severity: warning
-        receiver: python-team-lead
+        # Windows team
+        - match:
+            app_type: windows
+          # group_by: [severity]
+          # fallback receiver
+          receiver: windows-team-admin
+          routes:
+            - match:
+                severity: critical
+              receiver: windows-team-manager
+            - match:
+                severity: warning
+              receiver: windows-team-lead
 
-    # Go team
-    - match:
-        app_type: go
+      # test Technologies.
+    - match_re:
+        app_type: (python|go)
       # fallback receiver
-      receiver: go-team-admin
+      receiver: pec-admin
       routes:
-      - match:
-          severity: critical
-        receiver: go-team-manager
-      - match:
-          severity: warning
-        receiver: go-team-lead
+        # Python team
+        - match:
+            app_type: python
+          # fallback receiver
+          receiver: python-team-admin
+          routes:
+            - match:
+                severity: critical
+              receiver: python-team-manager
+            - match:
+                severity: warning
+              receiver: python-team-lead
+
+        # Go team
+        - match:
+            app_type: go
+          # fallback receiver
+          receiver: go-team-admin
+          routes:
+            - match:
+                severity: critical
+              receiver: go-team-manager
+            - match:
+                severity: warning
+              receiver: go-team-lead
 
 inhibit_rules:
-- source_match:
-    severity: 'critical'
-  target_match:
-    severity: 'warning'
-  equal: ['app_type', 'category']
+  - source_match:
+      severity: "critical"
+    target_match:
+      severity: "warning"
+    equal: ["app_type", "category"]
 
 receivers:
-- name: admin
-  email_configs:
-  - to: 'example@gmail.com'
-- name: ss-admin
-  email_configs:
-  - to: 'example@gmail.com'
-- name: linux-team-admin
-  email_configs:
-  - to: 'example@gmail.com'
-- name: linux-team-lead
-  email_configs:
-  - to: 'example@gmail.com'
-- name: linux-team-manager
-  email_configs:
-  - to: 'example@gmail.com'
-- name: windows-team-admin
-  email_configs:
-  - to: 'example@gmail.com'
-- name: windows-team-lead
-  email_configs:
-  - to: 'example@gmail.com'
-- name: windows-team-manager
-  email_configs:
-  - to: 'example@gmail.com'
-- name: pec-admin
-  email_configs:
-  - to: 'example@gmail.com'
-- name: python-team-admin
-  email_configs:
-  - to: 'example@gmail.com'
-- name: python-team-lead
-  email_configs:
-  - to: 'example@gmail.com'
-- name: python-team-manager
-  email_configs:
-  - to: 'example@gmail.com'
+  - name: "admin"
+    slack_configs:
+      - send_resolved: true
+        channel: "#general"
+        slack_api_url: "https://hooks.slack.com/services"
+        title: '{{ .Status | toUpper }}{{ if eq .Status "firing" }} - {{ .Alerts.Firing | len }}{{ end }} | PROMETHEUS ALERTS'
+        text: >-
+          {{ range .Alerts }}
+            *Alert:* {{ .Annotations.summary }}
+            *State:* `{{ .Labels.severity }}`
+            *Description:* {{ .Annotations.description }}
+            *Graph:* <{{ .GeneratorURL }}|:chart_with_upwards_trend:>
+            *Details:*
+            {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+            {{ end }}
+          {{ end }}
 
-- name: 'go-team-admin'
-  slack_configs:
-  - send_resolved: true
-    channel: '#general'
-    slack_api_url: 'https://hooks.slack.com/services'
-    title: '{{ .Status | toUpper }}{{ if eq .Status "firing" }} - {{ .Alerts.Firing | len }}{{ end }} | PROMETHEUS ALERTS'
-    text: >-
-      {{ range .Alerts }}
-        *Alert:* {{ .Annotations.summary }}
-        *State:* `{{ .Labels.severity }}`
-        *Description:* {{ .Annotations.description }}
-        *Graph:* <{{ .GeneratorURL }}|:chart_with_upwards_trend:>
-        *Details:*
-        {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
-        {{ end }}
-      {{ end }}
-      
-- name: 'go-team-lead'
-  slack_configs:
-  - send_resolved: true
-    channel: '#general'
-    slack_api_url: 'https://hooks.slack.com/services'
-    title: '{{ .Status | toUpper }}{{ if eq .Status "firing" }} - {{ .Alerts.Firing | len }}{{ end }} | PROMETHEUS ALERTS'
-    text: >-
-      {{ range .Alerts }}
-        *Alert:* {{ .Annotations.summary }}
-        *State:* `{{ .Labels.severity }}`
-        *Description:* {{ .Annotations.description }}
-        *Graph:* <{{ .GeneratorURL }}|:chart_with_upwards_trend:>
-        *Details:*
-        {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
-        {{ end }}
-      {{ end }}
-      
-- name: "go-team-manager"
-  email_configs:
-  - to: "receiver_mail_id@gmail.com"
-    from: "mail_id@gmail.com"
-    smarthost: smtp.gmail.com:587
-    auth_username: "mail_id@gmail.com"
-    auth_identity: "mail_id@gmail.com"
-    auth_password: "password"
+  - name: "ss-admin"
+    slack_configs:
+      - send_resolved: true
+        channel: "#general"
+        slack_api_url: "https://hooks.slack.com/services"
+        title: '{{ .Status | toUpper }}{{ if eq .Status "firing" }} - {{ .Alerts.Firing | len }}{{ end }} | PROMETHEUS ALERTS'
+        text: >-
+          {{ range .Alerts }}
+            *Alert:* {{ .Annotations.summary }}
+            *State:* `{{ .Labels.severity }}`
+            *Description:* {{ .Annotations.description }}
+            *Graph:* <{{ .GeneratorURL }}|:chart_with_upwards_trend:>
+            *Details:*
+            {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+            {{ end }}
+          {{ end }}
+
+  - name: "pec-admin"
+    slack_configs:
+      - send_resolved: true
+        channel: "#general"
+        slack_api_url: "https://hooks.slack.com/services"
+        title: '{{ .Status | toUpper }}{{ if eq .Status "firing" }} - {{ .Alerts.Firing | len }}{{ end }} | PROMETHEUS ALERTS'
+        text: >-
+          {{ range .Alerts }}
+            *Alert:* {{ .Annotations.summary }}
+            *State:* `{{ .Labels.severity }}`
+            *Description:* {{ .Annotations.description }}
+            *Graph:* <{{ .GeneratorURL }}|:chart_with_upwards_trend:>
+            *Details:*
+            {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+            {{ end }}
+          {{ end }}
+
+  - name: "linux-team-admin"
+    slack_configs:
+      - send_resolved: true
+        channel: "#general"
+        slack_api_url: "https://hooks.slack.com/services"
+        title: '{{ .Status | toUpper }}{{ if eq .Status "firing" }} - {{ .Alerts.Firing | len }}{{ end }} | PROMETHEUS ALERTS'
+        text: >-
+          {{ range .Alerts }}
+            *Alert:* {{ .Annotations.summary }}
+            *State:* `{{ .Labels.severity }}`
+            *Description:* {{ .Annotations.description }}
+            *Graph:* <{{ .GeneratorURL }}|:chart_with_upwards_trend:>
+            *Details:*
+            {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+            {{ end }}
+          {{ end }}
+
+  - name: "linux-team-lead"
+    slack_configs:
+      - send_resolved: true
+        channel: "#general"
+        slack_api_url: "https://hooks.slack.com/services"
+        title: '{{ .Status | toUpper }}{{ if eq .Status "firing" }} - {{ .Alerts.Firing | len }}{{ end }} | PROMETHEUS ALERTS'
+        text: >-
+          {{ range .Alerts }}
+            *Alert:* {{ .Annotations.summary }}
+            *State:* `{{ .Labels.severity }}`
+            *Description:* {{ .Annotations.description }}
+            *Graph:* <{{ .GeneratorURL }}|:chart_with_upwards_trend:>
+            *Details:*
+            {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+            {{ end }}
+          {{ end }}
+
+  - name: "linux-team-manager"
+    email_configs:
+      - to: "receiver_mail_id@gmail.com"
+        from: "mail_id@gmail.com"
+        smarthost: smtp.gmail.com:587
+        auth_username: "mail_id@gmail.com"
+        auth_identity: "mail_id@gmail.com"
+        auth_password: "password"
+
+  - name: "windows-team-admin"
+    slack_configs:
+      - send_resolved: true
+        channel: "#general"
+        slack_api_url: "https://hooks.slack.com/services"
+        title: '{{ .Status | toUpper }}{{ if eq .Status "firing" }} - {{ .Alerts.Firing | len }}{{ end }} | PROMETHEUS ALERTS'
+        text: >-
+          {{ range .Alerts }}
+            *Alert:* {{ .Annotations.summary }}
+            *State:* `{{ .Labels.severity }}`
+            *Description:* {{ .Annotations.description }}
+            *Graph:* <{{ .GeneratorURL }}|:chart_with_upwards_trend:>
+            *Details:*
+            {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+            {{ end }}
+          {{ end }}
+
+  - name: "windows-team-lead"
+    slack_configs:
+      - send_resolved: true
+        channel: "#general"
+        slack_api_url: "https://hooks.slack.com/services"
+        title: '{{ .Status | toUpper }}{{ if eq .Status "firing" }} - {{ .Alerts.Firing | len }}{{ end }} | PROMETHEUS ALERTS'
+        text: >-
+          {{ range .Alerts }}
+            *Alert:* {{ .Annotations.summary }}
+            *State:* `{{ .Labels.severity }}`
+            *Description:* {{ .Annotations.description }}
+            *Graph:* <{{ .GeneratorURL }}|:chart_with_upwards_trend:>
+            *Details:*
+            {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+            {{ end }}
+          {{ end }}
+
+  - name: "windows-team-manager"
+    email_configs:
+      - to: "receiver_mail_id@gmail.com"
+        from: "mail_id@gmail.com"
+        smarthost: smtp.gmail.com:587
+        auth_username: "mail_id@gmail.com"
+        auth_identity: "mail_id@gmail.com"
+        auth_password: "password"
+
+  - name: "python-team-admin"
+    slack_configs:
+      - send_resolved: true
+        channel: "#general"
+        slack_api_url: "https://hooks.slack.com/services"
+        title: '{{ .Status | toUpper }}{{ if eq .Status "firing" }} - {{ .Alerts.Firing | len }}{{ end }} | PROMETHEUS ALERTS'
+        text: >-
+          {{ range .Alerts }}
+            *Alert:* {{ .Annotations.summary }}
+            *State:* `{{ .Labels.severity }}`
+            *Description:* {{ .Annotations.description }}
+            *Graph:* <{{ .GeneratorURL }}|:chart_with_upwards_trend:>
+            *Details:*
+            {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+            {{ end }}
+          {{ end }}
+
+  - name: "python-team-lead"
+    slack_configs:
+      - send_resolved: true
+        channel: "#general"
+        slack_api_url: "https://hooks.slack.com/services"
+        title: '{{ .Status | toUpper }}{{ if eq .Status "firing" }} - {{ .Alerts.Firing | len }}{{ end }} | PROMETHEUS ALERTS'
+        text: >-
+          {{ range .Alerts }}
+            *Alert:* {{ .Annotations.summary }}
+            *State:* `{{ .Labels.severity }}`
+            *Description:* {{ .Annotations.description }}
+            *Graph:* <{{ .GeneratorURL }}|:chart_with_upwards_trend:>
+            *Details:*
+            {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+            {{ end }}
+          {{ end }}
+
+  - name: "python-team-manager"
+    email_configs:
+      - to: "receiver_mail_id@gmail.com"
+        from: "mail_id@gmail.com"
+        smarthost: smtp.gmail.com:587
+        auth_username: "mail_id@gmail.com"
+        auth_identity: "mail_id@gmail.com"
+        auth_password: "password"
+
+  - name: "go-team-admin"
+    slack_configs:
+      - send_resolved: true
+        channel: "#general"
+        slack_api_url: "https://hooks.slack.com/services"
+        title: '{{ .Status | toUpper }}{{ if eq .Status "firing" }} - {{ .Alerts.Firing | len }}{{ end }} | PROMETHEUS ALERTS'
+        text: >-
+          {{ range .Alerts }}
+            *Alert:* {{ .Annotations.summary }}
+            *State:* `{{ .Labels.severity }}`
+            *Description:* {{ .Annotations.description }}
+            *Graph:* <{{ .GeneratorURL }}|:chart_with_upwards_trend:>
+            *Details:*
+            {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+            {{ end }}
+          {{ end }}
+
+  - name: "go-team-lead"
+    slack_configs:
+      - send_resolved: true
+        channel: "#general"
+        slack_api_url: "https://hooks.slack.com/services"
+        title: '{{ .Status | toUpper }}{{ if eq .Status "firing" }} - {{ .Alerts.Firing | len }}{{ end }} | PROMETHEUS ALERTS'
+        text: >-
+          {{ range .Alerts }}
+            *Alert:* {{ .Annotations.summary }}
+            *State:* `{{ .Labels.severity }}`
+            *Description:* {{ .Annotations.description }}
+            *Graph:* <{{ .GeneratorURL }}|:chart_with_upwards_trend:>
+            *Details:*
+            {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+            {{ end }}
+          {{ end }}
+
+  - name: "go-team-manager"
+    email_configs:
+      - to: "receiver_mail_id@gmail.com"
+        from: "mail_id@gmail.com"
+        smarthost: smtp.gmail.com:587
+        auth_username: "mail_id@gmail.com"
+        auth_identity: "mail_id@gmail.com"
+        auth_password: "password"
+
 ```
-    sudo vim /etc/systemd/system/alertmanager.service
 
-    [Unit]
-    Description=Prometheus AlertManager
-    After=network.target auditd.service
+_custom systemd servixce_
 
-    [Service]
-    User=alertuser
-    ExecStart=/usr/local/bin/alertmanager --config.file "/etc/alertmanager/alertmanager.yml" --storage.path "/var/alertmanager/data/"
-    Restart=on-failure
-    StandardOutput=syslog
-    StandardError=syslog
+create the file under this location `/etc/systemd/system` with the name of `alertmanager.service` include the below content
 
-    [Install]
-    WantedBy=default.target
+```bash
 
+[Unit]
+Description=Prometheus AlertManager
+After=network.target auditd.service
+
+[Service]
+User=alertuser
+ExecStart=/usr/local/bin/alertmanager --config.file "/etc/alertmanager/alertmanager.yml" --storage.path "/var/alertmanager/data/"
+Restart=on-failure
+StandardOutput=syslog
+StandardError=syslog
+
+[Install]
+WantedBy=default.target
+```
+
+_service management_
+
+```bash
     sudo systemctl daemon-reload
     sudo systemctl enable alertmanager
     sudo systemctl start alertmanager
     sudo netstat -tulpn
     sudo systemctl status alertmanager
+```
