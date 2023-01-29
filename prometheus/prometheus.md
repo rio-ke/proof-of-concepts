@@ -77,7 +77,7 @@ _custom systemd service_
 
 to supervise the prometheus service We can easily create the systemd service in Linux, and we can be aware of how we can start and stop those binaries.
 
-```bash
+```service
 # sudo vim /etc/systemd/system/prometheus.service 
 
 [Unit]
