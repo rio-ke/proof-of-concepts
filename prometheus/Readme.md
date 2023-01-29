@@ -42,6 +42,37 @@ sudo chown -R prometheus:prometheus  /var/lib/prometheus
 sudo chown -R prometheus:prometheus  /etc/prometheus/prometheus.yml
 ```
 
+_prepare the prometheus configuiration yaml file_
+
+For the time being, I am going to add only the prometheus service to monitor prometheus itself.
+
+```bash
+# /etc/prometheus/prometheus.yml
+global:
+  scrape_interval:     15s      # default 1m
+  evaluation_interval: 15s      # default 1m
+  scrape_timeout: 10s           # default 10s
+
+# # Alertmanager configuration
+# alerting:
+#   alertmanagers:
+#   - static_configs:
+#     - targets:
+#       - alertmanager:9093
+
+# # Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+# rule_files:
+#   - "/etc/prometheus/rules.yml"
+#   - "/etc/prometheus/add-rules.yml"
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+    - targets: ['localhost:9090']
+      labels: 
+        instance: Prometheus
+```
+
 _custom systemd service_
 
 to supervise the prometheus service We can easily create the systemd service in Linux, and we can be aware of how we can start and stop those binaries.
@@ -88,31 +119,7 @@ sudo systemctl status prometheus
 sudo netstat -tulpn | grep 9090
 ```
 
-    # vim /etc/prometheus/prometheus.yml
 
-    global:
-      scrape_interval:     15s # default 1m
-      evaluation_interval: 15s # default 1m
-      scrape_timeout: 10s      # default 10s
-
-    # Alertmanager configuration
-    alerting:
-      alertmanagers:
-      - static_configs:
-        - targets:
-          # - alertmanager:9093
-
-    # Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
-    rule_files:
-      # - "/etc/prometheus/first_rules.yml"
-      # - "second_rules.yml"
-
-    scrape_configs:
-      - job_name: 'prometheus'
-        static_configs:
-        - targets: ['localhost:9090']
-          labels: 
-            instance: Prometheus
 
 node exporter installation
 
