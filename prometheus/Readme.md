@@ -208,6 +208,44 @@ switch to prometheus server below the configuration must be updated
       labels: 
         instance: web-server         # server name
 ```
+_validate the prometheus configuration_
+
+after the update to the Prometheus configuration. your config file looks like below this.
+
+```bash
+---
+global:
+  scrape_interval:     15s      # default 1m
+  evaluation_interval: 15s      # default 1m
+  scrape_timeout: 10s           # default 10s
+
+# # Alertmanager configuration
+# alerting:
+#   alertmanagers:
+#   - static_configs:
+#     - targets:
+#       - alertmanager:9093
+
+# # Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+# rule_files:
+#   - "/etc/prometheus/rules.yml"
+#   - "/etc/prometheus/add-rules.yml"
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+    - targets: ['localhost:9090']
+      labels: 
+        instance: Prometheus
+  - job_name: 'node'
+    static_configs: 
+    - targets: ['10.0.1.3:9100']     # server address 
+      labels: 
+        instance: app-server         # server name
+    - targets: ['10.0.1.4:9100']     # server address 
+      labels: 
+        instance: web-server         # server name
+```
 
 _restart the prometheus service_
 
@@ -217,7 +255,7 @@ sudo systemctl restart prometheus
         
         
 
-mysql exporter installtion
+_mysql exporter installtion_
 
     # install mysql exporter MariaDB mysql [Each Server]
     sudo useradd --no-create-home -c "Monitoring user" --shell /bin/false mysqld_exporter
