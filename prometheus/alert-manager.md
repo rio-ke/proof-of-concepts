@@ -190,7 +190,7 @@ receivers:
   email_configs:
   - to: 'example@gmail.com'
 
-- name: 'slack'
+- name: 'go-team-lead'
   slack_configs:
   - send_resolved: true
     channel: '#general'
@@ -206,7 +206,7 @@ receivers:
         {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
         {{ end }}
       {{ end }}
-- name: "email"
+- name: "go-team-manager"
   email_configs:
   - to: "receiver_mail_id@gmail.com"
     from: "mail_id@gmail.com"
