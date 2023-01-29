@@ -1,5 +1,5 @@
 
-_node exporter installation_
+**_node exporter installation_**
 
 In order to monitor the linux server performance and process based activity via prometheus each instance should have run to the node exporter as a service. the prometheus pull the metric from node exporter via api and store it self to maintain the upon to max duration time.
 
@@ -67,5 +67,66 @@ _service management_
 sudo systemctl daemon-reload
 sudo systemctl start node_exporter
 sudo systemctl status node_exporter
-sudo netstat -tulpn 
+sudo netstat -tulpn | grep 9100
 ```
+
+_how to integrate node exporter into prometheus_
+
+switch to prometheus server below the configuration must be updated 
+
+```
+# vim /etc/prometheus/prometheus.yml
+# add the new server with new node exporter
+  - job_name: 'node'
+    static_configs: 
+    - targets: ['10.0.1.3:9100']     # server IP address
+      labels: 
+        instance: app-server         # server name
+    - targets: ['10.0.1.4:9100']     # server IP address
+      labels: 
+        instance: web-server         # server name
+```
+_validate the prometheus configuration_
+
+after the update to the Prometheus configuration. your config file looks like below this.
+
+```bash
+---
+global:
+  scrape_interval:     15s      # default 1m
+  evaluation_interval: 15s      # default 1m
+  scrape_timeout: 10s           # default 10s
+
+# # Alertmanager configuration
+# alerting:
+#   alertmanagers:
+#   - static_configs:
+#     - targets:
+#       - alertmanager:9093
+
+# # Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+# rule_files:
+#   - "/etc/prometheus/rules.yml"
+#   - "/etc/prometheus/add-rules.yml"
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+    - targets: ['localhost:9090']
+      labels: 
+        instance: Prometheus
+  - job_name: 'node'
+    static_configs: 
+    - targets: ['10.0.1.3:9100']     # server address 
+      labels: 
+        instance: app-server         # server name
+    - targets: ['10.0.1.4:9100']     # server address 
+      labels: 
+        instance: web-server         # server name
+```
+
+_restart the prometheus service_
+
+```bash
+sudo systemctl restart prometheus
+``` 
