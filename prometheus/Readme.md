@@ -123,7 +123,7 @@ sudo netstat -tulpn | grep 9090
 
 
 
-node exporter installation
+_node exporter installation_
 
     # Create node_exporter Service [Each server]
     sudo useradd --no-create-home -c "Monitoring user" --shell /bin/false node_exporter
