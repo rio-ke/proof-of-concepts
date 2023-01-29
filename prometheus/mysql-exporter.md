@@ -40,7 +40,7 @@ sudo chown -R mysqld_exporter:mysqld_exporter  /usr/local/bin/mysqld_exporter
 
 _create the mysql credentials as a file_
 
-```bash
+```service
 # sudo vim /etc/.mysqld_exporter.cnf
 [client]
 user=mysqld_exporter
@@ -59,7 +59,7 @@ For the time being, I am going to add only the prometheus service to monitor pro
 
 create the file under this location `/etc/systemd/system` with the name of `mysql_exporter.service` include the below content
 
-```bash
+```service
 # /etc/systemd/system/mysql_exporter.service
 [Unit]
 Description=Prometheus MySQL Exporter
