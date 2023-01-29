@@ -152,7 +152,7 @@ scrape_configs:
         instance: web-server         # server name
   - job_name: 'mysql'
     static_configs: 
-    - targets: ['10.0.1.5:9104']     # server IP address
+    - targets: ['10.0.1.5:9104']     # server address
       labels: 
         instance: db-server          # server name
 ```
