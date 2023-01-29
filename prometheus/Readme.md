@@ -189,27 +189,31 @@ _service management_
 sudo systemctl daemon-reload
 sudo systemctl start node_exporter
 sudo systemctl status node_exporter
-sudo netstat -tulpn 
+sudo netstat -tulpn | grep 9100
 ```
 
-switch to prometheus server
+_how to integrate node exporter into prometheus_
 
-    # need to change prometheus server.
-    # vim /etc/prometheus/prometheus.yml
-    # add the new server with new nodeexporter
-      - job_name: 'nodeexporter'
-        static_configs: 
-        - targets: ['localhost:9100']    # server IP address
-          labels: 
-            instance: Prometheus-server  # server name
-        # add the new server with existing nodeexporter
-        - targets: ['10.0.1.4:9100']     # server IP address
-          labels: 
-            instance: additional-server  # server name
+switch to prometheus server below the configuration must be updated 
 
+```
+# vim /etc/prometheus/prometheus.yml
+# add the new server with new node exporter
+  - job_name: 'node'
+    static_configs: 
+    - targets: ['10.0.1.3:9100']     # server IP address
+      labels: 
+        instance: app-server         # server name
+    - targets: ['10.0.1.4:9100']     # server IP address
+      labels: 
+        instance: web-server         # server name
+```
 
-        sudo systemctl restart prometheus
-        
+_restart the prometheus service_
+
+```bash
+sudo systemctl restart prometheus
+``` 
         
         
 
