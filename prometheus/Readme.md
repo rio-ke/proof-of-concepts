@@ -10,3 +10,4 @@ documentation
 
 
 https://github.com/ruanbekker/thanos-cluster-setup
+https://github.com/ruanbekker/thanos-cluster-setup/wiki/Install
