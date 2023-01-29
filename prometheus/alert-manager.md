@@ -374,7 +374,7 @@ _custom systemd servixce_
 create the file under this location `/etc/systemd/system` with the name of `alertmanager.service` include the below content
 
 ```bash
-
+# /etc/systemd/system/alertmanager.service
 [Unit]
 Description=Prometheus AlertManager
 After=network.target auditd.service
@@ -393,9 +393,9 @@ WantedBy=default.target
 _service management_
 
 ```bash
-    sudo systemctl daemon-reload
-    sudo systemctl enable alertmanager
-    sudo systemctl start alertmanager
-    sudo netstat -tulpn
-    sudo systemctl status alertmanager
+sudo systemctl daemon-reload
+sudo systemctl enable alertmanager
+sudo systemctl start alertmanager
+sudo systemctl status alertmanager
+sudo netstat -tulpn
 ```
