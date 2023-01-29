@@ -30,6 +30,11 @@ _download the mysql exporter binary_
 wget https://github.com/prometheus/mysqld_exporter/releases/download/v0.14.0/mysqld_exporter-0.14.0.linux-amd64.tar.gz
 tar -vxzf mysqld_exporter-0.14.0.linux-amd64.tar.gz
 sudo mv mysqld_exporter-0.14.0.linux-amd64/mysqld_exporter /usr/local/bin/
+```
+
+_permission setup_
+
+```bash
 sudo chown -R mysqld_exporter:mysqld_exporter  /usr/local/bin/mysqld_exporter
 ```
 
