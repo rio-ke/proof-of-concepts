@@ -132,8 +132,8 @@ _custom query based on tasks and publish to prometheus_
 
 # bash cron_batchtrigger.sh
 # Environment Labels Name
-#    jobname: batchtrigger
-#    instance: 127.0.0.1
+#    jobname: cron_job
+#    instance: 10.0.1.2
 command=$(curl -s -o /dev/null -I -w "%{http_code}" https://google.com)
 if [ $command == 200 ]; then
     echo "login_trigger 0" | curl --data-binary @- http://10.0.1.2:9091/metrics/job/cron_job/instance/10.0.1.2
