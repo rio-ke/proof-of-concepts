@@ -167,3 +167,5 @@ _restart the prometheus service_
 ```bash
 sudo systemctl restart prometheus
 ``` 
+
+once restarted service. It will pull the data from push mysql exporter server.
