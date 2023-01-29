@@ -2,23 +2,23 @@
 create the user and folder's to handle the node exporter process itself. So we are aware of user-based processes and permissions.
 
 ```bash
-    sudo useradd --no-create-home -c "alert user" --shell /bin/false alertuser
+sudo useradd --no-create-home -c "alert user" --shell /bin/false alertuser
 ```
 
 _download the binary_
 
 ```bash
-    wget https://github.com/prometheus/alertmanager/releases/download/v0.21.0/alertmanager-0.21.0.linux-amd64.tar.gz
-    tar -xvzf alertmanager-0.21.0.linux-amd64.tar.gz
-    mv alertmanager-0.21.0.linux-amd64/alertmanager /usr/local/bin/
-    mv alertmanager-0.21.0.linux-amd64/amtool /usr/local/bin/
+wget https://github.com/prometheus/alertmanager/releases/download/v0.21.0/alertmanager-0.21.0.linux-amd64.tar.gz
+tar -xvzf alertmanager-0.21.0.linux-amd64.tar.gz
+mv alertmanager-0.21.0.linux-amd64/alertmanager /usr/local/bin/
+mv alertmanager-0.21.0.linux-amd64/amtool /usr/local/bin/
 ```
 
 _permission access for alertuser_
 
 ```bash
-    sudo chown -R alertuser:alertuser /usr/local/bin/alertmanager
-    sudo chown -R alertuser:alertuser /usr/local/bin/amtool
+sudo chown -R alertuser:alertuser /usr/local/bin/alertmanager
+sudo chown -R alertuser:alertuser /usr/local/bin/amtool
 ```
 
 _alertmanager configuration_
@@ -180,22 +180,13 @@ receivers:
 - name: python-team-manager
   email_configs:
   - to: 'example@gmail.com'
-- name: go-team-admin
-  email_configs:
-  - to: 'example@gmail.com'
-- name: go-team-lead
-  email_configs:
-  - to: 'example@gmail.com'
-- name: go-team-manager
-  email_configs:
-  - to: 'example@gmail.com'
 
-- name: 'go-team-lead'
+- name: 'go-team-admin'
   slack_configs:
   - send_resolved: true
     channel: '#general'
     slack_api_url: 'https://hooks.slack.com/services'
-    title: '{{ .Status | toUpper }}{{ if eq .Status "firing" }} - {{ .Alerts.Firing | len }}{{ end }} | JINO PROMETHEUS ALERTS'
+    title: '{{ .Status | toUpper }}{{ if eq .Status "firing" }} - {{ .Alerts.Firing | len }}{{ end }} | PROMETHEUS ALERTS'
     text: >-
       {{ range .Alerts }}
         *Alert:* {{ .Annotations.summary }}
@@ -206,6 +197,24 @@ receivers:
         {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
         {{ end }}
       {{ end }}
+      
+- name: 'go-team-lead'
+  slack_configs:
+  - send_resolved: true
+    channel: '#general'
+    slack_api_url: 'https://hooks.slack.com/services'
+    title: '{{ .Status | toUpper }}{{ if eq .Status "firing" }} - {{ .Alerts.Firing | len }}{{ end }} | PROMETHEUS ALERTS'
+    text: >-
+      {{ range .Alerts }}
+        *Alert:* {{ .Annotations.summary }}
+        *State:* `{{ .Labels.severity }}`
+        *Description:* {{ .Annotations.description }}
+        *Graph:* <{{ .GeneratorURL }}|:chart_with_upwards_trend:>
+        *Details:*
+        {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+        {{ end }}
+      {{ end }}
+      
 - name: "go-team-manager"
   email_configs:
   - to: "receiver_mail_id@gmail.com"
