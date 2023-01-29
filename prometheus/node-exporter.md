@@ -130,4 +130,4 @@ _restart the prometheus service_
 sudo systemctl restart prometheus
 ``` 
 
-once restarted service. It will pull the data from push gateway server.
+once restarted service. It will pull the data from push node exporter server.
