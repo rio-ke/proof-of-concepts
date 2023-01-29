@@ -47,10 +47,15 @@ _assign a permission_
 sudo chown root:mysqld_exporter /etc/.mysqld_exporter.cnf
 ```
 
-__
-sudo vim /etc/systemd/system/mysql_exporter.service
+
+_custom systemd service_
+
+For the time being, I am going to add only the prometheus service to monitor prometheus itself.
+
+create the file under this location `/etc/systemd/system` with the name of `mysql_exporter.service` include the below content
 
 ```bash
+# /etc/systemd/system/mysql_exporter.service
 [Unit]
 Description=Prometheus MySQL Exporter
 After=network.target
@@ -83,6 +88,7 @@ ExecStart=/usr/local/bin/mysqld_exporter \
 WantedBy=multi-user.target
 ```
 
+_service management_
 
 ```bash
 sudo systemctl daemon-reload
@@ -91,20 +97,68 @@ sudo systemctl start mysql_exporter
 sudo netstat -tulpn
 ```
 
+_how to integrate mysql exporter into prometheus_
 
-switch to prometheus server
+switch to prometheus server below the configuration must be updated 
 
-```bash
-
+```
 # vim /etc/prometheus/prometheus.yml
-# add the new server with new nodeexporter
+# add the new server with new node exporter
   - job_name: 'mysql'
     static_configs: 
-    - targets: ['localhost:9104']    # MySQL address
+    - targets: ['10.0.1.5:9104']     # server IP address
       labels: 
-        instance: mysql-server
+        instance: db-server         # server name
+
 ```
+
+
+_validate the prometheus configuration_
+
+after the update to the Prometheus configuration. your config file looks like below this.
+
+```bash
+---
+global:
+  scrape_interval:     15s      # default 1m
+  evaluation_interval: 15s      # default 1m
+  scrape_timeout: 10s           # default 10s
+
+# # Alertmanager configuration
+# alerting:
+#   alertmanagers:
+#   - static_configs:
+#     - targets:
+#       - alertmanager:9093
+
+# # Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+# rule_files:
+#   - "/etc/prometheus/rules.yml"
+#   - "/etc/prometheus/add-rules.yml"
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+    - targets: ['localhost:9090']
+      labels: 
+        instance: Prometheus
+  - job_name: 'node'
+    static_configs: 
+    - targets: ['10.0.1.3:9100']     # server address 
+      labels: 
+        instance: app-server         # server name
+    - targets: ['10.0.1.4:9100']     # server address 
+      labels: 
+        instance: web-server         # server name
+    - job_name: 'mysql'
+      static_configs: 
+      - targets: ['10.0.1.5:9104']   # server IP address
+        labels: 
+          instance: db-server        # server name
+```
+
+_restart the prometheus service_
 
 ```bash
 sudo systemctl restart prometheus
-```
+``` 
