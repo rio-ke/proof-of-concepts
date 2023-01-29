@@ -21,8 +21,8 @@ _custom systemd service_
 to supervise the pushgateway service We can easily create the systemd service in Linux, and we can be aware of how we can start and stop those binaries.
 
 
-```bash
-sudo vim /etc/systemd/system/pushgateway.service
+```service
+# /etc/systemd/system/pushgateway.service
 [Unit]
 Description=Pushgateway
 Wants=network-online.target
