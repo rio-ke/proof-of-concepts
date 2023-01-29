@@ -1,26 +1,39 @@
 _mysql exporter installation_
 
-    # install mysql exporter MariaDB mysql [Each Server]
-    sudo useradd --no-create-home -c "Monitoring user" --shell /bin/false mysqld_exporter
-    wget https://github.com/prometheus/mysqld_exporter/releases/download/v0.12.1/mysqld_exporter-0.12.1.linux-amd64.tar.gz
-    tar -vxzf mysqld_exporter-0.12.1.linux-amd64.tar.gz
-    sudo mv mysqld_exporter-0.12.1.linux-amd64/mysqld_exporter /usr/local/bin/
-    sudo chown -R mysqld_exporter:mysqld_exporter  /usr/local/bin/mysqld_exporter
+Before mysql exporter installation, make sure the MySQL service is exist. if it is not running then you should follow below steps
 
-
-    # its need mysql server (Require new installtion)
-    sudo apt install mysql-server
-    sudo systemctl start mysql
-    sudo mysql_secure_installtion
-    sudo mysql -u root -p 
-
-    # Create Mysql user for mysqld_exporter
 ```bash
-    CREATE USER 'mysqld_exporter'@'localhost' IDENTIFIED BY 'StrongPassword' WITH MAX_USER_CONNECTIONS 2;
-    GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO 'mysqld_exporter'@'localhost';
-    FLUSH PRIVILEGES;
-    EXIT
+sudo apt install mysql-server
+sudo mysql_secure_installtion
+sudo systemctl start mysql
 ```
+
+_create the mysql user for mysql exporter_
+
+```bash
+sudo mysql -u root -p 
+CREATE USER 'mysqld_exporter'@'localhost' IDENTIFIED BY 'StrongPassword' WITH MAX_USER_CONNECTIONS 2;
+GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO 'mysqld_exporter'@'localhost';
+FLUSH PRIVILEGES;
+EXIT
+```
+
+create the user and folder's to handle the mysql exporter process itself. So we are aware of user-based processes and permissions.
+
+```bash
+sudo useradd --no-create-home -c "Monitoring user" --shell /bin/false mysqld_exporter
+```
+
+_download the mysql exporter binary_
+
+```bash
+wget https://github.com/prometheus/mysqld_exporter/releases/download/v0.14.0/mysqld_exporter-0.14.0.linux-amd64.tar.gz
+tar -vxzf mysqld_exporter-0.14.0.linux-amd64.tar.gz
+sudo mv mysqld_exporter-0.14.0.linux-amd64/mysqld_exporter /usr/local/bin/
+sudo chown -R mysqld_exporter:mysqld_exporter  /usr/local/bin/mysqld_exporter
+```
+
+_create the mysql credentials as a file_
 
 ```bash
 # sudo vim /etc/.mysqld_exporter.cnf
@@ -28,9 +41,13 @@ _mysql exporter installation_
 user=mysqld_exporter
 password=StrongPassword
 ```
+_assign a permission_
 
+```bash
 sudo chown root:mysqld_exporter /etc/.mysqld_exporter.cnf
+```
 
+__
 sudo vim /etc/systemd/system/mysql_exporter.service
 
 ```bash
