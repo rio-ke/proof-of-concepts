@@ -26,11 +26,9 @@ We should provide the appropriate permissions that are required for all binaries
 ```bash
 sudo mv prometheus-files/prometheus /usr/local/bin/
 sudo mv prometheus-files/promtool /usr/local/bin/
-sudo mv prometheus-files/tsdb /usr/local/bin/
 
 sudo chown prometheus:prometheus /usr/local/bin/prometheus
 sudo chown prometheus:prometheus /usr/local/bin/promtool
-sudo chown prometheus:prometheus /usr/local/bin/tsdb
 
 sudo mv prometheus-files/prometheus.yml /etc/prometheus/
 sudo mv prometheus-files/consoles /etc/prometheus
