@@ -46,6 +46,8 @@ _prepare the prometheus configuiration yaml file_
 
 For the time being, I am going to add only the prometheus service to monitor prometheus itself.
 
+create the file under this location `/etc/prometheus` with the name of `prometheus.yml` include the below content
+
 ```bash
 # /etc/prometheus/prometheus.yml
 global:
