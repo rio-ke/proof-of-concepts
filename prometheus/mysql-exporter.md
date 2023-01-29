@@ -4,7 +4,7 @@ Before mysql exporter installation, make sure the MySQL service is exist. if it 
 
 ```bash
 sudo apt install mysql-server
-sudo mysql_secure_installtion
+sudo mysql_secure_installation
 sudo systemctl start mysql
 ```
 
