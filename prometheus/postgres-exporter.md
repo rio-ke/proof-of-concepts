@@ -79,9 +79,9 @@ global:
   evaluation_interval: 15s      # default 1m
   scrape_timeout: 10s           # default 10s
   
-- job_name: ‘postgres_exporter’
+- job_name: 'postgres_exporter'
   static_configs:
-  - targets: [‘172.31.20.235:9187’]   # Our machine IP Address
+  - targets: ['172.31.20.235:9187']   # Our machine IP Address
     labels:
       instance: db-server
 ```
