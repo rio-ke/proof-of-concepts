@@ -44,6 +44,7 @@ DATA_SOURCE_NAME="postgresql://username:password@localhost:5432/database-name?ss
 ```
 Add the below content for promotheus psql server
 ```bash
+# vim /etc/systemd/system/postgres_exporter.service
 [Unit]
 Description=Prometheus exporter for Postgresql
 Wants=network-online.target
