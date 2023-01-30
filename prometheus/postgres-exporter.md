@@ -19,3 +19,5 @@ CREATE DATABASE demo;
 GRANT ALL PRIVILEGES ON DATABASE demo TO postgres_exporter;
 ```
 
+Create the User and folders 
+
