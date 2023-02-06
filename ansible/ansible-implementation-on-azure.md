@@ -40,3 +40,30 @@ these below yaml file I found under the ansible [docs](https://docs.ansible.com/
     location: eastus
     sku: S1
 ```
+
+**_how can I create the custom ansible module?_**
+
+In that case you sould familier with python code. This the [ansible docs](https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_general.html) which is provide the custom library creation examples.
+
+For your reference, these are the examples that I am now creating. [custom library](https://github.com/fourtimes/Documentation/tree/master/azure-webjob-ansible)
+
+This is a custom module example for your reference.
+
+```yaml
+---
+- name: all
+  hosts: localhost
+  vars:
+    appname: testjino
+    file_location: ./webapp.zip
+  tasks:
+  - azureAccessToken:
+      tenantid: "xxxx-c3cc-xxxx-9c53-xxxxxxx"
+      clientid: "xxxxx-569f-xxxx-9d4b-xxxx"
+      clientsecret: "5l~pb8xhfoDO.Ea7u91b2dbCLQuN5Ae2~V"
+    register: _results
+  - azurewebjobsdeploy:
+      appServiceName: "{{ appname }}"
+      accessToken: "{{  _results.meta.accessToken  }}"
+      fileLocation: "{{ file_location }}"
+```
