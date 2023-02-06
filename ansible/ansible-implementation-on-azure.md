@@ -30,7 +30,8 @@ yes. It is possible. By default, Ansile provides those details as a module. We c
 
 Yes, it is possible. First, we will have to search the module under the "Ansible Documentation" part. If it is not there, we will have to prepare the custom library for the specific task.
 
-these below yaml file I found under t
+these below yaml file I found under the ansible [docs](https://docs.ansible.com/ansible/latest/collections/azure/azcollection/azure_rm_appserviceplan_module.html#ansible-collections-azure-azcollection-azure-rm-appserviceplan-module)
+
 ```yaml
 - name: Create a windows app service plan
   azure_rm_appserviceplan:
