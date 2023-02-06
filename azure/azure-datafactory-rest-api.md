@@ -1,4 +1,4 @@
-**_azure-date-factory-rest-api.md_**
+**_azure-datafactory-rest-api.md_**
 
 _PreRequsties_
 
