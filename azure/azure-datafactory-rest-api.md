@@ -6,6 +6,13 @@ _PreRequsties_
 2. Collect the subscription Id, Resource Group name and Azure Datafactory Name.
 3. Agent servicer should be installed the Jq packages as a prerequesties.
 
+
+_Create the bearer token_
+
+```bash
+curl -X POST -d 'grant_type=client_credentials&client_id=[APP_ID]&client_secret=[PASSWORD]&resource=https%3A%2F%2Fmanagement.azure.com%2F' https://login.microsoftonline.com/[TENANT_ID]/oauth2/token
+```
+
 _Create linked service_
 
 ```bash
