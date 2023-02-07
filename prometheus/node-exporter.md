@@ -73,7 +73,7 @@ sudo netstat -tulpn | grep 9100
 
 switch to prometheus server below the configuration must be updated 
 
-```
+```bash
 # sudo vim /etc/prometheus/prometheus.yml
 # add the new server with new node exporter
   - job_name: 'node'
