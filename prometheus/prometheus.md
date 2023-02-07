@@ -47,7 +47,7 @@ For the time being, I am going to add only the prometheus service to monitor pro
 create the file under this location `/etc/prometheus` with the name of `prometheus.yml` include the below content
 
 ```bash
-# /etc/prometheus/prometheus.yml
+# sudo vim /etc/prometheus/prometheus.yml
 global:
   scrape_interval:     15s      # default 1m
   evaluation_interval: 15s      # default 1m
