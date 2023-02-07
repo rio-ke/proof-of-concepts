@@ -1,0 +1,30 @@
+{
+  "properties": {
+    "type": "AzureBlob",
+    "typeProperties": {
+      "folderPath": {
+        "value": "@dataset().MyFolderPath",
+        "type": "Expression"
+      },
+      "fileName": {
+        "value": "@dataset().MyFileName",
+        "type": "Expression"
+      },
+      "format": {
+        "type": "TextFormat"
+      }
+    },
+    "linkedServiceName": {
+      "referenceName": "exampleLinkedService",
+      "type": "LinkedServiceReference"
+    },
+    "parameters": {
+      "MyFolderPath": {
+        "type": "String"
+      },
+      "MyFileName": {
+        "type": "String"
+      }
+    }
+  }
+}

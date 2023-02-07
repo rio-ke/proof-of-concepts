@@ -1,0 +1,8 @@
+{
+  "properties": {
+    "waitTime": {
+      "value": 5,
+      "type": "Int"
+    }
+  }
+}
