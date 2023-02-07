@@ -1,4 +1,4 @@
-**_azure-datafactory-rest-api-deployement_**
+[**_azure-datafactory-rest-api-deployement_**](https://learn.microsoft.com/en-us/rest/api/datafactory/datasets)
 
 ```yml
 steps:
@@ -73,3 +73,6 @@ steps:
       AZURE_DATA_FACOTRY_NAME: $(AZURE_DATA_FACOTRY_NAME)
       AZURE_SUBSCRIPTION_SERVICE_CONNECTION: $(AZURE_SUBSCRIPTION_SERVICE_CONNECTION)
 ```
+
+
+[azure devOps logging](https://learn.microsoft.com/en-us/azure/devops/pipelines/scripts/logging-commands?view=azure-devops&tabs=bash)
