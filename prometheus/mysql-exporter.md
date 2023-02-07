@@ -60,7 +60,7 @@ For the time being, I am going to add only the prometheus service to monitor pro
 create the file under this location `/etc/systemd/system` with the name of `mysql_exporter.service` include the below content
 
 ```service
-# /etc/systemd/system/mysql_exporter.service
+# sudo vim /etc/systemd/system/mysql_exporter.service
 [Unit]
 Description=Prometheus MySQL Exporter
 After=network.target
