@@ -4,27 +4,7 @@
 ```yml
 steps:
   - bash: |
-      databricksUrl="https://adb-xxxxx.x.azuredatabricks.net"
-      databricksToken="xxxxxe7bbadf2-2"
-      databricks configure --token <<EOF
-      $databricksUrl
-      $databricksToken
-      EOF
-    displayName: "AuthenticateDatabricksUseDataBricksCli"
-  - bash: |
-      set -xe
-      dataBricksURL=$(databricks-url-xxx)
-      bearerToken=$(databricks-token-xxx)
-      echo "${dataBricksURL}"
-      echo "${bearerToken}"
-    displayName: "AuthenticateDatabricks"
-  - bash: |
-      dataBricksURL="https://adb-xxxxx.x.azuredatabricks.net"
-      bearerToken="xxxxxxx-2"
-      echo "${dataBricksURL}"
-      echo "${bearerToken}"
-      statusCode=$(curl -s -o /dev/null -w "%{http_code}" -XGET ${dataBricksURL}/api/2.0/repos -H "Authorization: Bearer ${bearerToken}")
-
+      statusCode=$(curl -s -o /dev/null -w "%{http_code}" -XGET ${AZURE_DATA_BRICKS_URL}/api/2.0/repos -H "Authorization: Bearer ${AZURE_DATA_BRICKS_BEARER_TOKEN}")
       if [ $statusCode == 200 ]; then
           echo "SuccessCode: ${statusCode}"
       else
@@ -32,34 +12,38 @@ steps:
           exit 1
       fi
     displayName: "AuthenticateDatabricksValidation"
+    env:
+      AZURE_DATA_BRICKS_URL: "https://adb-xxxxx.x.azuredatabricks.net"
+      AZURE_DATA_BRICKS_BEARER_TOKEN: "xxxxxxx-2"
   - bash: |
-      updatedPath="/Repos/cicd/${BUILD_REPOSITORY_NAME}"
-      dataBricksURL=$(databricks-url-xxx)
-      bearerToken=$(databricks-token-xxx)
-      getUpdatedSyncStatus=$(curl -s -XGET ${dataBricksURL}/api/2.0/repos -H "Authorization: Bearer ${bearerToken}" | jq '.repos[]' | grep ${updatedPath} | wc -l)
-
+      getUpdatedSyncStatus=$(curl -s -XGET ${AZURE_DATA_BRICKS_URL}/api/2.0/repos -H "Authorization: Bearer ${AZURE_DATA_BRICKS_BEARER_TOKEN}" | jq '.repos[]' | grep ${AZURE_DATA_BRICKS_SYNC_PATH} | wc -l)
       if [ $getUpdatedSyncStatus == 1 ]; then
           echo "SuccessCode: The repository has already been synced."
-          getUpdatedSyncRepoId=$(curl -s -XGET ${dataBricksURL}/api/2.0/repos?path_prefix=${updatedPath} -H "Authorization: Bearer ${bearerToken}" | jq '.repos[].id')
-          curl -s -XDELETE ${dataBricksURL}/api/2.0/repos/${getUpdatedSyncRepoId} -H "Authorization: Bearer ${bearerToken}" -H "Content-Type: application/json"
+          getUpdatedSyncRepoId=$(curl -s -XGET ${AZURE_DATA_BRICKS_URL}/api/2.0/repos?path_prefix=${AZURE_DATA_BRICKS_SYNC_PATH} -H "Authorization: Bearer ${AZURE_DATA_BRICKS_BEARER_TOKEN}" | jq '.repos[].id')
+          curl -s -XDELETE ${AZURE_DATA_BRICKS_URL}/api/2.0/repos/${getUpdatedSyncRepoId} -H "Authorization: Bearer ${AZURE_DATA_BRICKS_BEARER_TOKEN}" -H "Content-Type: application/json"
       else
           echo "MessageCode:  The repository has not yet been synced."
       fi
     displayName: "deleteSyncedRepo"
+    env:
+      AZURE_DATA_BRICKS_URL: "https://adb-xxxxx.x.azuredatabricks.net"
+      AZURE_DATA_BRICKS_BEARER_TOKEN: "xxxxxxx-2"
+      AZURE_DATA_BRICKS_SYNC_PATH: "/Repos/cicd/${BUILD_REPOSITORY_NAME}"
   - bash: |
-      syncUrl="https://dev.azure.com/xxxx/xxxxxxxxx/_git/${BUILD_REPOSITORY_NAME}"
-      dataBricksURL=$(databricks-url-xxx)
-      bearerToken=$(databricks-token-xxx)
-      updatedPath="/Repos/cicd/${BUILD_REPOSITORY_NAME}"
+      AZURE_ADO_REPO_SOURCE_URL="https://dev.azure.com/xxxx/xxxxxxxxx/_git/${BUILD_REPOSITORY_NAME}"
       cat > data.json <<EOF
       { 
-        "url": "${syncUrl}", 
+        "url": "${AZURE_ADO_REPO_SOURCE_URL}", 
         "provider": "azureDevOpsServices", 
-        "path": "${updatedPath}"
+        "path": "${AZURE_DATA_BRICKS_SYNC_PATH}"
       }
       EOF
-      repoInfo=$(curl -X POST https://${databricksUrl}/api/2.0/repos -d @data.json  -H "Content-Type: application/json" -H "Authorization: Bearer ${bearerToken}")
+      repoInfo=$(curl -X POST ${AZURE_DATA_BRICKS_URL}/api/2.0/repos -d @data.json  -H "Content-Type: application/json" -H "Authorization: Bearer ${AZURE_DATA_BRICKS_BEARER_TOKEN}")
       echo $repoInfo
     displayName: "syncRepo"
-
+    env:
+      AZURE_DATA_BRICKS_URL: "https://adb-xxxxx.x.azuredatabricks.net"
+      AZURE_DATA_BRICKS_BEARER_TOKEN: "xxxxxxx-2"
+      AZURE_DATA_BRICKS_SYNC_PATH: "/Repos/cicd/${BUILD_REPOSITORY_NAME}"
+      AZURE_ADO_REPO_SOURCE_URL: "https://dev.azure.com/xxxx/xxxxxxxxx/_git/${BUILD_REPOSITORY_NAME}"
 ```
