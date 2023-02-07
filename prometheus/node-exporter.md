@@ -69,7 +69,7 @@ sudo systemctl status node_exporter
 sudo netstat -tulpn | grep 9100
 ```
 
-_how to integrate node exporter into prometheus_
+**_how to integrate node exporter into prometheus_**
 
 switch to prometheus server below the configuration must be updated 
 
