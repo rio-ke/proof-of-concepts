@@ -99,15 +99,15 @@ _service management_
 sudo systemctl daemon-reload
 sudo systemctl enable mysql_exporter
 sudo systemctl start mysql_exporter
-sudo netstat -tulpn
+sudo netstat -tulpn | grep 9104
 ```
 
-_how to integrate mysql exporter into prometheus_
+**_how to integrate mysql exporter into prometheus_**
 
 switch to prometheus server below the configuration must be updated 
 
 ```
-# vim /etc/prometheus/prometheus.yml
+# sudo vim /etc/prometheus/prometheus.yml
 # add the new server with new node exporter
   - job_name: 'mysql'
     static_configs: 
