@@ -44,7 +44,7 @@ array.forEach(Element => {
 _actual implementation_
 
 ```js
-var string =process.env.ENV_PROJECTS
+var string = process.env.ENV_PROJECTS
 var array = demo.split(",");
 
 console.log(array)
