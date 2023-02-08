@@ -33,6 +33,7 @@ _create the notification templates_
 create the file under this location `/etc/alertmanager` with the name of `notifications.tmpl` include the below content
 
 ```j2
+# sudo vim /etc/alertmanager/notifications.tmpl
 {{ define "__single_message_title" }}{{ range .Alerts.Firing }}{{ .Labels.alertname }} @ {{ .Annotations.identifier }}{{ end }}{{ range .Alerts.Resolved }}{{ .Labels.alertname }} @ {{ .Annotations.identifier }}{{ end }}{{ end }}
 
 {{ define "custom_title" }}[{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ if or (and (eq (len .Alerts.Firing) 1) (eq (len .Alerts.Resolved) 0)) (and (eq (len .Alerts.Firing) 0) (eq (len .Alerts.Resolved) 1)) }}{{ template "__single_message_title" . }}{{ end }}{{ end }}
@@ -58,6 +59,7 @@ _create the alartmanager configuration_
 create the file under this location `/etc/alertmanager` with the name of `alertmanager.yml` include the below content
 
 ```bash
+# sudo vim /etc/alertmanager/alertmanager.yml
 global:
   resolve_timeout: 30s
 
@@ -404,7 +406,7 @@ sudo netstat -tulpn
 _basic rules_
 
 ```yml
-# /etc/prometheus/linux.yml
+# sudo vim /etc/prometheus/linux.yml
 
 groups:
   - name: linux-rules
