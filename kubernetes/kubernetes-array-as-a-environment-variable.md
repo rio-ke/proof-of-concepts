@@ -1,7 +1,6 @@
+_kubernetes-array-as-a-environment-variable_
 
-
-By default, the kubernetes env variable is not supported by array of values. but insteed of we can approch this way to do achive this kind of senarios.
-
+By default, the kubernetes env variable is not supported by array of values. but instead of we can approch this way to do achieve this kind of scenarios.
 
 ```yaml
 ---
@@ -54,3 +53,7 @@ array.forEach(Element => {
     console.log(Element)
 });
 ```
+
+_expected output_
+
+![image](https://user-images.githubusercontent.com/57703276/217413291-bc5781a6-6f82-4e07-848d-2d4735a3aeaa.png)
