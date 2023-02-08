@@ -10,8 +10,8 @@ _download the binary_
 ```bash
 wget https://github.com/prometheus/alertmanager/releases/download/v0.21.0/alertmanager-0.21.0.linux-amd64.tar.gz
 tar -xvzf alertmanager-0.21.0.linux-amd64.tar.gz
-mv alertmanager-0.21.0.linux-amd64/alertmanager /usr/local/bin/
-mv alertmanager-0.21.0.linux-amd64/amtool /usr/local/bin/
+sudo mv alertmanager-0.21.0.linux-amd64/alertmanager /usr/local/bin/
+sudo mv alertmanager-0.21.0.linux-amd64/amtool /usr/local/bin/
 ```
 
 _permission access for alertuser_
