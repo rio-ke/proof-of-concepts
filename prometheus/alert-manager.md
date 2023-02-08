@@ -19,6 +19,8 @@ _permission access for alertuser_
 ```bash
 sudo chown -R alertuser:alertuser /usr/local/bin/alertmanager
 sudo chown -R alertuser:alertuser /usr/local/bin/amtool
+sudo mkdir -p /var/alertmanager/data/
+sudo chown -R alertuser:alertuser /var/alertmanager/data/
 ```
 
 _alertmanager configuration_
