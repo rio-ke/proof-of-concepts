@@ -32,7 +32,7 @@ _create the notification templates_
 
 create the file under this location `/etc/alertmanager` with the name of `notifications.tmpl` include the below content
 
-```bash
+```j2
 # sudo vim /etc/alertmanager/notifications.tmpl
 
 {{ define "__single_message_title" }}{{ range .Alerts.Firing }}{{ .Labels.alertname }} @ {{ .Annotations.identifier }}{{ end }}{{ range .Alerts.Resolved }}{{ .Labels.alertname }} @ {{ .Annotations.identifier }}{{ end }}{{ end }}
