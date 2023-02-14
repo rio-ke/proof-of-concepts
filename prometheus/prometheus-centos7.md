@@ -114,6 +114,7 @@ _service management_
 ```bash
 sudo systemctl daemon-reload
 sudo systemctl start prometheus
+sudo systemctl enable prometheus
 sudo systemctl status prometheus
 sudo netstat -tulpn | grep 9090
 ```
