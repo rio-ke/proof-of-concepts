@@ -17,3 +17,27 @@ Note: _The address must include https://. Do not include a trailing slash._
 Once the OIDC provider is created, it will look like this.
 
 ![image](https://user-images.githubusercontent.com/57703276/218640085-c9ca31d5-357c-4a80-9122-559c29a8a17a.png)
+
+
+_Configure a role and trust_
+
+
+```js
+{
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Principal": {
+          "Federated": "arn:aws:iam::123487226531:oidc-provider/gitlab.com"
+        },
+        "Action": "sts:AssumeRoleWithWebIdentity",
+        "Condition": {
+          "StringEquals": {
+            "gitlab.com:sub": "project_path:jjino/common-template-reference:ref_type:branch:ref:main"
+          }
+        }
+      }
+    ]
+}
+```
