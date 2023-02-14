@@ -143,3 +143,29 @@ deploy_b:
     - echo "Since build_b and test_b run slowly, this deploy job will run much later."
   environment: production
 ```
+_Parent-child pipelines_
+
+```yml
+stages:
+  - triggers
+
+trigger_a:
+  stage: triggers
+  trigger:
+    include: a/.gitlab-ci.yml
+  rules:
+    - changes:
+        - a/*
+
+trigger_b:
+  stage: triggers
+  trigger:
+    include: b/.gitlab-ci.yml
+  rules:
+    - changes:
+        - b/*
+```
+
+```yml
+
+```
