@@ -1,5 +1,5 @@
 
-_open api json_
+_open api json for queryString params post_
 
 ```js
 {
@@ -9,16 +9,7 @@ _open api json_
     "description": "sns-publish-integration-api",
     "version": "2023-02-14T07:50:39Z"
   },
-  "servers": [
-    {
-      "url": "",
-      "variables": {
-        "basePath": {
-          "default": "/dev"
-        }
-      }
-    }
-  ],
+  "servers": [],
   "paths": {
     "/sqshandler": {
       "post": {
@@ -39,13 +30,6 @@ _open api json_
           },
           {
             "name": "TopicArn",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Subject",
             "in": "query",
             "schema": {
               "type": "string"
@@ -75,13 +59,8 @@ _open api json_
           },
           "requestParameters": {
             "integration.request.querystring.TopicArn": "method.request.querystring.TopicArn",
-            "integration.request.querystring.Action": "method.request.querystring.Action",
-            "integration.request.querystring.Subject": "method.request.querystring.Subject",
             "integration.request.querystring.Message": "method.request.querystring.Message",
             "integration.request.header.Content-Type": "'application/x-www-form-urlencoded'"
-          },
-          "requestTemplates": {
-            "application/json": "#set($topic='arn:aws:sns:ap-southeast-1:676487226531:eb-sns-test')\r\n#set($msg=$input.body)\r\nAction=Publish&TopicArn=$util.urlEncode($topic)&Message=$util.urlEncode($msg)"
           },
           "passthroughBehavior": "never",
           "type": "aws"
@@ -101,6 +80,14 @@ _open api json_
     "application/x-www-form-urlencoded"
   ]
 }
+
+
+```
+
+queryString params
+
+```service
+Action=Publish&TopicArn=arn:aws:sns:ap-southeast-1:676487226531:eb-sns-test&Message=Hello world!
 
 ```
 
