@@ -98,3 +98,51 @@ secondary_role:
     - export AWS_DEFAULT_REGION="us-east-1"
     - aws sts get-caller-identity
 ```
+
+
+```yml
+stages:
+  - dev
+
+before_script:
+    - yum install -y zip jq
+publish image:
+  stage: dev
+  image: 
+    name: amazon/aws-cli
+  script: 
+    - IMAGE_TAG=$CI_COMMIT_TAG-$CI_COMMIT_SHORT_SHA
+    - sed -i "s/<IMAGE_TAG>/$IMAGE_TAG/g; s/<AWS_REGION>/$AWS_REGION/g; s/<AWS_ACCOUNT_ID>/$AWS_ACCOUNT_ID/g;" build.json
+    - zip -r image.zip buildspec.yml Dockerfile hello_docker.html
+    - aws s3api put-object --bucket $CODEBUILD_BUCKET --key app/$IMAGE_TAG/image.zip --body image.zip
+    - CODEBUILD_ID=$(aws codebuild start-build --project-name "build-app-docker-image" --cli-input-json file://build.json | jq -r '.build.id')
+    - sleep 5
+    - CODEBUILD_JOB=$(aws codebuild batch-get-builds --ids $CODEBUILD_ID)
+    - LOG_GROUP_NAME=$(jq -r '.builds[0].logs.groupName' <<< "$CODEBUILD_JOB")
+    - |
+      if [[ ${CODEBUILD_ID} != "" ]];
+      then
+        while true
+        do
+          sleep 10
+          aws logs tail $LOG_GROUP_NAME --since 10s
+
+          CODE_BUILD_STATUS=$(aws codebuild batch-get-builds --ids "$CODEBUILD_ID" | jq '.builds[].phases[] | select (.phaseType=="BUILD") | .phaseStatus' | tr -d '"')
+          if [[ ${CODE_BUILD_STATUS} = "FAILED" ]];
+          then
+              exit 1
+          elif [[ ${CODE_BUILD_STATUS} = "SUCCEEDED" ]];
+          then
+              break
+          fi
+        done
+      else
+        echo "Build initialization has failed"
+        exit 1
+      fi
+  tags:
+    - k8s-dev-runner
+  only:
+    refs:
+      - tags
+```
