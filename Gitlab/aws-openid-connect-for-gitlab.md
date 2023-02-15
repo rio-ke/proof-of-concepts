@@ -61,3 +61,40 @@ assume role:
       --output text))
     - aws sts get-caller-identity
 ```
+
+_multi stages_
+```yml
+assume role:
+  image:
+    name: amazon/aws-cli
+    entrypoint: [""]
+  script:
+    - >
+      export $(printf "AWS_ACCESS_KEY_ID=%s AWS_SECRET_ACCESS_KEY=%s AWS_SESSION_TOKEN=%s"
+      $(aws sts assume-role-with-web-identity
+      --role-arn arn:aws:iam::676487226531:role/dev-web-console-identity
+      --role-session-name "GitLabRunner-${CI_PROJECT_ID}-${CI_PIPELINE_ID}"
+      --web-identity-token $CI_JOB_JWT_V2
+      --duration-seconds 3600
+      --query 'Credentials.[AccessKeyId,SecretAccessKey,SessionToken]'
+      --output text))
+    - aws sts get-caller-identity
+
+secondary_role:
+  image:
+    name: amazon/aws-cli
+    entrypoint: [""]
+  script:
+    - >
+      STS=($(aws sts assume-role-with-web-identity
+      --role-arn arn:aws:iam::676487226531:role/dev-web-console-identity
+      --role-session-name "gitlab-${CI_PROJECT_ID}-${CI_PIPELINE_ID}"
+      --web-identity-token ${CI_JOB_JWT_V2}
+      --query 'Credentials.[AccessKeyId,SecretAccessKey,SessionToken]'
+      --output text))      
+    - export AWS_ACCESS_KEY_ID="${STS[0]}"
+    - export AWS_SECRET_ACCESS_KEY="${STS[1]}"
+    - export AWS_SESSION_TOKEN="${STS[2]}"
+    - export AWS_DEFAULT_REGION="us-east-1"
+    - aws sts get-caller-identity
+```
