@@ -168,7 +168,7 @@ show master status;
 | binlog.000004 |      196 |              |                  | 13c84508-5014-11eb-af41-000c2997dedd:1 |
 
 
-**_Update old-master instance with new-master information_**
+**_Update old-master instance with new-master information and start the slave_**
 
 _To change old-slave as master_
 
@@ -179,6 +179,76 @@ MASTER_USER='slave',
 MASTER_PASSWORD='password',
 MASTER_LOG_FILE='mysql-bin.000002', 
 MASTER_LOG_POS=1600;
+```
+_check status_
+
+```sql
+show master status;
+```
+
+```sql
+start slave;
+```
+
+_check slave status of Slave_IO_Running:_
+
+```sql
+show slave status\G;
+```
+
+**error**
+
+```bash
+*************************** 1. row ***************************
+               Slave_IO_State: Connecting to master
+                  Master_Host: 192.168.114.176
+                  Master_User: repluser
+                  Master_Port: 3306
+                Connect_Retry: 60
+              Master_Log_File:
+          Read_Master_Log_Pos: 4
+               Relay_Log_File: relay_bin01.000001
+                Relay_Log_Pos: 4
+        Relay_Master_Log_File:
+             Slave_IO_Running: Connecting
+            Slave_SQL_Running: Yes
+              Replicate_Do_DB:
+
+```
+
+* connecting error showing means the we have to check
+1. ip add 
+2. Executed_Gtid_Set
+
+_Reslove error_
+
+* for 2 error we have remove or move auto.cnf file form /var/lib/mysql
+
+ ![Screenshot from 2023-02-17 11-33-00](https://user-images.githubusercontent.com/88568938/219562286-24b78e59-3335-4781-bb07-2a29a1d80697.png)
+
+```cmd
+sudo -i
+```
+_To move file_
+
+```cmd
+cd /var/lib/mysql
+mv auto.cnf auto.cnf.backup
+systemctl restart mysqld
+```
+
+* Login now new-slave to mysql and follow ths stpes
+
+```sql
+stop slave;
+```
+```sql
+start slave;
+```
+_And check status:_
+
+```sql
+show slave status\G;
 ```
 
 _Testing_
