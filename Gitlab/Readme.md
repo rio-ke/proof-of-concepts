@@ -1,5 +1,16 @@
 
 
+_conditions_
+
+```yml
+test:
+  tags:
+    - dev
+  script:
+  - echo "It works!"
+  - for i in $(seq 1 30); do echo "."; sleep 1; done
+```
+
 
 ```yml
 dev:
