@@ -1,11 +1,11 @@
-**server configuration**
+_server configuration_
 
 | name  | ip address    |
 | ----- | ------------- |
 | node1 | 192.168.0.104 |
 | node2 | 192.168.0.105 |
 
-**node1 and node2 make an /etc/hosts entry**
+_`node1` and `node2` make an /etc/hosts entry_
 
 ```bash
 cat <<EOF >> /etc/hosts
@@ -16,7 +16,7 @@ hostnamectl set-hostname node2
 hostnamectl set-hostname node1
 ```
 
-**preparation of the pcs clusters on node1 and node2**
+_preparation of the pcs clusters on `node1` and `node2`_
 
 ```bash
 yum update -y
@@ -42,7 +42,7 @@ cat <<EOF >> /etc/httpd/conf.d/status.conf
 EOF
 ```
 
-**prepare the drbd configuration both node1 and node2**
+_prepare the drbd configuration both `node1` and `node2`_
 
 ```bash
 cat <<EOF >>  /etc/drbd.d/clusterdb.res
@@ -95,7 +95,7 @@ resource clusterdb {
 EOF
 ```
 
-**prepare the drbd setup both node1 and node2**
+_prepare the drbd setup both `node1` and `node2`_
 
 ```bash
 drbdadm create-md clusterdb
@@ -105,26 +105,26 @@ systemctl enable drbd
 systemctl status drbd
 ```
 
-**initiate the cluster on node1**
+_initiate the cluster on `node1`_
 
 ```bash
 drbdadm -- --overwrite-data-of-peer primary clusterdb
 ```
 
-**check the drbd sync status both node1 and node2**
+_check the drbd sync status both `node1` and `node2`
 
 ```bash
  cat /proc/drbd
 ```
 
-**create the folder both node1 and node2**
+_create the folder both `node1` and `node2`_
 
 ```bash
 mkdir /drbd-webdata
 mkdir /drbd-dbdata
 ```
 
-**lvm configuration change both node1 and node2**
+_lvm configuration change both `node1` and `node2`_
 
 ```bash
 vim /etc/lvm/lvm.conf
@@ -133,7 +133,7 @@ edit: write_cache_state = 1 to write_cache_state = 0                            
 edit: use_lvmetad = 1 to  use_lvmetad = 0                                           # 958 line near by
 ```
 
-**update the lvm configuration on node1 and node2**
+_update the lvm configuration on `node1` and `node2`_
 
 ```bash
 lvmconf --enable-halvm --services --startstopservices
@@ -141,7 +141,7 @@ dracut -H -f /boot/initramfs-$(uname -r).img $(uname -r)
 reboot
 ```
 
-**reconnect both node1 and node2**
+_reconnect both `node1` and `node2`_
 
 ```bash
 setenforce 0
@@ -151,16 +151,16 @@ systemctl enable pcsd.service
 passwd hacluster
 ```
 
-**any one of server you can mark as a primary**
+_any one of server you can mark as a `primary`_
 
 ```bash
 # assume that this is node1
 drbdadm primary --force clusterdb
 ```
 
-**drbd integrate with pcs cluster**
+_drbd integrate with pcs cluster_
 
-**open drbd primary node terminal**
+_open drbd primary node terminal_
 
 ```bash
 pvcreate /dev/drbd0
@@ -192,7 +192,7 @@ pcs constraint colocation add resourcegroup  with master drbd_clusterdb_clone IN
 pcs resource create ftpserver systemd:vsftpd --group resourcegroup
 ```
 
-**MySQL integrated with pcs cluster**
+_MySQL integrated with pcs cluster_
 
 ```bash
 sudo rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2022
@@ -205,7 +205,7 @@ datadir=/drbd-dbdata/data
 bind-address=0.0.0.0
 ```
 
-**initiate the mysql cluster**
+_initiate the mysql cluster_
 
 ```bash
 mysql_install_db --no-defaults --datadir=/drbd-dbdata/data
@@ -213,7 +213,7 @@ chown -R mysql:mysql /drbd-dbdata/
 pcs resource create dbserver ocf:heartbeat:mysql config="/drbd-dbdata/my.cnf" datadir="/drbd-dbdata/data" pid="/var/lib/mysql/mysql.pid" socket="/var/lib/mysql/mysql.sock" user="mysql" group="mysql" additional_parameters="--user=mysql" --group resourcegroup
 ```
 
-**mysql service validation**
+_mysql service validation_
 
 ```bash
 mysql –h 192.168.0.200 –u root –p
@@ -222,11 +222,11 @@ FLUSH PRIVILEGES;
 CREATE DATABASE rcmsdata;
 ```
 
-**drbd issues findings**
+_**DRBD issue**_
 
-**Recover a split brain**
+_Recover a split brain_
 
-**Secondary node**
+_in Secondary node_
 
 ```bash
 drbdadm secondary all
@@ -234,7 +234,7 @@ drbdadm disconnect all
 drbdadm -- --discard-my-data connect all
 ```
 
-**Primary node**
+_in primary node_
 
 ```bash
 drbdadm primary all
@@ -242,15 +242,16 @@ drbdadm disconnect all
 drbdadm connect all
 ```
 
-**On both**
+_On both servers_
 
 ```bash
 drbdadm status
 cat /proc/drbd
 ```
-optional
 
-**Monitor the fdrbd resources**
+`optional`
+
+_Monitor the drbd resources_
 
 ```bash
 cat <<EOF > /drbd-webdata/crm_logger.sh
@@ -265,7 +266,7 @@ chmod 755 /drbd-webdata/crm_logger.sh
 pcs resource create ClusterMon-External ClusterMon user=apache update=10 extra_options="-E /usr/local/bin/crm_logger.sh --watch-fencing" htmlfile=/drbd-webdata/cluster_mon.html pidfile=/var/run/crm_mon-external.pid clone
 ```
 
-**stonith configuration**
+_stonith configuration_
 
 ```bash
 pcs resource defaults resource-stickiness=100
@@ -280,8 +281,7 @@ pcs cluster stop node2
 stonith_admin --reboot node2
 ```
 
-
-**reference**
+_reference_
 
 ```bash
 https://wiki.myhypervisor.ca/books/linux/page/drbd-pacemaker-corosync-mysql-cluster-centos7
@@ -292,7 +292,7 @@ http://sheepguardingllama.com/2011/06/drbd-error-device-is-held-open-by-someone/
 ```
 
 
-**active-active cluster from active-passive cluster**
+_active-active cluster from `active-passive` cluster_
 
 Configure SONITH. It will help you to fix this issue. or else it is not possible to complete
 
