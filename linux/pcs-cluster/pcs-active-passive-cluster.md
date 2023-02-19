@@ -297,3 +297,14 @@ http://sheepguardingllama.com/2011/06/drbd-error-device-is-held-open-by-someone/
 Configure SONITH. It will help you to fix this issue. or else it is not possible to complete
 
 ![image](https://user-images.githubusercontent.com/57703276/197835585-d9ef7962-023a-4755-9b78-3c6af61ff636.png)
+
+
+_how to increase the pcs lvm volume_
+
+```bash
+lvextend  -L+10G /dev/drbd-vg/drbd-webdata
+# ext4 volume
+resize2fs /dev/drbd-vg/drbd-webdata
+# xfs volume
+xfs_growfs /dev/drbd-vg/drbd-webdata
+```
