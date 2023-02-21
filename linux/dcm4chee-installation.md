@@ -77,7 +77,7 @@ docker-compose up -d
 
 [docs](https://github.com/dcm4che/dcm4chee-arc-light/wiki)
 
-`http://<docker-host>:8080/dcm4chee-arc/ui2` - if secured, login with `https://<docker-host>:8443/dcm4chee-arc/ui2
+`http://<docker-host>:8080/dcm4chee-arc/ui2` - if secured, login with `https://<docker-host>:8443/dcm4chee-arc/ui2`
 
   Name | Password | Role(s) |
   --- | --- | --- |
