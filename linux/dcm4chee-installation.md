@@ -58,3 +58,19 @@ services:
       - /var/local/dcm4chee-arc/storage:/storage
 
 ```
+
+_environement_
+
+```bash
+# vim docker-compose.env
+STORAGE_DIR=/storage/fs1
+POSTGRES_DB=pacsdb
+POSTGRES_USER=pacs
+POSTGRES_PASSWORD=pacs
+``
+
+_run command_
+
+```bash
+docker-compose up -d
+```
