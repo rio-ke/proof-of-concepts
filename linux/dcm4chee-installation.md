@@ -75,5 +75,12 @@ _run command_
 docker-compose up -d
 ```
 
+- Archive UI: `http://<docker-host>:8080/dcm4chee-arc/ui2` - if secured, login with
+
+  Name | Password | Role(s)
+  --- | --- | --- 
+  root | changeit | user<br/> root<br/> auditlog<br/> ADMINISTRATOR<br/> all roles specified by client realm-management
+  admin | changeit | user<br/> admin
+  user | changeit | user
 
 https://github.com/dcm4che/dcm4chee-arc-light/wiki
