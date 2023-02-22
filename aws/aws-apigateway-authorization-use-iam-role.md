@@ -42,6 +42,5 @@ _success message_
 
 _deny message_
 
-![image](https://user-images.githubusercontent.com/57703276/220546452-57f89b5d-a117-4699-942f-c19e83bd4670.png)
-
+![image](https://user-images.githubusercontent.com/57703276/220546870-019dc3b2-57df-4a5f-b877-6a579bc4d074.png)
 
