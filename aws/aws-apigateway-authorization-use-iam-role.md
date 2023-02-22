@@ -1,6 +1,16 @@
-aws-apigateway-authorization-use-iam-role.md
+_aws-apigateway-authorization-use-iam-role_
 
-This is the user policy look like
+aws IAM ROLE authentication should be enabled like this.
+
+![image](https://user-images.githubusercontent.com/57703276/220544675-9232f6c9-deb9-4103-90a3-d8a4d0e72132.png)
+
+apigateway should be configure like this
+
+![image](https://user-images.githubusercontent.com/57703276/220544832-e8caa984-443a-48fb-863f-adf8b1930d62.png)
+
+
+
+create the user and attach it to a group. The following policy should be attached at the group level.
 
 ```js
 {
@@ -21,4 +31,10 @@ This is the user policy look like
       ]
     }
   ]
-}```
+}
+```
+
+finally you should scrap the acces key and secret key from the user security credentials.
+
+
+
