@@ -34,7 +34,7 @@ create the user and attach it to a group. The following policy should be attache
 }
 ```
 
-finally you should scrap the acces key and secret key from the user security credentials.
+finally you should scrap the acces key and secret key from the user security credentials. open the postman under the authorization section you should select the `AWS Signature` and provide the appropriate values.
 
 _success message_
 
