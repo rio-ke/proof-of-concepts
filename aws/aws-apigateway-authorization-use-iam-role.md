@@ -36,5 +36,12 @@ create the user and attach it to a group. The following policy should be attache
 
 finally you should scrap the acces key and secret key from the user security credentials.
 
+_success message_
+
+![image](https://user-images.githubusercontent.com/57703276/220546560-7df683e7-ef23-45e0-8627-95e85390258f.png)
+
+_deny message_
+
+![image](https://user-images.githubusercontent.com/57703276/220546452-57f89b5d-a117-4699-942f-c19e83bd4670.png)
 
 
