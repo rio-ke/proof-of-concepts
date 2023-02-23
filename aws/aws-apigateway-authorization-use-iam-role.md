@@ -44,3 +44,26 @@ _deny message_
 
 ![image](https://user-images.githubusercontent.com/57703276/220546870-019dc3b2-57df-4a5f-b877-6a579bc4d074.png)
 
+
+```py
+import requests
+from aws_requests_auth.boto_utils import AWSRequestsAuth
+
+region = 'ap-southeast-1'
+
+def request_api(api_id: str, api_key=None): 
+    host = api_id+'.execute-api.'+region+'.amazonaws.com'
+    base_url = f'https://{host}/Prod'
+    get_url = f'{base_url}/hello'
+
+    ACCESS_KEY='xxxxxxxxxxx'
+    SECRET_ACCESS_KEY='xxxxxxxxxxxxxxxxxxx'
+    auth = AWSRequestsAuth(aws_host=host, aws_region=region, aws_service='execute-api', aws_access_key=ACCESS_KEY, aws_secret_access_key=SECRET_ACCESS_KEY)
+    response = requests.get(get_url, timeout=2, auth=auth)
+
+    return response
+
+response = request_api('acmulXXXXX')
+print (response.text)
+
+```
