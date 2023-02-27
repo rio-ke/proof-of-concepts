@@ -67,3 +67,30 @@ response = request_api('acmulXXXXX')
 print (response.text)
 
 ```
+
+
+_conditional json policy_
+
+```js
+{
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Action": ["execute-api:Invoke"],
+        "Resource": [
+          "arn:aws:execute-api:ap-southeast-1:<aws account number>:<api id>/*/GET/bds"
+        ],
+        "Condition" : { "StringEquals" : { "aws:username" : "johndoe" }}
+      },
+      {
+        "Effect": "Deny",
+        "Action": ["execute-api:Invoke"],
+        "Resource": [
+          "arn:aws:execute-api:ap-southeast-1:<aws account number>:<api id>/*/GET/gino"
+        ],
+        "Condition" : { "StringEquals" : { "aws:username" : "johndoe" }}
+      }
+    ]
+}
+```
