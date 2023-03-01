@@ -1,0 +1,43 @@
+---
+schedules:
+  - cron: "0 5 * * Mon,Sat"
+    displayName: "At 05:00 on Monday and Saturday."
+    branches:
+      include:
+        - develop
+
+pool:
+  vmImage: "ubuntu-22.04"
+
+stages:
+  - stage: "aksClusterActivity"
+    jobs:
+      - job: "aksClusterActivity"
+        steps:
+          - script: |
+              DAY_OF_WEEK=$(date '+%a')
+              echo "##[debug]Today is $DAY_OF_WEEK day"
+              if [ $DAY_OF_WEEK == 'Mon' ]; then
+                  echo "##vso[task.setvariable variable=ACTION_STATE]start"
+              elif [ $DAY_OF_WEEK == 'Sat' ]; then
+                  echo "##vso[task.setvariable variable=ACTION_STATE]stop"
+              else
+                  echo "##[debug]Today working day"
+                  exit 1
+              fi
+            displayName: "Find Action Date"
+          - task: AzureCLI@2
+            displayName: "perform aks clusters up and down"
+            inputs:
+              azureSubscription: "Azure service connection"
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |
+                echo "##[debug]The development aks cluster has been been $ACTION_STATEed"
+                # az aks $ACTION_STATE --name myAKSCluster --resource-group myResourceGroup
+
+                echo "##[debug]The qa aks cluster demo has been $ACTION_STATEed"
+                # az aks $ACTION_STATE --name myAKSCluster --resource-group myResourceGroup
+
+                echo "##[debug]The uat aks cluster has been $ACTION_STATEed"
+                # az aks $ACTION_STATE --name myAKSCluster --resource-group myResourceGroup
