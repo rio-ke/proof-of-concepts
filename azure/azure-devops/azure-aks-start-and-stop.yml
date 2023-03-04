@@ -1,10 +1,10 @@
 ---
-# schedules:
-#   - cron: "0 5 * * Mon,Sat"
-#     displayName: "At 05:00 on Monday and Saturday."
-#     branches:
-#       include:
-#         - develop
+schedules:
+  - cron: "0 5 * * Mon,Sat"
+    displayName: "At 05:00 on Monday and Saturday."
+    branches:
+      include:
+        - develop
         
 trigger: none
 
@@ -12,9 +12,7 @@ pool:
   vmImage: "ubuntu-22.04"
 
 variables:
-  - group: COMMON_VARIABLE_FOR_ALL_APPS # This variable group common for all apps. Do not ignore
-  - group: BUILD_VARIABLE_GROUP # Mandatory* variable group
-  - group: RELEASE_VARIABLE_GROUP # Mandatory* variable group
+  - group: COMMON_VARIABLE_FOR_ALL_APPS
 
 stages:
   - stage: "clusterActivity"
