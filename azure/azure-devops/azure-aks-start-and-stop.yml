@@ -1,0 +1,48 @@
+---
+# schedules:
+#   - cron: "0 5 * * Mon,Sat"
+#     displayName: "At 05:00 on Monday and Saturday."
+#     branches:
+#       include:
+#         - develop
+        
+trigger: none
+
+pool:
+  vmImage: "ubuntu-22.04"
+
+variables:
+  - group: COMMON_VARIABLE_FOR_ALL_APPS # This variable group common for all apps. Do not ignore
+  - group: BUILD_VARIABLE_GROUP # Mandatory* variable group
+  - group: RELEASE_VARIABLE_GROUP # Mandatory* variable group
+
+stages:
+  - stage: "clusterActivity"
+    jobs:
+      - job: "clusterActivity"
+        steps:
+          - script: |
+              DAY_OF_WEEK=$(date '+%a')
+              echo "##[debug]Today is $DAY_OF_WEEK day"
+              if [ $DAY_OF_WEEK == 'Mon' ]; then
+                  echo "##vso[task.setvariable variable=ACTION_STATE]start"
+              elif [ $DAY_OF_WEEK == 'Sat' ]; then
+                  echo "##vso[task.setvariable variable=ACTION_STATE]stop"
+              else
+                  echo "##[debug]Today working day"
+                  exit 1
+              fi
+            displayName: "Find Action Date"
+          - task: AzureCLI@2
+            displayName: "perform wealth aks clusters"
+            inputs:
+              azureSubscription: $(AZURE_SUBSCRIPTION)
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |
+                echo "##[debug]The development aks cluster $(DEV_AZURE_AKS_CLUSTER_NAME) has been been $ACTION_STATEed"
+                # az aks $ACTION_STATE --name $(DEV_AZURE_AKS_CLUSTER_NAME) --resource-group $(DEV_AZURE_RESOURCE_GROUP)
+                echo "##[debug]The qa aks cluster $(DEV_AZURE_AKS_CLUSTER_NAME) has been $ACTION_STATEed"
+                # az aks $ACTION_STATE --name $(QA_AZURE_AKS_CLUSTER_NAME) --resource-group $(QA_AZURE_RESOURCE_GROUP)
+                echo "##[debug]The uat aks cluster $(UAT_AZURE_AKS_CLUSTER_NAME) has been $ACTION_STATEed"
+                # az aks $ACTION_STATE --name $(UAT_AZURE_AKS_CLUSTER_NAME) --resource-group $(UAT_AZURE_RESOURCE_GROUP)
