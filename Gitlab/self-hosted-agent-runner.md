@@ -24,6 +24,6 @@ sudo gitlab-runner register --url https://gitlab.com/ --registration-token $REGI
 
 
 ```bash
-# command the all the containers
+# command the all the lines
 sudo vim  /home/gitlab-runner/.bash_logout
 ```
