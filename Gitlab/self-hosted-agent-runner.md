@@ -20,3 +20,10 @@ _token registration_
 ```bash
 sudo gitlab-runner register --url https://gitlab.com/ --registration-token $REGISTRATION_TOKEN
 ```
+
+
+
+```bash
+# command the all the containers
+sudo vim  /home/gitlab-runner/.bash_logout
+```
