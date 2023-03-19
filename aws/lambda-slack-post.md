@@ -24,9 +24,7 @@ def send_slack_message(payload, webhook):
     return requests.post(webhook, json.dumps(payload))
 
 def lambda_handler(event, context):
-    client = boto3.client('sns')
     print(event)
-
     message = event['Records'][0]['Sns']['Message']
     print("break")
     print(message)
@@ -35,15 +33,9 @@ def lambda_handler(event, context):
 
     _msg["instanceName"] = get_instance_name(_msg['detail']['instance-id'])
 
-    # SLACK_URL = "https://hooks.slack.com/services/XXXX/XXXX/XXXX"
     payload = {"text": json.dumps(_msg)}
     slackResponse = send_slack_message(payload, SLACK_URL)
     print(slackResponse)
 
-    response = client.publish(
-        TopicArn=SNS_ARN,
-        Message=json.dumps(_msg), 
-        Subject="EC2InstanceEvents"
-    )
-    return response
+    return slackResponse
 ```
