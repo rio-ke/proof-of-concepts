@@ -42,7 +42,6 @@ def lambda_handler(event, context):
 
 
 ```py
-
 import boto3
 import json
 import os
@@ -62,9 +61,9 @@ def get_instance_name(fid):
             instancename = tags["Value"]
     return instancename
 
-def alert_to_slack(msg):
+def alert_to_slack(instanceId, state, instanceName):
     data = {
-        "text": json.dumps(msg),
+        "text": "This {} instance {} has been {}" .format(instanceName, instanceId, state),
         "username": "Notifications",
         "channel": SLACK_CHANNEL
 	}
@@ -75,12 +74,10 @@ def alert_to_slack(msg):
 
 def lambda_handler(event, context):
     print(event)
-    message = event['detail']['instance-id']
-    print(message)
-    _msg = json.loads(message)
-    print(_msg)
-    _msg["instanceName"] = get_instance_name(_msg['detail']['instance-id'])
-    slackResponse = alert_to_slack(_msg)
+    instanceId = event['detail']['instance-id']
+    state = event['detail']['state']
+    instanceName = get_instance_name(instanceId)
+    slackResponse = alert_to_slack(instanceId, state, instanceName)
     return slackResponse
 
 ```
