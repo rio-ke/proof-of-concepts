@@ -28,6 +28,12 @@ master-verify-checksum         = 1
 slave-sql-verify-checksum      = 1 
 binlog-rows-query-log_events   = 1 
 log_slave_updates              = 1
+#
+max_allowed_packet          = 16M
+read_buffer_size            = 1M
+sort_buffer_size            = 16M
+thread_cache_size           = 8
+#set-variable               = max_connections=500
 ```
 
 **_Slave node_**
