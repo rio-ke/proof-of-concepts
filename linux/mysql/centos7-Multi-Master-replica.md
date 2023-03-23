@@ -18,7 +18,7 @@ Master-two: 192.168.xx.xxx
 ``` cmd
 sudo rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2022 
 sudo yum localinstall https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm 
-sudo yum install mysql-community-server`sql
+sudo yum install mysql-community-server
 ```
 
 **_Open the mysql configuration file on the Master-one node._**
