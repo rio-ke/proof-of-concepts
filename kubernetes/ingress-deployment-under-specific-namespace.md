@@ -2,7 +2,7 @@
 
 
 ```bash
-RELEASE_NAME=gino-ingress
+RELEASE_NAME=uwb-ingress
 
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm repo update
