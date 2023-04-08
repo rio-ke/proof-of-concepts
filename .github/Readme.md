@@ -91,3 +91,4 @@ scp -r -i demo.pem ubuntu@4.194.8.82:~/demo .
     * GitLab pipelines
     * Jenkins
     * Code Build and deploy
+    * GitLab
