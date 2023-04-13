@@ -1,4 +1,4 @@
-_gitlab-template-reference.md_
+_gitlab-security-template-reference.md_
 
 ```yml
 ---
