@@ -1,5 +1,5 @@
 
-_[dcm4chee docker installtion](https://nroduit.github.io/en/getting-started/dcm4chee/)_
+_[dcm4chee docker installation](https://nroduit.github.io/en/getting-started/dcm4chee/)_
 
 ```yml
 version: "3"
