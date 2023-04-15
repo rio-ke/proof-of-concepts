@@ -1,6 +1,13 @@
-@fourtimes 
+_Task_
 
-_flutter installation on Ubuntu_
+1. install the basic software
+2. create the dummy application
+
+[Discussion](https://github.com/operation-unknown/proof-of-concepts/discussions/5#discussioncomment-4635200)
+
+_Documentation_
+
+flutter installation on Ubuntu
 
 1. java required 
 2. android app required
@@ -13,9 +20,18 @@ sudo snap install flutter --classic
 sudo apt install default-jdk -y
 ```
 
-_download the android sdk from official site_
+download the android sdk from official site
 
 https://docs.flutter.dev/get-started/install/linux#install-android-studio
+
+
+_How can we create flutter project using Linux terminal?_
+
+* flutter create app
+
+_How to run the apps?_
+
+* flutter run
 
 
 ```dart
